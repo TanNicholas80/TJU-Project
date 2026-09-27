@@ -1,0 +1,37 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "portfolio": "Portofolio",
+    "contact": "Hubungi Kami"
+  },
+  "language": {
+    "select": "Pilih Bahasa / Language",
+    "id": "Bahasa Indonesia",
+    "en": "English",
+    "zh": "中文 (Mandarin)"
+  },
+  "errors": {
+    "backHome": "Kembali ke Beranda",
+    "retry": "Coba Lagi",
+    "403": {
+      "title": "Akses terbatas.",
+      "description": "Mohon maaf, Anda tidak memiliki izin untuk mengakses halaman ini. Silakan hubungi admin jika ini adalah kesalahan."
+    },
+    "404": {
+      "title": "Halaman tidak ditemukan.",
+      "description": "Kami tidak bisa menemukan halaman yang kamu tuju. Yuk, balik lagi ke halaman utama."
+    },
+    "500": {
+      "title": "Terjadi gangguan pada sistem.",
+      "description": "Maaf, server kami sedang mengalami kendala teknis. Kami akan segera memperbaikinya. Silakan coba lagi nanti."
+    }
+  },
+  "footer": {
+    "companyDescription": "CV. Tri Jaya Utama berkomitmen memberikan solusi rangka atap baja ringan terbaik dengan standar engineering tinggi untuk Indonesia yang lebih aman.",
+    "quickLinks": "Quick Links",
+    "citySemarang": "Semarang",
+    "copyright": "© 2026 TJU TRUSS®. All Rights Reserved."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "navigation": {
+    "home": "首页",
+    "about": "关于我们",
+    "blog": "博客动态",
+    "portfolio": "工程项目",
+    "contact": "联系我们"
+  },
+  "language": {
+    "select": "选择语言 / Language",
+    "id": "Bahasa Indonesia",
+    "en": "English",
+    "zh": "中文 (Mandarin)"
+  },
+  "errors": {
+    "backHome": "返回首页",
+    "retry": "重试",
+    "403": {
+      "title": "访问受限。",
+      "description": "抱歉，您没有权限访问此页面。如果存在疑问，请联系系统管理员。"
+    },
+    "404": {
+      "title": "页面未找到。",
+      "description": "无法找到您请求的页面。请返回主页重新浏览。"
+    },
+    "500": {
+      "title": "系统发生故障。",
+      "description": "抱歉，服务器暂时遇到技术问题。我们正在加紧修复，请稍后再试。"
+    }
+  },
+  "footer": {
+    "companyDescription": "CV. Tri Jaya Utama 致力于以卓越的工程标准提供优质轻钢屋架解决方案，建设更安全稳固的建筑。",
+    "quickLinks": "快速链接",
+    "citySemarang": "三宝垄",
+    "copyright": "© 2026 TJU TRUSS®. 版权所有。"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "portfolio": "Portfolio",
+    "contact": "Contact Us"
+  },
+  "language": {
+    "select": "Select Language",
+    "id": "Bahasa Indonesia",
+    "en": "English",
+    "zh": "中文 (Mandarin)"
+  },
+  "errors": {
+    "backHome": "Back to Home",
+    "retry": "Try Again",
+    "403": {
+      "title": "Access Restricted.",
+      "description": "Sorry, you do not have permission to access this page. Please contact the administrator if you believe this is an error."
+    },
+    "404": {
+      "title": "Page Not Found.",
+      "description": "We couldn't find the page you're looking for. Let's head back to the home page."
+    },
+    "500": {
+      "title": "System Disruption Occurred.",
+      "description": "Sorry, our server is currently experiencing technical difficulties. We will resolve it shortly. Please try again later."
+    }
+  },
+  "footer": {
+    "companyDescription": "CV. Tri Jaya Utama is dedicated to providing superior light steel truss solutions with high engineering standards for a safer Indonesia.",
+    "quickLinks": "Quick Links",
+    "citySemarang": "Semarang",
+    "copyright": "© 2026 TJU TRUSS®. All Rights Reserved."
+  }
+}
