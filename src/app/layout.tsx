@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -11,17 +12,20 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "TJU TRUSS SYSTEM | CV. Tri Jaya Utama",
-  description: "Aplikasi Rangka Atap Baja Ringan Terbesar, Kompetitif, dan Terpercaya di Indonesia.",
+  description:
+    "Aplikasi Rangka Atap Baja Ringan Terbesar, Kompetitif, dan Terpercaya di Indonesia.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="id"
-      className={`${montserrat.variable} h-full antialiased`}
-    >
+    <html lang="id" className={`${montserrat.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
         {children}
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
