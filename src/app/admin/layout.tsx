@@ -21,8 +21,11 @@ export default function AdminLayout({
   // Map route to human title
   const getPageTitle = () => {
     if (pathname.includes("/admin/carousel")) return "Manajemen Hero Carousel";
-    if (pathname.includes("/admin/standards")) return "Standar Kualitas & Keahlian";
+    if (pathname.includes("/admin/banners")) return "Manajemen Banner Halaman";
+    if (pathname.includes("/admin/certifications")) return "Manajemen Sertifikasi Mutu";
+    if (pathname.includes("/admin/portfolio-categories")) return "Manajemen Kategori Portofolio";
     if (pathname.includes("/admin/portfolios")) return "Manajemen Portofolio Proyek";
+    if (pathname.includes("/admin/standards")) return "Standar Kualitas & Keahlian";
     if (pathname.includes("/admin/posts")) return "Manajemen Blog & Artikel";
     if (pathname.includes("/admin/settings")) return "Pengaturan Kontak & Profil";
     return "Dashboard Overview";

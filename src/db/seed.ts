@@ -8,6 +8,8 @@ import {
   defaultPosts,
   defaultPortfolios,
   defaultCompanyProfile,
+  defaultPageBanners,
+  defaultCertifications,
 } from "../lib/data-defaults";
 import { auth } from "../lib/auth";
 
@@ -67,6 +69,36 @@ async function main() {
         .values({
           nameI18n: item.nameI18n,
           slug: item.slug,
+          descriptionI18n: item.descriptionI18n,
+          coverImageUrl: item.coverImageUrl,
+        })
+        .onConflictDoNothing();
+    }
+
+    // 4B. Page Banners
+    console.log("Seeding Page Banners...");
+    for (const banner of Object.values(defaultPageBanners)) {
+      await db
+        .insert(schema.pageBanners)
+        .values({
+          pageSlug: banner.pageSlug,
+          titleI18n: banner.titleI18n,
+          breadcrumbI18n: banner.breadcrumbI18n,
+          backgroundImageUrl: banner.backgroundImageUrl,
+        })
+        .onConflictDoNothing();
+    }
+
+    // 4C. Certifications
+    console.log("Seeding Certifications...");
+    for (const cert of defaultCertifications) {
+      await db
+        .insert(schema.certifications)
+        .values({
+          titleI18n: cert.titleI18n,
+          imageUrl: cert.imageUrl,
+          sortOrder: cert.sortOrder,
+          isActive: cert.isActive,
         })
         .onConflictDoNothing();
     }

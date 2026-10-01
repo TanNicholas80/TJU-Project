@@ -10,6 +10,8 @@ import {
   defaultCompanyProfile,
   defaultCategoriesPortfolio,
   defaultCategoriesPost,
+  defaultPageBanners,
+  defaultCertifications,
 } from "./data-defaults";
 
 export async function getHeroCarousels() {
@@ -152,3 +154,44 @@ export async function getCategoriesPost() {
     }
   }, 86400);
 }
+
+export async function getPageBanner(pageSlug: string = "about-us") {
+  return cache.getOrSet(`public:banner:${pageSlug}`, async () => {
+    try {
+      const [banner] = await db
+        .select()
+        .from(schema.pageBanners)
+        .where(eq(schema.pageBanners.pageSlug, pageSlug))
+        .limit(1);
+
+      if (banner) {
+        return banner;
+      }
+      return defaultPageBanners[pageSlug] || defaultPageBanners["about-us"];
+    } catch (err) {
+      console.warn(`[DataService] Database query for banner ${pageSlug} failed, using default:`, err);
+      return defaultPageBanners[pageSlug] || defaultPageBanners["about-us"];
+    }
+  }, 3600);
+}
+
+export async function getCertifications() {
+  return cache.getOrSet("public:certifications", async () => {
+    try {
+      const data = await db
+        .select()
+        .from(schema.certifications)
+        .where(eq(schema.certifications.isActive, true))
+        .orderBy(asc(schema.certifications.sortOrder));
+
+      if (data && data.length > 0) {
+        return data;
+      }
+      return defaultCertifications;
+    } catch (err) {
+      console.warn("[DataService] Database query for certifications failed, using defaults:", err);
+      return defaultCertifications;
+    }
+  }, 3600);
+}
+

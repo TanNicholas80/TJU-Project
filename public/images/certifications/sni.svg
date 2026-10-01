@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect x="12" y="18" width="96" height="84" rx="8" stroke="white" stroke-width="3"/>
+  <text x="60" y="62" fill="white" font-size="28" font-weight="900" font-family="Arial, sans-serif" text-anchor="middle" letter-spacing="2">SNI</text>
+  <line x1="24" y1="72" x2="96" y2="72" stroke="white" stroke-width="2"/>
+  <text x="60" y="86" fill="white" font-size="8.5" font-weight="600" font-family="Arial, sans-serif" text-anchor="middle">SNI 8399:2017</text>
+</svg>

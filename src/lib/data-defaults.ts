@@ -99,10 +99,124 @@ export const defaultQualityStandards = [
 ];
 
 export const defaultCategoriesPortfolio = [
-  { id: 1, slug: "pendidikan-publik", nameI18n: { id: "Fasilitas Pendidikan & Publik", en: "Educational & Public Facilities", zh: "教育与公共设施" } },
-  { id: 2, slug: "komersial", nameI18n: { id: "Gedung Komersial", en: "Commercial Buildings", zh: "商业大厦" } },
-  { id: 3, slug: "residensial", nameI18n: { id: "Residensial Mewah", en: "Luxury Residential", zh: "高端住宅" } },
-  { id: 4, slug: "kanopi-spesial", nameI18n: { id: "Kanopi & Struktur Khusus", en: "Canopy & Special Structures", zh: "雨棚与特种构件" } },
+  {
+    id: 1,
+    slug: "industrial",
+    nameI18n: { id: "Industrial", en: "Industrial", zh: "工业设施" },
+    descriptionI18n: {
+      id: "Pabrik, Gudang, Fasilitas Produksi Skala Besar",
+      en: "Factories, Warehouses, Large Scale Production Facilities",
+      zh: "厂房、仓库、大型生产设施",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 2,
+    slug: "commercial",
+    nameI18n: { id: "Commercial", en: "Commercial", zh: "商业建筑" },
+    descriptionI18n: {
+      id: "Pusat Perbelanjaan, Ruko Modern, Gedung Perkantoran",
+      en: "Shopping Centers, Modern Shophouses, Office Buildings",
+      zh: "商业中心、现代商铺、办公大楼",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 3,
+    slug: "residential",
+    nameI18n: { id: "Residential", en: "Residential", zh: "高端住宅" },
+    descriptionI18n: {
+      id: "Kompleks Perumahan, Real Estate, Villa Eksklusif",
+      en: "Housing Estates, Real Estate, Exclusive Villas",
+      zh: "住宅小区、房地产、独栋别墅",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+  },
+];
+
+export const defaultPageBanners: Record<
+  string,
+  {
+    id: number;
+    pageSlug: string;
+    titleI18n: I18nString;
+    breadcrumbI18n: I18nString;
+    backgroundImageUrl: string;
+  }
+> = {
+  "about-us": {
+    id: 1,
+    pageSlug: "about-us",
+    titleI18n: {
+      id: "About Us",
+      en: "About Us",
+      zh: "关于我们",
+    },
+    breadcrumbI18n: {
+      id: "Home > About US",
+      en: "Home > About US",
+      zh: "首页 > 关于我们",
+    },
+    backgroundImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+  },
+};
+
+export const defaultCertifications = [
+  {
+    id: 1,
+    titleI18n: {
+      id: "Sertifikasi Software Rekayasa Struktur HAKI",
+      en: "HAKI Structural Engineering Software Certification",
+      zh: "HAKI结构工程软件认证",
+    },
+    imageUrl: "/images/certifications/haki.svg",
+    sortOrder: 1,
+    isActive: true,
+  },
+  {
+    id: 2,
+    titleI18n: {
+      id: "Sistem Manajemen Mutu ISO 9001:2015",
+      en: "ISO 9001:2015 Quality Management System",
+      zh: "ISO 9001:2015 质量管理体系",
+    },
+    imageUrl: "/images/certifications/iso.svg",
+    sortOrder: 2,
+    isActive: true,
+  },
+  {
+    id: 3,
+    titleI18n: {
+      id: "Standar Nasional Indonesia SNI 8399:2017",
+      en: "Indonesian National Standard SNI 8399:2017",
+      zh: "印度尼西亚国家标准 SNI 8399:2017",
+    },
+    imageUrl: "/images/certifications/sni.svg",
+    sortOrder: 3,
+    isActive: true,
+  },
+  {
+    id: 4,
+    titleI18n: {
+      id: "Tingkat Komponen Dalam Negeri (TKDN) Kemenperin",
+      en: "Ministry of Industry Domestic Component Level (TKDN)",
+      zh: "工业部本土成分含量认证 (TKDN)",
+    },
+    imageUrl: "/images/certifications/tkdn.svg",
+    sortOrder: 4,
+    isActive: true,
+  },
+  {
+    id: 5,
+    titleI18n: {
+      id: "Garansi Resmi Struktural 10 Tahun & Standar K3",
+      en: "10-Year Official Structural Warranty & K3 Safety",
+      zh: "10年官方结构质保与K3安全标准",
+    },
+    imageUrl: "/images/certifications/garansi.svg",
+    sortOrder: 5,
+    isActive: true,
+  },
 ];
 
 export const defaultPortfolios = [

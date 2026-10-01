@@ -14,6 +14,9 @@ import {
   LogOut,
   ExternalLink,
   ChevronRight,
+  Bookmark,
+  ShieldCheck,
+  FolderTree,
 } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { toast } from "sonner";
@@ -32,14 +35,29 @@ const navigationItems = [
     icon: Images,
   },
   {
-    name: "Standar Kualitas",
-    href: "/admin/standards",
-    icon: Award,
+    name: "Banner Halaman",
+    href: "/admin/banners",
+    icon: Bookmark,
+  },
+  {
+    name: "Sertifikasi Mutu",
+    href: "/admin/certifications",
+    icon: ShieldCheck,
+  },
+  {
+    name: "Kategori Portofolio",
+    href: "/admin/portfolio-categories",
+    icon: FolderTree,
   },
   {
     name: "Portofolio Proyek",
     href: "/admin/portfolios",
     icon: Briefcase,
+  },
+  {
+    name: "Standar Kualitas",
+    href: "/admin/standards",
+    icon: Award,
   },
   {
     name: "Blog & Artikel",

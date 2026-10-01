@@ -57,8 +57,34 @@ export const categoriesPost = pgTable("categories_post", {
 // ==========================================
 export const categoriesPortfolio = pgTable("categories_portfolio", {
   id: serial("id").primaryKey(),
-  nameI18n: jsonb("name_i18n").$type<I18nString>().notNull(),
   slug: varchar("slug", { length: 150 }).notNull().unique(),
+  nameI18n: jsonb("name_i18n").$type<I18nString>().notNull(),
+  descriptionI18n: jsonb("description_i18n").$type<I18nString>(),
+  coverImageUrl: varchar("cover_image_url", { length: 500 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// ==========================================
+// 4B. PAGE BANNERS (Untuk Banner Header per Halaman)
+// ==========================================
+export const pageBanners = pgTable("page_banners", {
+  id: serial("id").primaryKey(),
+  pageSlug: varchar("page_slug", { length: 100 }).notNull().unique(),
+  titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
+  breadcrumbI18n: jsonb("breadcrumb_i18n").$type<I18nString>(),
+  backgroundImageUrl: varchar("background_image_url", { length: 500 }).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// ==========================================
+// 4C. CERTIFICATIONS (Sertifikasi & Standar Mutu)
+// ==========================================
+export const certifications = pgTable("certifications", {
+  id: serial("id").primaryKey(),
+  titleI18n: jsonb("title_i18n").$type<I18nString>(),
+  imageUrl: varchar("image_url", { length: 500 }).notNull(),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
