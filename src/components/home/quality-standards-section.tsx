@@ -74,7 +74,7 @@ export function QualityStandardsSection({ standards }: QualityStandardsSectionPr
   return (
     <section
       ref={sectionRef}
-      className="py-20 bg-white border-b border-[#E2E4EB]"
+      className="py-20 bg-white"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}

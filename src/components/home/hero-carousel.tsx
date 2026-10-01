@@ -4,16 +4,19 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
-import { ChevronLeft, ChevronRight, MessageSquare, PhoneCall } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { MessageSquare } from "lucide-react";
 import { useI18n, Locale } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
+import { cn } from "@/lib/utils";
 
 export interface HeroSlide {
   id: number;
   imageUrl: string;
+  subheaderI18n?: I18nString | null;
   titleI18n: I18nString;
-  subtitleI18n: I18nString;
+  descriptionI18n?: I18nString | null;
+  loadingTitleI18n?: I18nString | null;
+  subtitleI18n?: I18nString | null;
   ctaTextI18n?: I18nString | null;
   ctaLink?: string | null;
   sortOrder: number;
@@ -24,190 +27,216 @@ interface HeroCarouselProps {
   slides: HeroSlide[];
 }
 
+const SLIDE_DURATION = 6000; // 6 detik per slide
+
 export function HeroCarousel({ slides }: HeroCarouselProps) {
   const { locale } = useI18n();
   const [currentIdx, setCurrentIdx] = React.useState(0);
+  const [progress, setProgress] = React.useState(0);
+
   const textContainerRef = React.useRef<HTMLDivElement>(null);
+  const eyebrowRef = React.useRef<HTMLDivElement>(null);
   const headlineRef = React.useRef<HTMLHeadingElement>(null);
   const subtitleRef = React.useRef<HTMLParagraphElement>(null);
   const ctaGroupRef = React.useRef<HTMLDivElement>(null);
 
   const activeSlides = slides.filter((s) => s.isActive);
-  const slide = activeSlides[currentIdx] || activeSlides[0];
+  const currentSlide = activeSlides[currentIdx] || activeSlides[0];
 
-  const animateSlideText = React.useCallback(() => {
+  // Helper i18n
+  const getLocalized = (field?: I18nString | null) => {
+    if (!field) return "";
+    return field[locale as Locale] || field.id || "";
+  };
+
+  // Text transition with GSAP
+  React.useEffect(() => {
     if (!textContainerRef.current) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.fromTo(
-        headlineRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8 }
+        eyebrowRef.current,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.6 }
       )
         .fromTo(
-          subtitleRef.current,
+          headlineRef.current,
           { opacity: 0, y: 25 },
           { opacity: 1, y: 0, duration: 0.7 },
-          "-=0.5"
+          "-=0.4"
         )
         .fromTo(
-          ctaGroupRef.current,
+          subtitleRef.current,
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.6 },
           "-=0.4"
+        )
+        .fromTo(
+          ctaGroupRef.current,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          "-=0.3"
         );
     }, textContainerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [currentIdx]);
 
-  React.useEffect(() => {
-    const cleanup = animateSlideText();
-    return () => {
-      if (cleanup) cleanup();
-    };
-  }, [currentIdx, animateSlideText]);
-
-  // Auto-advance slide every 7 seconds
+  // Smooth Progress Bar Timer
   React.useEffect(() => {
     if (activeSlides.length <= 1) return;
+
+    setProgress(0);
+    const startTime = Date.now();
+    const intervalTime = 30; // update setiap 30ms
+
     const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % activeSlides.length);
-    }, 7000);
+      const elapsed = Date.now() - startTime;
+      const currentProgress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+      setProgress(currentProgress);
+
+      if (elapsed >= SLIDE_DURATION) {
+        clearInterval(timer);
+        setCurrentIdx((prev) => (prev + 1) % activeSlides.length);
+      }
+    }, intervalTime);
+
     return () => clearInterval(timer);
-  }, [activeSlides.length]);
+  }, [currentIdx, activeSlides.length]);
 
-  const handlePrev = () => {
-    setCurrentIdx((prev) => (prev === 0 ? activeSlides.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIdx((prev) => (prev + 1) % activeSlides.length);
-  };
-
-  if (!slide) return null;
-
-  const getLocalized = (field?: I18nString | null) => {
-    if (!field) return "";
-    return field[locale as Locale] || field.id || "";
-  };
+  if (!currentSlide) return null;
 
   return (
-    <section className="relative w-full h-[600px] md:h-[680px] lg:h-[720px] overflow-hidden bg-[#0F2353]">
-      {/* Background Image with Cinematic Gradient Overlay */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={slide.imageUrl}
-          alt={getLocalized(slide.titleI18n)}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center transition-all duration-1000 scale-105"
-        />
-        {/* Dual tone dark overlay for optimal text contrast and brand aesthetics */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1b42]/95 via-[#0f2353]/85 to-black/60" />
-        <div className="absolute inset-0 bg-black/25" />
-      </div>
+    <section className="relative w-full min-h-[640px] md:min-h-[700px] lg:h-[750px] flex flex-col justify-center overflow-hidden bg-[#0c121e]">
+      {/* Background Slides with Cross-Fade */}
+      {activeSlides.map((s, idx) => (
+        <div
+          key={s.id || idx}
+          className={cn(
+            "absolute inset-0 z-0 transition-opacity duration-1000 ease-in-out",
+            idx === currentIdx ? "opacity-100" : "opacity-0 pointer-events-none"
+          )}
+        >
+          <Image
+            src={s.imageUrl}
+            alt={getLocalized(s.titleI18n)}
+            fill
+            priority={idx === 0}
+            sizes="100vw"
+            className="object-cover object-center scale-105 transition-transform duration-10000 ease-out"
+          />
+          {/* Cinematic Dark Overlay sesuai gambar referensi */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/75 to-black/65" />
+          <div className="absolute inset-0 bg-[#0c121e]/45" />
+        </div>
+      ))}
 
-      {/* Content Container */}
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
+      {/* Main Content Area */}
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div ref={textContainerRef} className="max-w-3xl space-y-6">
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold tracking-wider text-blue-200 uppercase backdrop-blur-md border border-white/15">
-            <span className="h-2 w-2 rounded-full bg-[#F48902] animate-pulse" />
-            TJU Truss System & Engineering
+          {/* Subheader dengan Garis Oranye di sebelah kiri */}
+          <div ref={eyebrowRef} className="flex items-center gap-3">
+            <span className="h-[3px] w-12 sm:w-16 rounded-full bg-[#F48902] inline-block shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-white/90">
+              {getLocalized(currentSlide.subheaderI18n) || "SOLUSI TERINTEGRASI"}
+            </span>
           </div>
 
-          {/* Headline */}
+          {/* Headline / Title */}
           <h1
             ref={headlineRef}
-            className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl leading-[1.15]"
+            className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]"
           >
-            {getLocalized(slide.titleI18n)}
+            {getLocalized(currentSlide.titleI18n)}
           </h1>
 
-          {/* Subheadline */}
+          {/* Description */}
           <p
             ref={subtitleRef}
-            className="text-base sm:text-lg md:text-xl text-blue-100/90 leading-relaxed max-w-2xl font-light"
+            className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed max-w-2xl font-normal"
           >
-            {getLocalized(slide.subtitleI18n)}
+            {getLocalized(currentSlide.descriptionI18n) ||
+              getLocalized(currentSlide.subtitleI18n)}
           </p>
 
-          {/* CTA Buttons */}
+          {/* Statis CTA Buttons */}
           <div
             ref={ctaGroupRef}
-            className="flex flex-wrap items-center gap-4 pt-4"
+            className="flex flex-wrap items-center gap-4 pt-2"
           >
-            <Link href={slide.ctaLink || "#contact"}>
-              <Button
-                variant="orange"
-                size="lg"
-                className="h-12 px-7 text-base font-semibold shadow-lg shadow-orange-500/20 hover:scale-[1.02] transition-transform"
+            {/* 1. Konsultasi Proyek (Biru dengan Icon Chat) */}
+            <Link href="/contact">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2.5 rounded-md bg-[#20449A] hover:bg-[#1a3880] text-white px-6 py-3 font-semibold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
               >
-                <MessageSquare className="h-5 w-5 mr-2" />
-                {getLocalized(slide.ctaTextI18n) || "Konsultasi Proyek"}
-              </Button>
+                <MessageSquare className="h-4 w-4 fill-white/20" />
+                <span>Konsultasi Proyek</span>
+              </button>
             </Link>
 
-            <a
-              href="https://wa.me/6281234567890?text=Halo%20TJU%20Truss,%20saya%20ingin%20konsultasi%20mengenai%20proyek%20rangka%20atap"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-12 px-7 text-base font-medium bg-white/10 text-white border-white/30 backdrop-blur-sm hover:bg-white/20 hover:text-white"
+            {/* 2. Pelajari Sistem TJU (Transparan Border Putih) */}
+            <Link href="/about">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-md border border-white/80 bg-black/20 hover:bg-white/15 text-white px-6 py-3 font-semibold text-sm transition-all active:scale-95 cursor-pointer"
               >
-                <PhoneCall className="h-5 w-5 mr-2 text-green-400" />
-                Hubungi via WhatsApp
-              </Button>
-            </a>
+                <span>Pelajari Sistem TJU</span>
+              </button>
+            </Link>
           </div>
         </div>
+
+        {/* Loading Titles Tabs & Progress Bar di Bagian Bawah */}
+        {activeSlides.length > 0 && (
+          <div className="mt-14 sm:mt-20 flex flex-wrap items-end gap-8 sm:gap-14">
+            {activeSlides.map((s, idx) => {
+              const isActive = idx === currentIdx;
+              const loadingTitle =
+                getLocalized(s.loadingTitleI18n) ||
+                (idx === 0 ? "Strength" : idx === 1 ? "Structure" : "Balance");
+
+              return (
+                <button
+                  key={s.id || idx}
+                  type="button"
+                  onClick={() => {
+                    setCurrentIdx(idx);
+                    setProgress(0);
+                  }}
+                  className="group flex flex-col items-start text-left focus:outline-none cursor-pointer"
+                >
+                  {/* Progress Bar Loading tepat di atas Loading Title */}
+                  <div className="relative h-[3px] w-full min-w-[70px] sm:min-w-[90px] bg-white/10 rounded-full overflow-hidden mb-2.5">
+                    {isActive ? (
+                      <div
+                        className="h-full bg-[#F48902] transition-none rounded-full"
+                        style={{ width: `${progress}%` }}
+                      />
+                    ) : (
+                      <div className="h-full w-0 bg-transparent group-hover:w-full group-hover:bg-white/30 transition-all duration-300" />
+                    )}
+                  </div>
+
+                  {/* Teks Loading Title */}
+                  <span
+                    className={cn(
+                      "text-base sm:text-lg font-semibold tracking-wide transition-colors duration-200",
+                      isActive
+                        ? "text-white font-bold"
+                        : "text-white/40 group-hover:text-white/70 font-medium"
+                    )}
+                  >
+                    {loadingTitle}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
-
-      {/* Navigation Arrows */}
-      {activeSlides.length > 1 && (
-        <div className="absolute bottom-8 right-6 z-20 flex items-center gap-2 sm:right-12">
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label="Previous Slide"
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md border border-white/20 transition hover:bg-[#F48902] hover:border-[#F48902] cursor-pointer"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label="Next Slide"
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md border border-white/20 transition hover:bg-[#F48902] hover:border-[#F48902] cursor-pointer"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
-      )}
-
-      {/* Slide Indicators */}
-      {activeSlides.length > 1 && (
-        <div className="absolute bottom-8 left-6 z-20 flex items-center gap-2 sm:left-12">
-          {activeSlides.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setCurrentIdx(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === currentIdx ? "w-8 bg-[#F48902]" : "w-2 bg-white/50 hover:bg-white"
-              }`}
-            />
-          ))}
-        </div>
-      )}
     </section>
   );
 }

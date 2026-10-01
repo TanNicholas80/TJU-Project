@@ -16,10 +16,19 @@ function safeRevalidate(path: string) {
 
 const carouselSchema = z.object({
   imageUrl: z.string().min(1, "URL Gambar banner wajib diisi"),
+  subheaderId: z.string().optional(),
+  subheaderEn: z.string().optional(),
+  subheaderZh: z.string().optional(),
   titleId: z.string().min(3, "Judul banner wajib diisi"),
   titleEn: z.string().optional(),
   titleZh: z.string().optional(),
-  subtitleId: z.string().min(5, "Subjudul banner wajib diisi"),
+  descriptionId: z.string().optional(),
+  descriptionEn: z.string().optional(),
+  descriptionZh: z.string().optional(),
+  loadingTitleId: z.string().optional(),
+  loadingTitleEn: z.string().optional(),
+  loadingTitleZh: z.string().optional(),
+  subtitleId: z.string().optional(),
   subtitleEn: z.string().optional(),
   subtitleZh: z.string().optional(),
   ctaTextId: z.string().optional(),
@@ -52,23 +61,50 @@ export async function createCarousel(input: CarouselInput) {
   try {
     const validated = carouselSchema.parse(input);
 
+    const descId = validated.descriptionId || validated.subtitleId || "";
+    const descEn = validated.descriptionEn || validated.subtitleEn || descId;
+    const descZh = validated.descriptionZh || validated.subtitleZh || descId;
+
     try {
       await db.insert(schema.heroCarousels).values({
         imageUrl: validated.imageUrl,
+        subheaderI18n: validated.subheaderId
+          ? {
+              id: validated.subheaderId,
+              en: validated.subheaderEn || validated.subheaderId,
+              zh: validated.subheaderZh || validated.subheaderId,
+            }
+          : null,
         titleI18n: {
           id: validated.titleId,
           en: validated.titleEn || validated.titleId,
           zh: validated.titleZh || validated.titleId,
         },
-        subtitleI18n: {
-          id: validated.subtitleId,
-          en: validated.subtitleEn || validated.subtitleId,
-          zh: validated.subtitleZh || validated.subtitleId,
-        },
+        descriptionI18n: descId
+          ? {
+              id: descId,
+              en: descEn,
+              zh: descZh,
+            }
+          : null,
+        subtitleI18n: descId
+          ? {
+              id: descId,
+              en: descEn,
+              zh: descZh,
+            }
+          : null,
+        loadingTitleI18n: validated.loadingTitleId
+          ? {
+              id: validated.loadingTitleId,
+              en: validated.loadingTitleEn || validated.loadingTitleId,
+              zh: validated.loadingTitleZh || validated.loadingTitleId,
+            }
+          : null,
         ctaTextI18n: {
-          id: validated.ctaTextId || "Konsultasi",
-          en: validated.ctaTextEn || "Consultation",
-          zh: validated.ctaTextZh || "咨询",
+          id: validated.ctaTextId || "Konsultasi Proyek",
+          en: validated.ctaTextEn || "Project Consultation",
+          zh: validated.ctaTextZh || "项目咨询",
         },
         ctaLink: validated.ctaLink || "#contact",
         sortOrder: validated.sortOrder,
@@ -95,25 +131,52 @@ export async function updateCarousel(id: number, input: CarouselInput) {
   try {
     const validated = carouselSchema.parse(input);
 
+    const descId = validated.descriptionId || validated.subtitleId || "";
+    const descEn = validated.descriptionEn || validated.subtitleEn || descId;
+    const descZh = validated.descriptionZh || validated.subtitleZh || descId;
+
     try {
       await db
         .update(schema.heroCarousels)
         .set({
           imageUrl: validated.imageUrl,
+          subheaderI18n: validated.subheaderId
+            ? {
+                id: validated.subheaderId,
+                en: validated.subheaderEn || validated.subheaderId,
+                zh: validated.subheaderZh || validated.subheaderId,
+              }
+            : null,
           titleI18n: {
             id: validated.titleId,
             en: validated.titleEn || validated.titleId,
             zh: validated.titleZh || validated.titleId,
           },
-          subtitleI18n: {
-            id: validated.subtitleId,
-            en: validated.subtitleEn || validated.subtitleId,
-            zh: validated.subtitleZh || validated.subtitleId,
-          },
+          descriptionI18n: descId
+            ? {
+                id: descId,
+                en: descEn,
+                zh: descZh,
+              }
+            : null,
+          subtitleI18n: descId
+            ? {
+                id: descId,
+                en: descEn,
+                zh: descZh,
+              }
+            : null,
+          loadingTitleI18n: validated.loadingTitleId
+            ? {
+                id: validated.loadingTitleId,
+                en: validated.loadingTitleEn || validated.loadingTitleId,
+                zh: validated.loadingTitleZh || validated.loadingTitleId,
+              }
+            : null,
           ctaTextI18n: {
-            id: validated.ctaTextId || "Konsultasi",
-            en: validated.ctaTextEn || "Consultation",
-            zh: validated.ctaTextZh || "咨询",
+            id: validated.ctaTextId || "Konsultasi Proyek",
+            en: validated.ctaTextEn || "Project Consultation",
+            zh: validated.ctaTextZh || "项目咨询",
           },
           ctaLink: validated.ctaLink || "#contact",
           sortOrder: validated.sortOrder,

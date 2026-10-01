@@ -33,5 +33,46 @@
     "quickLinks": "Quick Links",
     "citySemarang": "Semarang",
     "copyright": "© 2026 TJU TRUSS®. All Rights Reserved."
+  },
+  "expertise": {
+    "sectionTitle": "Our Expertise Across All Scales",
+    "industrial": {
+      "title": "Industrial & Commercial",
+      "description": "We understand rigorous industrial standards. For factories, warehouses, and commercial facilities, TJU delivers roof truss systems engineered to heavy-duty standards with unrivaled software calculation precision.",
+      "point1": "Large-Scale Fast Installation Efficiency",
+      "point2": "AS100 Verified Material Strength",
+      "point3": "Comprehensive Technical Documentation Support"
+    },
+    "residential": {
+      "title": "Residential",
+      "description": "The roof of a home protects the entire family. We guarantee neat, structured, and officially warrantied installation. TJU Truss provides absolute peace of mind for homeowners prioritizing quality over low-cost compromises.",
+      "point1": "Termite-Proof & Lifetime Rust-Resistant",
+      "point2": "Precision Installation by Certified Experts",
+      "point3": "Official Corporate Structural Warranty"
+    }
+  },
+  "history": {
+    "badge": "STRONG HISTORICAL ROOTS",
+    "title": "From Initiative to Industrial Solution",
+    "description": "CV. Tri Jaya Utama was established in 2000 to answer the challenge of wood scarcity. We transformed from an applicator into an independent manufacturer to ensure absolute quality control.",
+    "cta": "Learn About Us",
+    "milestones": {
+      "m2000": {
+        "year": "2000",
+        "description": "Introducing light steel solutions to the local market through residential development networks."
+      },
+      "m2001": {
+        "year": "2001",
+        "description": "Establishment of CV Tri Jaya Utama. The birth of TJU TRUSS as an authorized applicator and distributor."
+      },
+      "m2010": {
+        "year": "2010",
+        "description": "Self-Manufacturing Era. TJU TRUSS began self-production with official SNI & HAKI certifications."
+      },
+      "now": {
+        "year": "NOW",
+        "description": "25+ Years of Excellence, becoming a trusted partner for residential and industrial projects."
+      }
+    }
   }
 }

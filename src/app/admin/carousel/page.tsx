@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, X, Images, Loader2, Globe } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Images, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable, ColumnDef } from "@/components/admin/data-table";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
@@ -20,14 +20,10 @@ import {
 
 const carouselFormSchema = z.object({
   imageUrl: z.string().min(1, "URL Gambar banner wajib diisi"),
+  subheaderId: z.string().optional(),
   titleId: z.string().min(3, "Judul banner wajib diisi"),
-  titleEn: z.string().optional(),
-  titleZh: z.string().optional(),
-  subtitleId: z.string().min(5, "Subjudul banner wajib diisi"),
-  subtitleEn: z.string().optional(),
-  subtitleZh: z.string().optional(),
-  ctaTextId: z.string().optional(),
-  ctaLink: z.string().optional(),
+  descriptionId: z.string().optional(),
+  loadingTitleId: z.string().optional(),
   sortOrder: z.coerce.number().default(0),
   isActive: z.boolean().default(true),
 });
@@ -53,14 +49,10 @@ export default function AdminCarouselPage() {
     resolver: zodResolver(carouselFormSchema) as any,
     defaultValues: {
       imageUrl: "",
+      subheaderId: "SOLUSI TERINTEGRASI",
       titleId: "",
-      titleEn: "",
-      titleZh: "",
-      subtitleId: "",
-      subtitleEn: "",
-      subtitleZh: "",
-      ctaTextId: "Konsultasi Proyek",
-      ctaLink: "#contact",
+      descriptionId: "",
+      loadingTitleId: "Balance",
       sortOrder: 1,
       isActive: true,
     },
@@ -88,14 +80,10 @@ export default function AdminCarouselPage() {
     setEditingItem(null);
     reset({
       imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+      subheaderId: "SOLUSI TERINTEGRASI",
       titleId: "",
-      titleEn: "",
-      titleZh: "",
-      subtitleId: "",
-      subtitleEn: "",
-      subtitleZh: "",
-      ctaTextId: "Konsultasi Proyek",
-      ctaLink: "#contact",
+      descriptionId: "",
+      loadingTitleId: "Balance",
       sortOrder: items.length + 1,
       isActive: true,
     });
@@ -106,14 +94,10 @@ export default function AdminCarouselPage() {
     setEditingItem(item);
     reset({
       imageUrl: item.imageUrl || "",
+      subheaderId: item.subheaderI18n?.id || item.subheaderI18n?.en || "SOLUSI TERINTEGRASI",
       titleId: item.titleI18n?.id || "",
-      titleEn: item.titleI18n?.en || "",
-      titleZh: item.titleI18n?.zh || "",
-      subtitleId: item.subtitleI18n?.id || "",
-      subtitleEn: item.subtitleI18n?.en || "",
-      subtitleZh: item.subtitleI18n?.zh || "",
-      ctaTextId: item.ctaTextI18n?.id || "Konsultasi Proyek",
-      ctaLink: item.ctaLink || "#contact",
+      descriptionId: item.descriptionI18n?.id || item.subtitleI18n?.id || "",
+      loadingTitleId: item.loadingTitleI18n?.id || item.loadingTitleI18n?.en || "",
       sortOrder: item.sortOrder || 1,
       isActive: Boolean(item.isActive),
     });
@@ -182,14 +166,31 @@ export default function AdminCarouselPage() {
             )}
           </div>
           <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#F48902]">
+                {row.subheaderI18n?.id || "SOLUSI"}
+              </span>
+              <span className="text-zinc-300">•</span>
+              <span className="text-[11px] font-semibold text-[#20449A]">
+                Tab: {row.loadingTitleI18n?.id || "Strength/Structure/Balance"}
+              </span>
+            </div>
             <p className="font-bold text-[#1E1F24] line-clamp-1">
               {row.titleI18n?.id || "Tanpa Judul"}
             </p>
             <p className="text-xs text-[#62636C] line-clamp-1">
-              {row.subtitleI18n?.id || ""}
+              {row.descriptionI18n?.id || row.subtitleI18n?.id || ""}
             </p>
           </div>
         </div>
+      ),
+    },
+    {
+      header: "Tab Bawah",
+      cell: (row) => (
+        <span className="inline-flex items-center rounded-md bg-[#EEF2FA] px-2.5 py-1 text-xs font-bold text-[#20449A]">
+          {row.loadingTitleI18n?.id || "-"}
+        </span>
       ),
     },
     {
@@ -248,7 +249,7 @@ export default function AdminCarouselPage() {
             Hero Carousel Slider
           </h2>
           <p className="text-sm text-[#62636C]">
-            Atur slider gambar banner utama pada bagian paling atas halaman Beranda.
+            Atur slider gambar banner utama (gambar, title, subheader, description, dan loading title) pada beranda.
           </p>
         </div>
 
@@ -273,7 +274,7 @@ export default function AdminCarouselPage() {
           data={items}
           searchPlaceholder="Cari judul slide..."
           emptyTitle="Belum ada slide carousel"
-          emptyDescription="Tambahkan gambar hero dan judul menarik untuk menyapa calon klien di beranda."
+          emptyDescription="Tambahkan slide banner untuk menyapa calon klien di beranda."
           addNewLabel="Tambah Slide Baru"
           onAddNew={handleOpenCreate}
         />
@@ -300,6 +301,7 @@ export default function AdminCarouselPage() {
               onSubmit={handleSubmit(onSubmit)}
               className="flex-1 overflow-y-auto p-6 space-y-4"
             >
+              {/* URL GAMBAR */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
                   URL Gambar Banner (1920x1080) *
@@ -317,13 +319,47 @@ export default function AdminCarouselPage() {
                 )}
               </div>
 
+              {/* SUBHEADER & LOADING TITLE */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
+                    Subheader (Sebelah Garis Oranye)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="SOLUSI TERINTEGRASI"
+                    {...register("subheaderId")}
+                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24]"
+                  />
+                  <p className="text-[11px] text-zinc-500">
+                    Contoh: SOLUSI TERINTEGRASI, REKAYASA STRUKTURAL
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
+                    Loading Title (Tab Bawah dengan Progress Bar)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Balance / Strength / Structure"
+                    {...register("loadingTitleId")}
+                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24]"
+                  />
+                  <p className="text-[11px] text-zinc-500">
+                    Nama singkat tab di bagian bawah banner
+                  </p>
+                </div>
+              </div>
+
+              {/* TITLE */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
-                  Headline / Judul Utama (ID) *
+                  Headline / Title Utama *
                 </label>
                 <input
                   type="text"
-                  placeholder="Solusi Rangka Atap Baja Ringan Presisi..."
+                  placeholder="Solusi Optimal. Efisiensi & Estetika."
                   {...register("titleId")}
                   className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#1E1F24] ${
                     errors.titleId ? "border-red-500" : "border-[#E2E4EB]"
@@ -334,49 +370,20 @@ export default function AdminCarouselPage() {
                 )}
               </div>
 
+              {/* DESCRIPTION */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
-                  Subheadline / Deskripsi Singkat (ID) *
+                  Description / Paragraf Deskripsi *
                 </label>
                 <textarea
-                  rows={2}
-                  placeholder="Spesialis fabrikasi dan konstruksi rangka atap berstandar SNI..."
-                  {...register("subtitleId")}
-                  className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#1E1F24] ${
-                    errors.subtitleId ? "border-red-500" : "border-[#E2E4EB]"
-                  }`}
+                  rows={3}
+                  placeholder="Menyeimbangkan efisiensi biaya, kecepatan pemasangan, dan keindahan arsitektural..."
+                  {...register("descriptionId")}
+                  className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24]"
                 />
-                {errors.subtitleId && (
-                  <p className="text-xs text-red-500">{errors.subtitleId.message}</p>
-                )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
-                    Teks Tombol CTA
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Konsultasi Proyek"
-                    {...register("ctaTextId")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24]"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
-                    Link Tujuan CTA
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="#contact atau /portofolio"
-                    {...register("ctaLink")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24]"
-                  />
-                </div>
-              </div>
-
+              {/* SORT ORDER & ACTIVE */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-semibold uppercase text-[#1E1F24]">

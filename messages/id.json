@@ -33,5 +33,46 @@
     "quickLinks": "Quick Links",
     "citySemarang": "Semarang",
     "copyright": "© 2026 TJU TRUSS®. All Rights Reserved."
+  },
+  "expertise": {
+    "sectionTitle": "Keahlian Kami di Segala Skala",
+    "industrial": {
+      "title": "Industrial & Commercial",
+      "description": "Kami memahami standarisasi industri yang ketat. Untuk pabrik, gudang, dan fasilitas komersial, TJU menyediakan sistem rangka atap yang memenuhi standar engineering berat dengan presisi perhitungan software yang tak tertandingi.",
+      "point1": "Efisiensi Waktu Pemasangan Skala Besar",
+      "point2": "Kekuatan Material Terverifikasi AS100",
+      "point3": "Dukungan Dokumen Teknis Lengkap"
+    },
+    "residential": {
+      "title": "Residential",
+      "description": "Atap rumah adalah pelindung keluarga. Kami memastikan instalasi rapi, terstruktur, dan bergaransi resmi. TJU Truss memberikan ketenangan pikiran bagi pemilik rumah yang mengutamakan kualitas di atas sekadar harga murah.",
+      "point1": "Anti Rayap & Tahan Karat Seumur Hidup",
+      "point2": "Instalasi Presisi oleh Tenaga Ahli",
+      "point3": "Garansi Struktural Resmi Perusahaan"
+    }
+  },
+  "history": {
+    "badge": "AKAR SEJARAH YANG KUAT",
+    "title": "Dari Inisiatif Menjadi Solusi Industri",
+    "description": "CV. Tri Jaya Utama hadir sejak tahun 2000 untuk menjawab tantangan kelangkaan kayu. Kami bertransformasi dari aplikator hingga produsen mandiri demi menjaga kontrol kualitas mutlak.",
+    "cta": "Pelajari Tentang Kami",
+    "milestones": {
+      "m2000": {
+        "year": "2000",
+        "description": "Memperkenalkan solusi baja ringan ke pasar lokal melalui jaringan pembangunan residensial."
+      },
+      "m2001": {
+        "year": "2001",
+        "description": "Pendirian CV Tri Jaya Utama. Lahirnya merek TJU TRUSS sebagai aplikator dan distributor resmi."
+      },
+      "m2010": {
+        "year": "2010",
+        "description": "Era Manufaktur Mandiri. TJU TRUSS mulai diproduksi sendiri dengan sertifikasi SNI & HAKI."
+      },
+      "now": {
+        "year": "KINI",
+        "description": "25+ Tahun Berkarya, menjadi mitra terpercaya untuk proyek residensial dan industrial."
+      }
+    }
   }
 }

@@ -49,19 +49,25 @@ export function Navbar({ className }: NavbarProps) {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-[#20449A]",
+                  "relative py-2 text-sm font-medium transition-colors hover:text-[#20449A]",
                   isActive
                     ? "text-[#20449A] font-semibold"
                     : "text-[#62636C]"
                 )}
               >
-                {item.label}
+                <span>{item.label}</span>
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2.5px] rounded-full bg-[#20449A] transition-all" />
+                )}
               </Link>
             );
           })}

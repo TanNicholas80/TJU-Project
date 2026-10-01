@@ -3,6 +3,7 @@ import { PublicLayout } from "@/components/layout/public-layout";
 import { HeroCarousel } from "@/components/home/hero-carousel";
 import { QualityStandardsSection } from "@/components/home/quality-standards-section";
 import { ExpertiseSection } from "@/components/home/expertise-section";
+import { HistorySection } from "@/components/home/history-section";
 import { FeaturedPortfolioSection } from "@/components/home/featured-portfolio-section";
 import { LatestArticlesSection } from "@/components/home/latest-articles-section";
 import { ContactSection } from "@/components/home/contact-section";
@@ -140,7 +141,10 @@ export default async function HomePage() {
         {/* 3. Keahlian Kami (Statis Split Layout) */}
         <ExpertiseSection />
 
-        {/* 4. Proyek Terbaik / Portofolio (Dinamis dari CMS 2x2 Grid) */}
+        {/* 4. Akar Sejarah Kami (Statis Timeline Sesuai Desain) */}
+        <HistorySection />
+
+        {/* 5. Proyek Terbaik / Portofolio (Dinamis dari CMS 2x2 Grid) */}
         <FeaturedPortfolioSection portfolios={portfolios as any} />
 
         {/* 5. Blog & Artikel (Dinamis dari CMS 3-Column Grid) */}

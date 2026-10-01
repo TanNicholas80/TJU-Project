@@ -33,5 +33,46 @@
     "quickLinks": "快速链接",
     "citySemarang": "三宝垄",
     "copyright": "© 2026 TJU TRUSS®. 版权所有。"
+  },
+  "expertise": {
+    "sectionTitle": "覆盖各种规模的专业工程实力",
+    "industrial": {
+      "title": "Industrial & Commercial",
+      "description": "我们深刻理解严苛的工业标准。针对厂房、仓库和商业建筑，TJU提供符合重型工程标准的轻钢屋架系统，具备无可比拟的专业软件计算精度。",
+      "point1": "大规模项目的高效安装周期",
+      "point2": "经AS100验证的材料结构强度",
+      "point3": "全套完备的技术与工程文档支持"
+    },
+    "residential": {
+      "title": "Residential",
+      "description": "家宅屋顶是守护全家安宁的坚实保障。我们确保施工规范整洁、结构严谨并附带官方保修。TJU Truss 为注重卓越品质而非盲目追求低价的业主提供长久安心。",
+      "point1": "终身防白蚁与高等级防锈抗腐",
+      "point2": "认证专家团队精准标准化施工",
+      "point3": "企业官方正式结构安全质保"
+    }
+  },
+  "history": {
+    "badge": "深厚坚实的品牌历史",
+    "title": "从创业初心到工业解决方案",
+    "description": "CV. Tri Jaya Utama 始创于2000年，旨在应对木材资源短缺挑战。我们从最初的施工单位逐步转型为自主生产商，确保对产品品质拥有绝对把控。",
+    "cta": "了解我们",
+    "milestones": {
+      "m2000": {
+        "year": "2000",
+        "description": "通过住宅建设网络将轻钢结构解决方案引入当地市场。"
+      },
+      "m2001": {
+        "year": "2001",
+        "description": "成立 CV Tri Jaya Utama。TJU TRUSS 作为正规施工与分销商品牌正式创立。"
+      },
+      "m2010": {
+        "year": "2010",
+        "description": "自主制造时代。TJU TRUSS 开始自主投产，荣获国家 SNI 与 HAKI 专利认证。"
+      },
+      "now": {
+        "year": "至今",
+        "description": "深耕行业25载，成为住宅及工业建筑领域值得信赖的战略合作伙伴。"
+      }
+    }
   }
 }

@@ -3,16 +3,31 @@ import { I18nString } from "@/db/schema";
 export const defaultHeroCarousels = [
   {
     id: 1,
-    imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80",
+    subheaderI18n: {
+      id: "REKAYASA STRUKTURAL",
+      en: "STRUCTURAL ENGINEERING",
+      zh: "结构工程",
+    },
     titleI18n: {
-      id: "Solusi Rangka Atap Baja Ringan Presisi & Terpercaya",
-      en: "Precision & Reliable Light Steel Roof Truss Solutions",
-      zh: "高精度、值得信赖的轻钢屋架解决方案",
+      id: "Konstruksi Tangguh dengan Garansi Struktural 10 Tahun",
+      en: "Durable Construction with 10-Year Structural Warranty",
+      zh: "坚固耐用，提供10年结构质保",
+    },
+    descriptionI18n: {
+      id: "Didukung tim aplikator bersertifikat nasional dan material baja Galvalum Zincalume G550 mutu tinggi anti-karat.",
+      en: "Supported by nationally certified applicators and high-grade rust-resistant G550 Galvalume Zincalume steel.",
+      zh: "拥有国家认证施工团队，采用高品质防锈G550镀铝锌钢材。",
     },
     subtitleI18n: {
-      id: "Spesialis fabrikasi dan konstruksi rangka atap berstandar SNI dan software engineering bersertifikat HAKI untuk keamanan bangunan Anda.",
-      en: "Specialist in fabrication and construction of SNI-standard roof trusses with HAKI-certified engineering software for structural safety.",
-      zh: "专业从事符合SNI标准并采用HAKI认证工程软件的轻钢屋架制造与施工，保障建筑安全。",
+      id: "Didukung tim aplikator bersertifikat nasional dan material baja Galvalum Zincalume G550 mutu tinggi anti-karat.",
+      en: "Supported by nationally certified applicators and high-grade rust-resistant G550 Galvalume Zincalume steel.",
+      zh: "拥有国家认证施工团队，采用高品质防锈G550镀铝锌钢材。",
+    },
+    loadingTitleI18n: {
+      id: "Strength",
+      en: "Strength",
+      zh: "强度",
     },
     ctaTextI18n: {
       id: "Konsultasi Proyek",
@@ -25,24 +40,76 @@ export const defaultHeroCarousels = [
   },
   {
     id: 2,
-    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+    subheaderI18n: {
+      id: "PRESISI TINGGI",
+      en: "HIGH PRECISION",
+      zh: "高精度系统",
+    },
     titleI18n: {
-      id: "Konstruksi Tangguh dengan Garansi Struktural 10 Tahun",
-      en: "Durable Construction with 10-Year Structural Warranty",
-      zh: "坚固耐用，提供10年结构质保",
+      id: "Solusi Rangka Atap Baja Ringan Presisi & Terpercaya",
+      en: "Precision & Reliable Light Steel Roof Truss Solutions",
+      zh: "高精度、值得信赖的轻钢屋架解决方案",
+    },
+    descriptionI18n: {
+      id: "Spesialis fabrikasi dan konstruksi rangka atap berstandar SNI dan software engineering bersertifikat HAKI untuk keamanan bangunan Anda.",
+      en: "Specialist in fabrication and construction of SNI-standard roof trusses with HAKI-certified engineering software for structural safety.",
+      zh: "专业从事符合SNI标准并采用HAKI认证工程软件的轻钢屋架制造与施工，保障建筑安全。",
     },
     subtitleI18n: {
-      id: "Didukung tim aplikator bersertifikat nasional dan material baja Galvalum Zincalume G550 mutu tinggi anti-karat.",
-      en: "Supported by nationally certified applicators and high-grade rust-resistant G550 Galvalume Zincalume steel.",
-      zh: "拥有国家认证施工团队，采用高品质防锈G550镀铝锌钢材。",
+      id: "Spesialis fabrikasi dan konstruksi rangka atap berstandar SNI dan software engineering bersertifikat HAKI untuk keamanan bangunan Anda.",
+      en: "Specialist in fabrication and construction of SNI-standard roof trusses with HAKI-certified engineering software for structural safety.",
+      zh: "专业从事符合SNI标准并采用HAKI认证工程软件的轻钢屋架制造与施工，保障建筑安全。",
+    },
+    loadingTitleI18n: {
+      id: "Structure",
+      en: "Structure",
+      zh: "结构",
     },
     ctaTextI18n: {
-      id: "Lihat Portofolio",
-      en: "View Portfolio",
-      zh: "查看案例",
+      id: "Konsultasi Proyek",
+      en: "Project Consultation",
+      zh: "项目咨询",
     },
-    ctaLink: "#portfolio",
+    ctaLink: "#contact",
     sortOrder: 2,
+    isActive: true,
+  },
+  {
+    id: 3,
+    imageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1920&q=80",
+    subheaderI18n: {
+      id: "SOLUSI TERINTEGRASI",
+      en: "INTEGRATED SOLUTIONS",
+      zh: "集成解决方案",
+    },
+    titleI18n: {
+      id: "Solusi Optimal. Efisiensi & Estetika.",
+      en: "Optimal Solution. Efficiency & Aesthetics.",
+      zh: "优化方案，高效与美观兼备",
+    },
+    descriptionI18n: {
+      id: "Menyeimbangkan efisiensi biaya, kecepatan pemasangan, dan keindahan arsitektural. Mitra solusi terpercaya untuk keamanan bangunan residensial dan industrial Anda.",
+      en: "Balancing cost efficiency, installation speed, and architectural beauty. Your trusted partner for residential and industrial safety.",
+      zh: "兼顾成本效益、安装速度与建筑美学，是您住宅及工业建筑安全的信赖之选。",
+    },
+    subtitleI18n: {
+      id: "Menyeimbangkan efisiensi biaya, kecepatan pemasangan, dan keindahan arsitektural. Mitra solusi terpercaya untuk keamanan bangunan residensial dan industrial Anda.",
+      en: "Balancing cost efficiency, installation speed, and architectural beauty. Your trusted partner for residential and industrial safety.",
+      zh: "兼顾成本效益、安装速度与建筑美学，是您住宅及工业建筑安全的信赖之选。",
+    },
+    loadingTitleI18n: {
+      id: "Balance",
+      en: "Balance",
+      zh: "平衡",
+    },
+    ctaTextI18n: {
+      id: "Konsultasi Proyek",
+      en: "Project Consultation",
+      zh: "项目咨询",
+    },
+    ctaLink: "#contact",
+    sortOrder: 3,
     isActive: true,
   },
 ];

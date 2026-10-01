@@ -20,8 +20,11 @@ export type SocialLinks = {
 export const heroCarousels = pgTable("hero_carousels", {
   id: serial("id").primaryKey(),
   imageUrl: varchar("image_url", { length: 500 }).notNull(),
+  subheaderI18n: jsonb("subheader_i18n").$type<I18nString>(),
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
-  subtitleI18n: jsonb("subtitle_i18n").$type<I18nString>().notNull(),
+  descriptionI18n: jsonb("description_i18n").$type<I18nString>(),
+  loadingTitleI18n: jsonb("loading_title_i18n").$type<I18nString>(),
+  subtitleI18n: jsonb("subtitle_i18n").$type<I18nString>(),
   ctaTextI18n: jsonb("cta_text_i18n").$type<I18nString>(),
   ctaLink: varchar("cta_link", { length: 255 }),
   sortOrder: integer("sort_order").default(0).notNull(),
