@@ -66,7 +66,7 @@ export default function AdminPortfoliosPage() {
       titleZh: "",
       categoryPortfolioId: 1,
       location: "Semarang, Jawa Tengah",
-      coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+      coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
       status: "published",
       galleryUrlsString: "",
     },
@@ -98,7 +98,7 @@ export default function AdminPortfoliosPage() {
       titleZh: "",
       categoryPortfolioId: 1,
       location: "Semarang, Jawa Tengah",
-      coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+      coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
       status: "published",
       galleryUrlsString: "",
     });

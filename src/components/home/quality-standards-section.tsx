@@ -2,6 +2,12 @@
 
 import * as React from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 import {
   ShieldCheck,
   Calculator,
@@ -39,28 +45,73 @@ interface QualityStandardsSectionProps {
 }
 
 export function QualityStandardsSection({ standards }: QualityStandardsSectionProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const sectionRef = React.useRef<HTMLElement>(null);
+  const headerRef = React.useRef<HTMLHeadingElement>(null);
+  const underlineRef = React.useRef<HTMLDivElement>(null);
   const cardsRef = React.useRef<HTMLDivElement>(null);
 
   const activeStandards = standards.filter((s) => s.isActive);
 
   React.useEffect(() => {
-    if (!cardsRef.current) return;
-    const cards = cardsRef.current.children;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Header Animation
       gsap.fromTo(
-        cards,
-        { opacity: 0, y: 35 },
+        headerRef.current,
+        { opacity: 0, y: 28 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power2.out",
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
         }
       );
+
+      // Underline animation
+      gsap.fromTo(
+        underlineRef.current,
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.8,
+          delay: 0.2,
+          ease: "power2.out",
+          transformOrigin: "center",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Cards staggered reveal
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -78,17 +129,18 @@ export function QualityStandardsSection({ standards }: QualityStandardsSectionPr
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#EEF2FA] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#20449A]">
-            <Award className="h-4 w-4 text-[#F48902]" />
-            Standar Kualitas & Rekayasa TJU
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1E1F24] tracking-tight">
-            Fondasi Struktur Kokoh Berstandar Rekayasa Tinggi
+        <div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
+          <h2
+            ref={headerRef}
+            className="text-3xl sm:text-4xl md:text-5xl font-black italic tracking-tight text-[#1E1F24]"
+          >
+            {t("qualityStandards.title")}
           </h2>
-          <p className="text-base sm:text-lg text-[#62636C] leading-relaxed">
-            Kami menjamin setiap sambungan, profil, dan sudut kemiringan rangka atap Anda didesain dengan perhitungan presisi mutlak tanpa kompromi.
-          </p>
+          {/* Underline Orange Responsive (Proporsional sesuai desain) */}
+          <div
+            ref={underlineRef}
+            className="mt-4 h-1.5 w-44 sm:w-56 md:w-64 lg:w-72 rounded-full bg-[#F48902]"
+          />
         </div>
 
         {/* 3-Column Grid */}
@@ -101,29 +153,22 @@ export function QualityStandardsSection({ standards }: QualityStandardsSectionPr
             return (
               <div
                 key={item.id}
-                className="group relative rounded-2xl border border-[#E2E4EB] bg-[#F9F9FB] p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#20449A]/5 hover:border-[#20449A]/40 flex flex-col justify-between"
+                className="group relative rounded-2xl border border-[#E2E4EB] bg-[#F9F9FB] p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#20449A]/5 hover:border-[#20449A]/40 flex flex-col justify-start"
               >
-                <div>
-                  {/* Icon badge */}
-                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-md shadow-[#20449A]/20 transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#F48902]">
-                    <Icon className="h-7 w-7 text-white" />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="mt-6 text-xl font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors">
-                    {getLocalized(item.titleI18n)}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="mt-3 text-sm text-[#62636C] leading-relaxed">
-                    {getLocalized(item.descriptionI18n)}
-                  </p>
+                {/* Icon badge */}
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-md shadow-[#20449A]/20 transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#F48902]">
+                  <Icon className="h-7 w-7 text-white" />
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#E2E4EB]/80 flex items-center gap-2 text-xs font-semibold text-[#20449A]">
-                  <CheckCircle2 className="h-4 w-4 text-[#F48902]" />
-                  <span>Terverifikasi SNI & K3</span>
-                </div>
+                {/* Title */}
+                <h3 className="mt-6 text-xl font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors">
+                  {getLocalized(item.titleI18n)}
+                </h3>
+
+                {/* Description */}
+                <p className="mt-3 text-sm text-[#62636C] leading-relaxed">
+                  {getLocalized(item.descriptionI18n)}
+                </p>
               </div>
             );
           })}

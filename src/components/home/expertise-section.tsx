@@ -2,6 +2,13 @@
 
 import * as React from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +42,11 @@ function ShieldCheckIcon({ color }: { color: "blue" | "orange" }) {
 
 export function ExpertiseSection() {
   const { t } = useI18n();
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const headerRef = React.useRef<HTMLHeadingElement>(null);
+  const underlineRef = React.useRef<HTMLDivElement>(null);
+  const block1Ref = React.useRef<HTMLDivElement>(null);
+  const block2Ref = React.useRef<HTMLDivElement>(null);
 
   const industrialPoints = [
     t("expertise.industrial.point1"),
@@ -48,8 +60,130 @@ export function ExpertiseSection() {
     t("expertise.residential.point3"),
   ];
 
+  React.useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Header
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Underline
+      gsap.fromTo(
+        underlineRef.current,
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.8,
+          delay: 0.2,
+          ease: "power2.out",
+          transformOrigin: "center",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Block 1 (Industrial)
+      if (block1Ref.current) {
+        const image = block1Ref.current.children[0];
+        const card = block1Ref.current.children[1];
+
+        gsap.fromTo(
+          image,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: block1Ref.current,
+              start: "top 80%",
+              once: true,
+            },
+          }
+        );
+
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            delay: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: block1Ref.current,
+              start: "top 80%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Block 2 (Residential)
+      if (block2Ref.current) {
+        const card = block2Ref.current.children[0];
+        const image = block2Ref.current.children[1];
+
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: block2Ref.current,
+              start: "top 80%",
+              once: true,
+            },
+          }
+        );
+
+        gsap.fromTo(
+          image,
+          { opacity: 0, x: 30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.9,
+            delay: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: block2Ref.current,
+              start: "top 80%",
+              once: true,
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative py-20 sm:py-28 overflow-hidden bg-white">
+    <section ref={sectionRef} className="relative py-20 sm:py-28 overflow-hidden bg-white">
       {/* Background Grid Pattern with Top and Bottom Fade Out (Masking) */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
@@ -66,17 +200,26 @@ export function ExpertiseSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header: Italic bold with orange underline accent */}
-        <div className="text-center mb-16 sm:mb-24">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-[#1E1F24]">
+        <div className="text-center mb-16 sm:mb-24 flex flex-col items-center">
+          <h2
+            ref={headerRef}
+            className="text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-[#1E1F24]"
+          >
             {t("expertise.sectionTitle")}
           </h2>
-          <div className="w-24 sm:w-28 h-1 bg-[#F48902] mx-auto rounded-full mt-3.5" />
+          <div
+            ref={underlineRef}
+            className="mt-4 h-1.5 w-44 sm:w-56 md:w-64 lg:w-72 rounded-full bg-[#F48902]"
+          />
         </div>
 
         {/* Content Container: 2 Overlapping Block Sections */}
         <div className="space-y-24 sm:space-y-32">
           {/* 1. INDUSTRIAL & COMMERCIAL (Image Left, Card Right) */}
-          <div className="relative flex flex-col lg:flex-row items-center justify-between">
+          <div
+            ref={block1Ref}
+            className="relative flex flex-col lg:flex-row items-center justify-between"
+          >
             {/* Image (gambar_1.JPG) */}
             <div className="relative w-full lg:w-[58%] h-[340px] sm:h-[440px] lg:h-[480px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-slate-200/80">
               <Image
@@ -113,7 +256,10 @@ export function ExpertiseSection() {
           </div>
 
           {/* 2. RESIDENTIAL (Card Left, Image Right) */}
-          <div className="relative flex flex-col-reverse lg:flex-row items-center justify-between">
+          <div
+            ref={block2Ref}
+            className="relative flex flex-col-reverse lg:flex-row items-center justify-between"
+          >
             {/* Floating Overlap Card */}
             <div className="relative z-10 w-full lg:w-[48%] mt-[-40px] sm:mt-[-60px] lg:mt-0 lg:-mr-20 bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-11 shadow-2xl shadow-slate-900/10 border border-slate-100">
               <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1E1F24]">

@@ -3,10 +3,15 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ArrowRight, BookOpen, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n, Locale } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export interface PostItem {
   id: number;
@@ -23,54 +28,120 @@ interface LatestArticlesSectionProps {
 }
 
 export function LatestArticlesSection({ posts }: LatestArticlesSectionProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const headerRef = React.useRef<HTMLDivElement>(null);
+  const lineRef = React.useRef<HTMLDivElement>(null);
+  const gridRef = React.useRef<HTMLDivElement>(null);
+  const btnRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Header Animation
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Orange Line scale-in
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleX: 0, opacity: 0 },
+          {
+            scaleX: 1,
+            opacity: 1,
+            duration: 0.7,
+            delay: 0.15,
+            ease: "power2.out",
+            transformOrigin: "center center",
+            scrollTrigger: {
+              trigger: lineRef.current,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Articles Grid Stagger Animation
+      if (gridRef.current) {
+        gsap.fromTo(
+          gridRef.current.children,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.14,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top 82%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Bottom Button Reveal
+      if (btnRef.current) {
+        gsap.fromTo(
+          btnRef.current,
+          { opacity: 0, y: 15 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: 0.25,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: btnRef.current,
+              start: "top 90%",
+              once: true,
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const getLocalized = (field?: I18nString | null) => {
     if (!field) return "";
     return field[locale as Locale] || field.id || "";
   };
 
-  const formatDate = (date: Date | string) => {
-    try {
-      const d = new Date(date);
-      return d.toLocaleDateString(locale === "en" ? "en-US" : locale === "zh" ? "zh-CN" : "id-ID", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      });
-    } catch {
-      return "Terbaru";
-    }
-  };
-
   return (
-    <section id="blog" className="py-24 bg-[#F9F9FB] border-b border-[#E2E4EB]">
+    <section ref={sectionRef} id="blog" className="py-20 sm:py-24 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-          <div className="max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#EEF2FA] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#20449A]">
-              <BookOpen className="h-4 w-4 text-[#F48902]" />
-              Edukasi & Wawasan Rekayasa
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1E1F24] tracking-tight">
-              Artikel & Berita Konstruksi Baja Ringan Terkini
-            </h2>
-            <p className="text-base text-[#62636C] leading-relaxed">
-              Dapatkan wawasan mendalam mengenai panduan pemilihan ketebalan profil, standar beban struktural, dan inovasi fabrikasi rangka atap modern.
-            </p>
-          </div>
-
-          <Link href="/blog" className="shrink-0">
-            <Button variant="outline" size="lg" className="font-semibold group">
-              Lihat Semua Artikel
-              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+        <div ref={headerRef} className="text-center max-w-4xl mx-auto mb-14 sm:mb-16 flex flex-col items-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black italic tracking-tight text-[#1E1F24]">
+            {t("homeBlog.title")}
+          </h2>
+          {/* Underline Orange Responsive (Konsisten dengan section di atasnya) */}
+          <div ref={lineRef} className="mt-4 h-1.5 w-44 sm:w-56 md:w-64 lg:w-72 rounded-full bg-[#F48902]" />
         </div>
 
-        {/* 3-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* 3-Column Grid Articles */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {posts.map((item) => {
             const title = getLocalized(item.titleI18n);
             const excerpt = getLocalized(item.excerptI18n);
@@ -80,42 +151,30 @@ export function LatestArticlesSection({ posts }: LatestArticlesSectionProps) {
             return (
               <article
                 key={item.id}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-[#E2E4EB] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#20449A]/30"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-200"
               >
-                {/* Thumbnail Image */}
-                <div className="relative h-52 w-full overflow-hidden bg-zinc-100">
+                {/* Thumbnail Image Container */}
+                <div className="relative h-56 sm:h-60 w-full overflow-hidden bg-slate-100">
                   <Image
                     src={item.coverImageUrl || fallbackImg}
                     alt={title}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   />
-                  {/* Category Pill */}
+                  {/* Category Pill di sudut kiri atas thumbnail (gelap semi-transparan dengan border lembut) */}
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-flex items-center rounded-md bg-[#20449A] px-2.5 py-1 text-xs font-semibold text-white shadow-xs">
+                    <span className="inline-flex items-center rounded-lg bg-black/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-xs border border-white/10">
                       {item.categoryName || "Engineering"}
                     </span>
                   </div>
                 </div>
 
                 {/* Content Body */}
-                <div className="p-6 flex flex-1 flex-col justify-between space-y-4">
+                <div className="p-6 sm:p-7 flex flex-1 flex-col justify-between space-y-5">
                   <div className="space-y-3">
-                    {/* Date & Read Time */}
-                    <div className="flex items-center gap-4 text-xs text-[#62636C]">
-                      <span className="flex items-center gap-1.5">
-                        <Calendar className="h-3.5 w-3.5 text-[#F48902]" />
-                        {formatDate(item.createdAt)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5 text-zinc-400" />
-                        4 mnt baca
-                      </span>
-                    </div>
-
                     {/* Article Title */}
-                    <h3 className="text-lg font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-lg sm:text-xl font-bold text-[#1E1F24] leading-snug line-clamp-2 group-hover:text-[#20449A] transition-colors">
                       {title}
                     </h3>
 
@@ -126,16 +185,30 @@ export function LatestArticlesSection({ posts }: LatestArticlesSectionProps) {
                   </div>
 
                   {/* Baca Selengkapnya Link */}
-                  <div className="pt-4 border-t border-[#E2E4EB]">
-                    <span className="inline-flex items-center text-sm font-semibold text-[#20449A] group-hover:text-[#F48902] transition-colors">
-                      Baca Selengkapnya
-                      <ArrowRight className="h-4 w-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
-                    </span>
+                  <div className="pt-2">
+                    <Link
+                      href={`/blog/${item.id}`}
+                      className="inline-flex items-center text-sm font-bold text-[#1E1F24] transition-colors group/link hover:text-[#F48902]"
+                    >
+                      <span>{t("homeBlog.readMore")}</span>
+                      <ArrowRight className="h-4 w-4 ml-1.5 transition-transform duration-200 group-hover/link:translate-x-1" />
+                    </Link>
                   </div>
                 </div>
               </article>
             );
           })}
+        </div>
+
+        {/* Tombol "Lihat lebih lengkap" di bagian bawah tengah */}
+        <div ref={btnRef} className="mt-12 sm:mt-16 flex justify-center">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-7 py-3 text-sm sm:text-base font-semibold text-slate-700 shadow-xs transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 hover:shadow-md group"
+          >
+            <span>{t("homeBlog.viewMore")}</span>
+            <ArrowRight className="h-4 w-4 text-slate-500 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-slate-900" />
+          </Link>
         </div>
       </div>
     </section>

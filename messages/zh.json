@@ -74,5 +74,44 @@
         "description": "深耕行业25载，成为住宅及工业建筑领域值得信赖的战略合作伙伴。"
       }
     }
+  },
+  "coreValues": {
+    "title": "核心价值观",
+    "description": "CV. Tri Jaya Utama 采用经 HAKI 权威验证的专业软件，并已荣获合格使用证书。"
+  },
+  "cta": {
+    "title": "真正的坚固，始于精准无误的严谨测算。",
+    "button": "咨询您的项目"
+  },
+  "homePortfolio": {
+    "badge": "精选案例",
+    "title": "我们的代表性工程",
+    "description": "探索我们为各类客户与建筑需求量身打造的高精度轻钢屋面桁架结构安装案例。",
+    "allCategory": "全部",
+    "viewMore": "查看更多",
+    "emptyMessage": "该分类下暂无项目案例"
+  },
+  "qualityStandards": {
+    "title": "TJU TRUSS 质量标准"
+  },
+  "homeBlog": {
+    "title": "博客与资讯",
+    "readMore": "阅读全文",
+    "viewMore": "查看更多"
+  },
+  "homeContact": {
+    "title": "联系我们",
+    "emailLabel": "电子邮箱",
+    "phoneLabel": "联系电话",
+    "addressLabel": "公司地址",
+    "formTitle": "发送消息",
+    "formSubtitle": "请填写下方表单，我们的团队将尽快与您取得联系。",
+    "nameLabel": "姓名",
+    "namePlaceholder": "输入您的姓名",
+    "phoneFieldLabel": "电话号码",
+    "phonePlaceholder": "+62 xxx xxxx xxx",
+    "projectDetailsLabel": "项目详情",
+    "projectDetailsPlaceholder": "描述您的项目需求 ...",
+    "sendButton": "发送消息"
   }
 }

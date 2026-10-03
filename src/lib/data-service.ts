@@ -74,7 +74,10 @@ export async function getPortfolios(limit: number = 4) {
       if (rows && rows.length > 0) {
         return rows.map((r: any) => ({
           ...r.portfolio,
+          categoryPortfolioId: r.portfolio.categoryPortfolioId,
           categoryName: r.category?.nameI18n?.id || "Konstruksi",
+          categorySlug: r.category?.slug,
+          categoryNameI18n: r.category?.nameI18n,
         }));
       }
       return defaultPortfolios.slice(0, limit);

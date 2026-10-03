@@ -2,12 +2,22 @@
 
 import * as React from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export function HistorySection() {
   const { t } = useI18n();
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const leftColRef = React.useRef<HTMLDivElement>(null);
+  const milestonesListRef = React.useRef<HTMLDivElement>(null);
 
   const milestones = [
     {
@@ -32,12 +42,60 @@ export function HistorySection() {
     },
   ];
 
+  React.useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Left Column
+      if (leftColRef.current) {
+        gsap.fromTo(
+          leftColRef.current.children,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            stagger: 0.12,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: leftColRef.current,
+              start: "top 82%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Right Column Milestones
+      if (milestonesListRef.current) {
+        gsap.fromTo(
+          milestonesListRef.current.children,
+          { opacity: 0, x: 25 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            stagger: 0.14,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: milestonesListRef.current,
+              start: "top 82%",
+              once: true,
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-20 sm:py-28 bg-[#F9F9FB] border-b border-[#E2E4EB] overflow-hidden">
+    <section ref={sectionRef} className="py-20 sm:py-28 bg-[#F9F9FB] border-b border-[#E2E4EB] overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Heading, Description & CTA */}
-          <div className="lg:col-span-6 space-y-6">
+          <div ref={leftColRef} className="lg:col-span-6 space-y-6">
             <span className="inline-block text-xs sm:text-sm font-bold tracking-wider uppercase text-[#F48902]">
               {t("history.badge")}
             </span>
@@ -65,7 +123,7 @@ export function HistorySection() {
           <div className="lg:col-span-6">
             <div className="relative">
               {/* Milestones List */}
-              <div className="space-y-8 sm:space-y-10">
+              <div ref={milestonesListRef} className="space-y-8 sm:space-y-10">
                 {milestones.map((item, idx) => (
                   <div key={idx} className="relative flex items-center gap-5 sm:gap-7">
                     {/* Badge Container with Centered Line Segment */}

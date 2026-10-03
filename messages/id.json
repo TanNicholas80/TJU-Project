@@ -74,5 +74,44 @@
         "description": "25+ Tahun Berkarya, menjadi mitra terpercaya untuk proyek residensial dan industrial."
       }
     }
+  },
+  "coreValues": {
+    "title": "Core Values",
+    "description": "CV. Tri Jaya Utama menggunaan software yang sudah di verifikasi oleh HAKI dan sudah mendapatkan sertifikat layak pakai."
+  },
+  "cta": {
+    "title": "Kekuatan Sejati Dimulai dari Perhitungan yang Presisi.",
+    "button": "Konsultasikan Proyek Anda"
+  },
+  "homePortfolio": {
+    "badge": "PORTOFOLIO",
+    "title": "Proyek Terbaik Kami",
+    "description": "Lihat koleksi instalasi struktur rangka atap baja ringan presisi tinggi yang telah kami selesaikan untuk berbagai klien dan kebutuhan.",
+    "allCategory": "Semua",
+    "viewMore": "Lihat lebih lengkap",
+    "emptyMessage": "Belum ada portofolio untuk kategori ini"
+  },
+  "qualityStandards": {
+    "title": "Standar Kualitas TJU TRUSS"
+  },
+  "homeBlog": {
+    "title": "Blog & Artikel",
+    "readMore": "Baca Selengkapnya",
+    "viewMore": "Lihat lebih lengkap"
+  },
+  "homeContact": {
+    "title": "Hubungi Kami",
+    "emailLabel": "Email",
+    "phoneLabel": "Telepon",
+    "addressLabel": "Alamat",
+    "formTitle": "Send Message",
+    "formSubtitle": "Fill out the form below and we will contact you shortly.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Enter your name",
+    "phoneFieldLabel": "Phone Number",
+    "phonePlaceholder": "+62 xxx xxxx xxx",
+    "projectDetailsLabel": "Project Details",
+    "projectDetailsPlaceholder": "Describe your project needs ...",
+    "sendButton": "Send Messages"
   }
 }

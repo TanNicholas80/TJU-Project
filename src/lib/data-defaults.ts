@@ -40,7 +40,7 @@ export const defaultHeroCarousels = [
   },
   {
     id: 2,
-    imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1920&q=80",
     subheaderI18n: {
       id: "PRESISI TINGGI",
       en: "HIGH PRECISION",
@@ -175,7 +175,7 @@ export const defaultCategoriesPortfolio = [
       en: "Factories, Warehouses, Large Scale Production Facilities",
       zh: "厂房、仓库、大型生产设施",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: 2,
@@ -224,7 +224,7 @@ export const defaultPageBanners: Record<
       en: "Home > About US",
       zh: "首页 > 关于我们",
     },
-    backgroundImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+    backgroundImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1920&q=80",
   },
 };
 
@@ -297,11 +297,11 @@ export const defaultPortfolios = [
       zh: "三宝垄国立大学 (UNNES)",
     },
     location: "Semarang, Jawa Tengah",
-    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
     status: "published",
     createdAt: new Date("2026-03-15"),
     images: [
-      { id: 1, imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+      { id: 1, imageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
       { id: 2, imageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80", sortOrder: 2 },
       { id: 3, imageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80", sortOrder: 3 },
       { id: 4, imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", sortOrder: 4 },
@@ -409,7 +409,7 @@ export const defaultPosts = [
       en: "<p>Choosing the right light steel profile is crucial for multi-story buildings.</p>",
       zh: "<p>为多层建筑选择合适的轻钢型材至关重要。</p>",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
     status: "published",
     createdAt: new Date("2026-03-12"),
   },

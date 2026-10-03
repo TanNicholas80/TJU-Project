@@ -74,5 +74,44 @@
         "description": "25+ Years of Excellence, becoming a trusted partner for residential and industrial projects."
       }
     }
+  },
+  "coreValues": {
+    "title": "Core Values",
+    "description": "CV. Tri Jaya Utama utilizes software that has been verified by HAKI and certified fit for use."
+  },
+  "cta": {
+    "title": "True Strength Begins with Precise Calculation.",
+    "button": "Consult Your Project"
+  },
+  "homePortfolio": {
+    "badge": "PORTFOLIO",
+    "title": "Our Best Projects",
+    "description": "Explore our collection of high-precision light steel truss structure installations delivered for diverse clients and needs.",
+    "allCategory": "All",
+    "viewMore": "View More",
+    "emptyMessage": "No portfolios found for this category"
+  },
+  "qualityStandards": {
+    "title": "TJU TRUSS Quality Standards"
+  },
+  "homeBlog": {
+    "title": "Blog & Articles",
+    "readMore": "Read More",
+    "viewMore": "View More"
+  },
+  "homeContact": {
+    "title": "Contact Us",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "addressLabel": "Address",
+    "formTitle": "Send Message",
+    "formSubtitle": "Fill out the form below and we will contact you shortly.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Enter your name",
+    "phoneFieldLabel": "Phone Number",
+    "phonePlaceholder": "+62 xxx xxxx xxx",
+    "projectDetailsLabel": "Project Details",
+    "projectDetailsPlaceholder": "Describe your project needs ...",
+    "sendButton": "Send Messages"
   }
 }

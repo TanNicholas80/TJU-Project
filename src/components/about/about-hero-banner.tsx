@@ -45,7 +45,7 @@ export function AboutHeroBanner({ banner }: AboutHeroBannerProps) {
       {/* Background Image with Dark Vignette */}
       <div className="absolute inset-0">
         <Image
-          src={banner.backgroundImageUrl || "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80"}
+          src={banner.backgroundImageUrl || "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1920&q=80"}
           alt="About Us Banner"
           fill
           priority

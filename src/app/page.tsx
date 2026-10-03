@@ -6,13 +6,16 @@ import { ExpertiseSection } from "@/components/home/expertise-section";
 import { HistorySection } from "@/components/home/history-section";
 import { FeaturedPortfolioSection } from "@/components/home/featured-portfolio-section";
 import { LatestArticlesSection } from "@/components/home/latest-articles-section";
+import { CoreValuesSection } from "@/components/home/core-values-section";
 import { ContactSection } from "@/components/home/contact-section";
+import { CtaBannerSection } from "@/components/home/cta-banner-section";
 import {
   getHeroCarousels,
   getQualityStandards,
   getPortfolios,
   getPosts,
   getCompanyProfile,
+  getCategoriesPortfolio,
 } from "@/lib/data-service";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "TJU TRUSS SYSTEM",
       images: [
         {
-          url: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+          url: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
           width: 1200,
           height: 630,
           alt: "TJU Truss System Konstruksi Rangka Atap",
@@ -57,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       images: [
-        "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
       ],
     },
     alternates: {
@@ -83,10 +86,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [slides, standards, portfolios, posts, profile] = await Promise.all([
+  const [slides, standards, portfolios, categories, posts, profile] = await Promise.all([
     getHeroCarousels(),
     getQualityStandards(),
-    getPortfolios(4),
+    getPortfolios(12),
+    getCategoriesPortfolio(),
     getPosts(3),
     getCompanyProfile(),
   ]);
@@ -101,7 +105,7 @@ export default async function HomePage() {
         name: "CV. Tri Jaya Utama (TJU Truss)",
         url: "https://tjutruss.com",
         logo: "https://tjutruss.com/images/logo_tju.png",
-        image: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+        image: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
         description:
           "Spesialis pabrikasi dan instalasi rangka atap baja ringan presisi bergaransi 10 tahun di Indonesia.",
         telephone: profile.phone || "(024) 3519 776",
@@ -144,14 +148,23 @@ export default async function HomePage() {
         {/* 4. Akar Sejarah Kami (Statis Timeline Sesuai Desain) */}
         <HistorySection />
 
-        {/* 5. Proyek Terbaik / Portofolio (Dinamis dari CMS 2x2 Grid) */}
-        <FeaturedPortfolioSection portfolios={portfolios as any} />
+        {/* 5. Proyek Terbaik / Portofolio (Dinamis dari CMS & Tab Kategori) */}
+        <FeaturedPortfolioSection
+          portfolios={portfolios as any}
+          categories={categories as any}
+        />
 
-        {/* 5. Blog & Artikel (Dinamis dari CMS 3-Column Grid) */}
+        {/* 6. Blog & Artikel (Dinamis dari CMS 3-Column Grid) */}
         <LatestArticlesSection posts={posts as any} />
 
-        {/* 6. Contact Us / Hubungi Kami (Dinamis dari CMS Profile) */}
+        {/* 7. Core Values (HAKI Verified Software) */}
+        <CoreValuesSection />
+
+        {/* 8. Contact Us / Hubungi Kami (Dinamis dari CMS Profile) */}
         <ContactSection profile={profile as any} />
+
+        {/* 9. CTA Banner (Sebelum Footer) */}
+        <CtaBannerSection />
       </main>
     </PublicLayout>
   );

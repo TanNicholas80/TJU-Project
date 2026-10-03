@@ -79,7 +79,7 @@ export default function AdminCarouselPage() {
   const handleOpenCreate = () => {
     setEditingItem(null);
     reset({
-      imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1920&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1920&q=80",
       subheaderId: "SOLUSI TERINTEGRASI",
       titleId: "",
       descriptionId: "",
