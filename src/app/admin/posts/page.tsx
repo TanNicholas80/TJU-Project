@@ -27,6 +27,7 @@ import {
   deletePost,
   PostInput,
 } from "@/actions/posts";
+import { getPostCategoriesAdmin } from "@/actions/post-categories";
 
 const postFormSchema = z.object({
   titleId: z.string().min(3, "Judul Bahasa Indonesia minimal 3 karakter"),
@@ -47,6 +48,7 @@ type PostFormData = z.infer<typeof postFormSchema>;
 
 export default function AdminPostsPage() {
   const [posts, setPosts] = React.useState<any[]>([]);
+  const [categories, setCategories] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -85,9 +87,15 @@ export default function AdminPostsPage() {
   const loadPosts = React.useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await getPostsAdmin();
-      if (res.success && res.data) {
-        setPosts(res.data);
+      const [resPosts, resCats] = await Promise.all([
+        getPostsAdmin(),
+        getPostCategoriesAdmin(),
+      ]);
+      if (resPosts.success && resPosts.data) {
+        setPosts(resPosts.data);
+      }
+      if (resCats.success && resCats.data) {
+        setCategories(resCats.data);
       }
     } catch {
       toast.error("Gagal memuat data artikel");
@@ -378,7 +386,7 @@ export default function AdminPostsPage() {
               </div>
 
               {/* Cover Image & Category & Status */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
                     URL Cover Gambar *
@@ -398,11 +406,27 @@ export default function AdminPostsPage() {
 
                 <div className="space-y-1.5">
                   <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
+                    Kategori Artikel
+                  </label>
+                  <select
+                    {...register("categoryPostId")}
+                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]/30 focus:border-[#20449A]"
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.nameI18n?.id || cat.name || `Kategori #${cat.id}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
                     Status Publikasi
                   </label>
                   <select
                     {...register("status")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3 py-2 text-sm text-[#1E1F24]"
+                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]/30 focus:border-[#20449A]"
                   >
                     <option value="published">Tayang (Published)</option>
                     <option value="draft">Draft (Disembunyikan)</option>

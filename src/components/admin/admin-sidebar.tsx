@@ -17,6 +17,7 @@ import {
   Bookmark,
   ShieldCheck,
   FolderTree,
+  Tags,
 } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { toast } from "sonner";
@@ -58,6 +59,11 @@ const navigationItems = [
     name: "Standar Kualitas",
     href: "/admin/standards",
     icon: Award,
+  },
+  {
+    name: "Kategori Blog",
+    href: "/admin/post-categories",
+    icon: Tags,
   },
   {
     name: "Blog & Artikel",
@@ -153,7 +159,6 @@ export function AdminSidebar({ className, onCloseMobile }: AdminSidebarProps) {
                 />
                 <span>{item.name}</span>
               </div>
-              {isActive && <ChevronRight className="h-4 w-4 opacity-75" />}
             </Link>
           );
         })}

@@ -83,17 +83,6 @@ export function DataTable<T extends Record<string, any>>({
             className="w-full rounded-lg border border-[#E2E4EB] bg-white pl-9 pr-4 py-2 text-sm text-[#1E1F24] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#20449A]/30 focus:border-[#20449A]"
           />
         </div>
-
-        {onAddNew && (
-          <Button
-            variant="orange"
-            size="default"
-            onClick={onAddNew}
-            className="font-semibold shadow-xs shrink-0"
-          >
-            {addNewLabel}
-          </Button>
-        )}
       </div>
 
       {/* Table Container */}

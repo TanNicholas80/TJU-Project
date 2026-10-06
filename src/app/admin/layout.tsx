@@ -58,7 +58,7 @@ export default function AdminLayout({
           onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)}
         />
         <main className="flex-1 overflow-y-auto p-6 sm:p-8 lg:p-10">
-          <div className="mx-auto max-w-7xl">{children}</div>
+          <div className="w-full">{children}</div>
         </main>
       </div>
     </div>

@@ -19,20 +19,30 @@ interface AboutHeroBannerProps {
 export function AboutHeroBanner({ banner }: AboutHeroBannerProps) {
   const { locale } = useI18n();
   const bannerRef = React.useRef<HTMLDivElement>(null);
+  const bgRef = React.useRef<HTMLDivElement>(null);
   const textRef = React.useRef<HTMLDivElement>(null);
 
   const title =
     banner.titleI18n?.[locale] || banner.titleI18n?.id || "About Us";
 
   React.useEffect(() => {
-    if (!textRef.current) return;
+    if (!bannerRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        textRef.current,
-        { opacity: 0, y: 30, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: "power3.out" }
-      );
-    }, textRef);
+      if (bgRef.current) {
+        gsap.fromTo(
+          bgRef.current,
+          { scale: 1.08 },
+          { scale: 1, duration: 1.4, ease: "power2.out" }
+        );
+      }
+      if (textRef.current) {
+        gsap.fromTo(
+          textRef.current,
+          { opacity: 0, y: 30, scale: 0.98 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: "power3.out" }
+        );
+      }
+    }, bannerRef);
 
     return () => ctx.revert();
   }, []);
@@ -43,7 +53,7 @@ export function AboutHeroBanner({ banner }: AboutHeroBannerProps) {
       className="relative w-full h-[260px] sm:h-[320px] md:h-[360px] flex items-center justify-center overflow-hidden bg-zinc-950"
     >
       {/* Background Image with Dark Vignette */}
-      <div className="absolute inset-0">
+      <div ref={bgRef} className="absolute inset-0">
         <Image
           src={banner.backgroundImageUrl || "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1920&q=80"}
           alt="About Us Banner"

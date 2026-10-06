@@ -119,6 +119,66 @@ export async function getPosts(limit: number = 3) {
   }, 3600);
 }
 
+export async function getPostById(id: number) {
+  return cache.getOrSet(`public:post:${id}`, async () => {
+    try {
+      const [row] = await db
+        .select({
+          post: schema.posts,
+          category: schema.categoriesPost,
+        })
+        .from(schema.posts)
+        .leftJoin(
+          schema.categoriesPost,
+          eq(schema.posts.categoryPostId, schema.categoriesPost.id)
+        )
+        .where(eq(schema.posts.id, id))
+        .limit(1);
+
+      if (row) {
+        return {
+          ...row.post,
+          categoryName: row.category?.nameI18n?.id || "Umum",
+        };
+      }
+      return defaultPosts.find((p) => p.id === id) || defaultPosts[0];
+    } catch (err) {
+      console.warn(`[DataService] Database query for post ${id} failed, using default:`, err);
+      return defaultPosts.find((p) => p.id === id) || defaultPosts[0];
+    }
+  }, 3600);
+}
+
+export async function getPortfolioById(id: number) {
+  return cache.getOrSet(`public:portfolio:${id}`, async () => {
+    try {
+      const [row] = await db
+        .select({
+          portfolio: schema.portfolios,
+          category: schema.categoriesPortfolio,
+        })
+        .from(schema.portfolios)
+        .leftJoin(
+          schema.categoriesPortfolio,
+          eq(schema.portfolios.categoryPortfolioId, schema.categoriesPortfolio.id)
+        )
+        .where(eq(schema.portfolios.id, id))
+        .limit(1);
+
+      if (row) {
+        return {
+          ...row.portfolio,
+          categoryName: row.category?.nameI18n?.id || "Komersial",
+        };
+      }
+      return defaultPortfolios.find((p) => p.id === id) || defaultPortfolios[0];
+    } catch (err) {
+      console.warn(`[DataService] Database query for portfolio ${id} failed, using default:`, err);
+      return defaultPortfolios.find((p) => p.id === id) || defaultPortfolios[0];
+    }
+  }, 3600);
+}
+
 export async function getCompanyProfile() {
   return cache.getOrSet("public:company_profile", async () => {
     try {

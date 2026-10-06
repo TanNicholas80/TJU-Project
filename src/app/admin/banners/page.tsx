@@ -2,377 +2,262 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
+  Plus,
+  Pencil,
+  Trash2,
   Bookmark,
   Loader2,
+  ExternalLink,
+  Building2,
+  FileText,
+  Layers,
+  Phone,
   Globe,
-  Save,
-  Eye,
-  ChevronRight,
-  Sparkles,
+  ImageIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ImageUpload } from "@/components/admin/image-upload";
-import { getBannerBySlug, saveBanner, BannerInput } from "@/actions/banners";
-
-const bannerFormSchema = z.object({
-  pageSlug: z.string().min(1, "Slug halaman wajib diisi"),
-  titleId: z.string().min(2, "Judul banner (Bahasa Indonesia) wajib diisi"),
-  titleEn: z.string().optional(),
-  titleZh: z.string().optional(),
-  breadcrumbId: z.string().optional(),
-  breadcrumbEn: z.string().optional(),
-  breadcrumbZh: z.string().optional(),
-  backgroundImageUrl: z.string().min(1, "URL Background banner wajib diisi"),
-});
-
-type BannerFormData = z.infer<typeof bannerFormSchema>;
+import { DataTable, ColumnDef } from "@/components/admin/data-table";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { getAllBannersAdmin, deleteBanner } from "@/actions/banners";
 
 export default function AdminBannersPage() {
-  const [activeTab, setActiveTab] = React.useState<"id" | "en" | "zh">("id");
+  const router = useRouter();
+  const [items, setItems] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm<BannerFormData>({
-    resolver: zodResolver(bannerFormSchema) as any,
-    defaultValues: {
-      pageSlug: "about-us",
-      titleId: "",
-      titleEn: "",
-      titleZh: "",
-      breadcrumbId: "Home > About US",
-      breadcrumbEn: "Home > About US",
-      breadcrumbZh: "首页 > 关于我们",
-      backgroundImageUrl: "",
-    },
-  });
-
-  const watchedValues = watch();
+  const [deleteTarget, setDeleteTarget] = React.useState<any | null>(null);
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const loadData = React.useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await getBannerBySlug("about-us");
+      const res = await getAllBannersAdmin();
       if (res.success && res.data) {
-        const item = res.data;
-        reset({
-          pageSlug: item.pageSlug || "about-us",
-          titleId: item.titleI18n?.id || "",
-          titleEn: item.titleI18n?.en || "",
-          titleZh: item.titleI18n?.zh || "",
-          breadcrumbId: item.breadcrumbI18n?.id || "Home > About US",
-          breadcrumbEn: item.breadcrumbI18n?.en || "Home > About US",
-          breadcrumbZh: item.breadcrumbI18n?.zh || "首页 > 关于我们",
-          backgroundImageUrl: item.backgroundImageUrl || "",
-        });
+        setItems(res.data);
       }
     } catch {
-      toast.error("Gagal memuat banner");
+      toast.error("Gagal memuat daftar banner halaman");
     } finally {
       setIsLoading(false);
     }
-  }, [reset]);
+  }, []);
 
   React.useEffect(() => {
     loadData();
   }, [loadData]);
 
-  const onSubmit = async (data: BannerFormData) => {
-    setIsSubmitting(true);
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await saveBanner(data as BannerInput);
+      const res = await deleteBanner(deleteTarget.id);
       if (res.success) {
-        toast.success(res.message || "Banner About Us berhasil disimpan!");
+        toast.success("Berhasil menghapus banner halaman");
+        setDeleteTarget(null);
+        loadData();
       } else {
-        toast.error("Gagal: " + res.message);
+        toast.error("Gagal menghapus: " + res.message);
       }
-    } catch (err: any) {
-      toast.error("Terjadi kesalahan: " + err.message);
+    } catch {
+      toast.error("Gagal menghapus banner");
     } finally {
-      setIsSubmitting(false);
+      setIsDeleting(false);
     }
   };
 
-  // Preview computed title & breadcrumb based on active tab
-  const previewTitle =
-    activeTab === "en"
-      ? watchedValues.titleEn || watchedValues.titleId || "About Us"
-      : activeTab === "zh"
-      ? watchedValues.titleZh || watchedValues.titleId || "关于我们"
-      : watchedValues.titleId || "About Us";
+  const getPageBadge = (slug: string) => {
+    switch (slug) {
+      case "about-us":
+      case "about":
+        return {
+          label: "About Us",
+          color: "bg-blue-50 text-blue-700 border-blue-200",
+          publicUrl: "/about",
+        };
+      case "blog":
+        return {
+          label: "Blog & Artikel",
+          color: "bg-purple-50 text-purple-700 border-purple-200",
+          publicUrl: "/blog",
+        };
+      case "portofolio":
+      case "portfolio":
+        return {
+          label: "Portofolio Proyek",
+          color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+          publicUrl: "/portofolio",
+        };
+      case "contact":
+        return {
+          label: "Contact Us",
+          color: "bg-amber-50 text-amber-700 border-amber-200",
+          publicUrl: "/contact",
+        };
+      default:
+        return {
+          label: slug,
+          color: "bg-zinc-50 text-zinc-700 border-zinc-200",
+          publicUrl: `/${slug}`,
+        };
+    }
+  };
 
-  const previewBreadcrumb =
-    activeTab === "en"
-      ? watchedValues.breadcrumbEn || "Home > About US"
-      : activeTab === "zh"
-      ? watchedValues.breadcrumbZh || "首页 > 关于我们"
-      : watchedValues.breadcrumbId || "Home > About US";
+  const columns: ColumnDef<any>[] = [
+    {
+      header: "Banner Preview",
+      cell: (row) => (
+        <div className="flex items-center gap-3">
+          <div className="relative h-14 w-28 shrink-0 overflow-hidden rounded-xl bg-zinc-950 border border-[#E2E4EB] shadow-xs">
+            {row.backgroundImageUrl ? (
+              <Image
+                src={row.backgroundImageUrl}
+                alt="Banner"
+                fill
+                sizes="112px"
+                className="object-cover filter brightness-75"
+                unoptimized={
+                  row.backgroundImageUrl.startsWith("http://localhost") ||
+                  row.backgroundImageUrl.startsWith("/")
+                }
+              />
+            ) : (
+              <ImageIcon className="h-6 w-6 text-white/50 m-auto" />
+            )}
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center p-1">
+              <span className="text-[10px] font-bold text-white text-center line-clamp-1 drop-shadow-sm">
+                {row.titleI18n?.id || "Banner"}
+              </span>
+            </div>
+          </div>
+          <div>
+            <p className="font-bold text-[#1E1F24] line-clamp-1">
+              {row.titleI18n?.id || "Tanpa Judul"}
+            </p>
+            <p className="text-xs text-[#62636C] font-mono">
+              Key: /{row.pageSlug}
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Target Halaman",
+      cell: (row) => {
+        const badge = getPageBadge(row.pageSlug);
+        return (
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold border ${badge.color}`}
+          >
+            {badge.label}
+          </span>
+        );
+      },
+    },
+    {
+      header: "Breadcrumb Navigasi",
+      cell: (row) => (
+        <span className="inline-flex items-center rounded-md bg-[#EEF2FA] px-2.5 py-1 text-xs font-medium text-[#20449A]">
+          {row.breadcrumbI18n?.id || `Home > ${row.titleI18n?.id}`}
+        </span>
+      ),
+    },
+    {
+      header: "Aksi",
+      className: "text-right",
+      cell: (row) => {
+        const badge = getPageBadge(row.pageSlug);
+        return (
+          <div className="flex items-center justify-end gap-2">
+            <Link
+              href={badge.publicUrl}
+              target="_blank"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E4EB] bg-white text-[#62636C] hover:bg-[#F9F9FB] hover:text-[#1E1F24] transition-colors shadow-xs"
+              title="Buka Halaman Publik"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
+            <Link
+              href={`/admin/banners/${row.id}/edit`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E4EB] bg-white text-[#20449A] hover:bg-[#EEF2FA] hover:border-[#20449A]/30 transition-colors shadow-xs"
+              title="Edit Banner Halaman"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+            </Link>
+            <button
+              type="button"
+              onClick={() => setDeleteTarget(row)}
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-red-200 bg-white text-red-600 hover:bg-red-50 transition-colors shadow-xs"
+              title="Hapus Banner"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Bookmark className="h-6 w-6 text-[#20449A]" />
-            <h2 className="text-2xl font-extrabold text-[#1E1F24]">
-              Banner Halaman: About Us
-            </h2>
+            <span className="inline-flex items-center gap-1 rounded-md bg-[#EEF2FA] px-2 py-0.5 text-[11px] font-bold text-[#20449A]">
+              <Bookmark className="h-3 w-3 text-[#F48902]" /> Manajemen Navigasi & Header
+            </span>
           </div>
-          <p className="text-sm text-[#62636C] mt-1">
-            Kelola judul banner header, breadcrumb navigasi, dan gambar background untuk halaman publik Tentang Kami.
+          <h2 className="text-2xl font-extrabold text-[#1E1F24] tracking-tight mt-1">
+            Banner Halaman Publik
+          </h2>
+          <p className="text-sm text-[#62636C]">
+            Kelola foto background, headline, dan breadcrumb header untuk setiap halaman (About Us, Blog, Portfolio, Contact Us).
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <Link href="/admin/banners/create">
           <Button
             variant="orange"
             size="default"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting || isLoading}
-            className="font-bold shadow-sm"
+            className="font-semibold text-xs h-10 shadow-xs shrink-0"
           >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Menyimpan...
-              </>
-            ) : (
-              <>
-                <Save className="h-4 w-4 mr-2" />
-                Simpan Perubahan
-              </>
-            )}
+            <Plus className="h-4 w-4 mr-1.5" />
+            Tambah Banner Baru
           </Button>
-        </div>
+        </Link>
       </div>
 
       {isLoading ? (
-        <div className="flex h-72 items-center justify-center rounded-2xl border border-[#E2E4EB] bg-white">
+        <div className="flex h-64 items-center justify-center rounded-2xl border border-[#E2E4EB] bg-white">
           <Loader2 className="h-8 w-8 animate-spin text-[#20449A]" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left: Form Fields (7 cols) */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-[#E2E4EB] p-6 sm:p-8 shadow-xs space-y-6">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Language Switcher Tabs */}
-              <div className="flex items-center justify-between border-b border-[#E2E4EB] pb-3">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#62636C]">
-                  <Globe className="h-4 w-4 text-[#20449A]" />
-                  <span>Bahasa Teks Konten:</span>
-                </div>
-                <div className="flex rounded-lg bg-[#F9F9FB] p-1 border border-[#E2E4EB]">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("id")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "id"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇮🇩 ID
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("en")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "en"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇬🇧 EN
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("zh")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "zh"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇨🇳 ZH
-                  </button>
-                </div>
-              </div>
-
-              {/* Title Field (Tabbed) */}
-              {activeTab === "id" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Judul Banner (Bahasa Indonesia) *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="About Us"
-                    {...register("titleId")}
-                    className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A] ${
-                      errors.titleId ? "border-red-500" : "border-[#E2E4EB]"
-                    }`}
-                  />
-                  {errors.titleId && (
-                    <p className="text-xs text-red-500">{errors.titleId.message}</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === "en" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Banner Title (English)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="About Us"
-                    {...register("titleEn")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {activeTab === "zh" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    横幅标题 (中文)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="关于我们"
-                    {...register("titleZh")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {/* Breadcrumb Field (Tabbed) */}
-              {activeTab === "id" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Teks Breadcrumb (Bahasa Indonesia)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Home > About US"
-                    {...register("breadcrumbId")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                  <p className="text-[11px] text-[#62636C]">
-                    Format referensi: Home &gt; About US
-                  </p>
-                </div>
-              )}
-
-              {activeTab === "en" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Breadcrumb Text (English)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Home > About US"
-                    {...register("breadcrumbEn")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {activeTab === "zh" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    面包屑导航 (中文)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="首页 > 关于我们"
-                    {...register("breadcrumbZh")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {/* Background Image Upload / URL */}
-              <div className="pt-2">
-                <Controller
-                  control={control}
-                  name="backgroundImageUrl"
-                  render={({ field }) => (
-                    <ImageUpload
-                      value={field.value}
-                      onChange={field.onChange}
-                      label="Background Image Banner (1920x600 px) *"
-                      description="Pilih foto struktur rangka atap atau baja ringan untuk latar belakang hero banner."
-                      error={errors.backgroundImageUrl?.message}
-                      aspectRatio="wide"
-                    />
-                  )}
-                />
-              </div>
-
-              {/* Hidden pageSlug */}
-              <input type="hidden" {...register("pageSlug")} />
-            </form>
-          </div>
-
-          {/* Right: Live Preview Card (5 cols) */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#62636C]">
-              <Eye className="h-4 w-4 text-[#20449A]" />
-              <span>Pratinjau Live Banner Publik</span>
-            </div>
-
-            <div className="relative rounded-2xl overflow-hidden shadow-lg border border-[#E2E4EB] bg-zinc-950 h-[260px] flex items-center justify-center p-6 text-center">
-              {/* Background Image */}
-              {watchedValues.backgroundImageUrl ? (
-                <Image
-                  src={watchedValues.backgroundImageUrl}
-                  alt="Banner Preview"
-                  fill
-                  className="object-cover object-center filter brightness-[0.45] contrast-110"
-                />
-              ) : (
-                <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center text-zinc-600 text-xs">
-                  (Belum ada gambar background)
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/75" />
-
-              {/* Text Preview */}
-              <div className="relative z-10 space-y-2 max-w-sm">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-md">
-                  {previewTitle}
-                </h3>
-                <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-white/90">
-                  <span className="text-[#E76F1D]">Home</span>
-                  <ChevronRight className="h-3 w-3 text-zinc-300" />
-                  <span>{previewBreadcrumb.split(">").pop()?.trim() || "About US"}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl bg-[#EEF2FA] p-4 border border-blue-100 flex items-start gap-3">
-              <Sparkles className="h-5 w-5 text-[#20449A] shrink-0 mt-0.5" />
-              <p className="text-xs text-[#20449A] leading-relaxed">
-                Setiap kali Anda menekan tombol <strong>Simpan Perubahan</strong>, sistem otomatis menginvaliasi cache Redis dan memutakhirkan halaman publik <span className="font-mono">/about</span> secara instan.
-              </p>
-            </div>
-          </div>
-        </div>
+        <DataTable
+          columns={columns}
+          data={items}
+          searchPlaceholder="Cari judul banner atau slug halaman..."
+          emptyTitle="Belum ada banner halaman"
+          emptyDescription="Tambahkan banner halaman untuk menyempurnakan tampilan header halaman publik."
+          addNewLabel="Tambah Banner Baru"
+          onAddNew={() => router.push("/admin/banners/create")}
+        />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={Boolean(deleteTarget)}
+        onCancel={() => setDeleteTarget(null)}
+        title="Hapus Banner Halaman"
+        description={`Apakah Anda yakin ingin menghapus banner halaman "${
+          deleteTarget?.titleI18n?.id || deleteTarget?.pageSlug || "ini"
+        }"? Tindakan ini tidak dapat dibatalkan.`}
+        confirmLabel="Hapus Banner"
+        cancelLabel="Batal"
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 }

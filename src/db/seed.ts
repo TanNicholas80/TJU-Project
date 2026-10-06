@@ -114,6 +114,7 @@ async function main() {
           excerptI18n: item.excerptI18n,
           contentHtmlI18n: item.contentHtmlI18n,
           coverImageUrl: item.coverImageUrl,
+          views: item.views || 0,
           status: item.status,
         })
         .onConflictDoNothing();
@@ -129,6 +130,7 @@ async function main() {
           titleI18n: item.titleI18n,
           location: item.location,
           coverImageUrl: item.coverImageUrl,
+          views: item.views || 0,
           status: item.status,
         })
         .returning();

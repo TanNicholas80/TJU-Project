@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Lock, Mail, ArrowRight, Loader2, ShieldCheck, KeyRound } from "lucide-react";
+import { Lock, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signIn } from "@/lib/auth-client";
 
@@ -26,13 +26,12 @@ export default function AdminLoginPage() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema) as any,
     defaultValues: {
-      email: "admin@tjutruss.com",
-      password: "secure_admin_password",
+      email: "",
+      password: "",
     },
   });
 
@@ -73,11 +72,6 @@ export default function AdminLoginPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const fillDemoCredentials = () => {
-    setValue("email", "admin@tjutruss.com");
-    setValue("password", "12345678");
   };
 
   return (
@@ -185,19 +179,7 @@ export default function AdminLoginPage() {
               </Button>
             </form>
 
-            {/* Demo Helper Button */}
-            <div className="mt-6 pt-5 border-t border-[#E2E4EB]">
-              <button
-                type="button"
-                onClick={fillDemoCredentials}
-                className="w-full flex items-center justify-center gap-2 rounded-xl border border-dashed border-[#20449A]/30 bg-[#EEF2FA] p-2.5 text-xs font-semibold text-[#20449A] hover:bg-[#DCE5F5] transition-colors cursor-pointer"
-              >
-                <KeyRound className="h-4 w-4 text-[#F48902]" />
-                <span>Gunakan Kredensial Default (admin@tjutruss.com)</span>
-              </button>
-            </div>
-
-            <div className="mt-4 text-center">
+            <div className="mt-6 text-center">
               <Link
                 href="/"
                 className="text-xs text-[#62636C] hover:text-[#20449A] transition-colors"
@@ -206,12 +188,6 @@ export default function AdminLoginPage() {
               </Link>
             </div>
           </div>
-        </div>
-
-        {/* Security badge footer */}
-        <div className="mt-6 flex items-center justify-center gap-2 text-xs text-blue-200">
-          <ShieldCheck className="h-4 w-4 text-emerald-400" />
-          <span>Sesi diamankan dengan enkripsi cookie Better Auth</span>
         </div>
       </div>
     </div>

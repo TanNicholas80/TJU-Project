@@ -7,6 +7,7 @@ import { eq, desc } from "drizzle-orm";
 import { cache } from "@/lib/cache";
 import { defaultCategoriesPortfolio } from "@/lib/data-defaults";
 import * as z from "zod";
+import { translateContentBatch } from "@/lib/translator";
 
 function safeRevalidate(path: string) {
   try {
@@ -60,18 +61,40 @@ export async function createPortfolioCategory(input: PortfolioCategoryInput) {
       ? slugify(validated.slug)
       : slugify(validated.nameId);
 
+    // Auto-translation via Gemini AI with L1/L2 cache
+    let autoEn: Record<string, string> = {};
+    let autoZh: Record<string, string> = {};
+
+    if (!validated.nameEn || !validated.nameZh || (!validated.descriptionEn && validated.descriptionId)) {
+      try {
+        const trans = await translateContentBatch({
+          name: validated.nameId,
+          description: validated.descriptionId || "",
+        });
+        autoEn = trans.en;
+        autoZh = trans.zh;
+      } catch (tErr) {
+        console.warn("[Portfolio Category Action] Auto-translate error:", tErr);
+      }
+    }
+
+    const nameEn = validated.nameEn || autoEn.name || validated.nameId;
+    const nameZh = validated.nameZh || autoZh.name || validated.nameId;
+    const descEn = validated.descriptionEn || autoEn.description || validated.descriptionId || "";
+    const descZh = validated.descriptionZh || autoZh.description || validated.descriptionId || "";
+
     try {
       await db.insert(schema.categoriesPortfolio).values({
         slug: finalSlug,
         nameI18n: {
           id: validated.nameId,
-          en: validated.nameEn || validated.nameId,
-          zh: validated.nameZh || validated.nameId,
+          en: nameEn,
+          zh: nameZh,
         },
         descriptionI18n: {
           id: validated.descriptionId || "",
-          en: validated.descriptionEn || validated.descriptionId || "",
-          zh: validated.descriptionZh || validated.descriptionId || "",
+          en: descEn,
+          zh: descZh,
         },
         coverImageUrl: validated.coverImageUrl || "",
       });
@@ -100,6 +123,28 @@ export async function updatePortfolioCategory(id: number, input: PortfolioCatego
       ? slugify(validated.slug)
       : slugify(validated.nameId);
 
+    // Auto-translation via Gemini AI with L1/L2 cache
+    let autoEn: Record<string, string> = {};
+    let autoZh: Record<string, string> = {};
+
+    if (!validated.nameEn || !validated.nameZh || (!validated.descriptionEn && validated.descriptionId)) {
+      try {
+        const trans = await translateContentBatch({
+          name: validated.nameId,
+          description: validated.descriptionId || "",
+        });
+        autoEn = trans.en;
+        autoZh = trans.zh;
+      } catch (tErr) {
+        console.warn("[Portfolio Category Action] Auto-translate error:", tErr);
+      }
+    }
+
+    const nameEn = validated.nameEn || autoEn.name || validated.nameId;
+    const nameZh = validated.nameZh || autoZh.name || validated.nameId;
+    const descEn = validated.descriptionEn || autoEn.description || validated.descriptionId || "";
+    const descZh = validated.descriptionZh || autoZh.description || validated.descriptionId || "";
+
     try {
       await db
         .update(schema.categoriesPortfolio)
@@ -107,13 +152,13 @@ export async function updatePortfolioCategory(id: number, input: PortfolioCatego
           slug: finalSlug,
           nameI18n: {
             id: validated.nameId,
-            en: validated.nameEn || validated.nameId,
-            zh: validated.nameZh || validated.nameId,
+            en: nameEn,
+            zh: nameZh,
           },
           descriptionI18n: {
             id: validated.descriptionId || "",
-            en: validated.descriptionEn || validated.descriptionId || "",
-            zh: validated.descriptionZh || validated.descriptionId || "",
+            en: descEn,
+            zh: descZh,
           },
           coverImageUrl: validated.coverImageUrl || "",
         })

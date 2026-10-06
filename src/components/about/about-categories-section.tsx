@@ -4,10 +4,15 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export interface PortfolioCategoryItem {
   id: number;
@@ -27,6 +32,7 @@ export function AboutCategoriesSection({
   const { locale } = useI18n();
   const sectionRef = React.useRef<HTMLElement>(null);
   const titleRef = React.useRef<HTMLDivElement>(null);
+  const lineRef = React.useRef<HTMLDivElement>(null);
   const gridRef = React.useRef<HTMLDivElement>(null);
   const ctaRef = React.useRef<HTMLDivElement>(null);
 
@@ -36,29 +42,73 @@ export function AboutCategoriesSection({
       if (titleRef.current) {
         gsap.fromTo(
           titleRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: titleRef.current,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      }
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleX: 0, opacity: 0 },
+          {
+            scaleX: 1,
+            opacity: 1,
+            duration: 0.7,
+            delay: 0.15,
+            ease: "power2.out",
+            transformOrigin: "center center",
+            scrollTrigger: {
+              trigger: lineRef.current,
+              start: "top 85%",
+              once: true,
+            },
+          }
         );
       }
       if (gridRef.current) {
         gsap.fromTo(
           gridRef.current.children,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.7,
-            stagger: 0.15,
-            ease: "power2.out",
-            delay: 0.2,
+            duration: 0.8,
+            stagger: 0.14,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top 82%",
+              once: true,
+            },
           }
         );
       }
       if (ctaRef.current) {
         gsap.fromTo(
           ctaRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.4 }
+          { opacity: 0, y: 15 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: 0.25,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ctaRef.current,
+              start: "top 90%",
+              once: true,
+            },
+          }
         );
       }
     }, sectionRef);
@@ -73,11 +123,11 @@ export function AboutCategoriesSection({
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Title with Orange Underline */}
-        <div ref={titleRef} className="text-center space-y-3">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1F24] tracking-tight">
+        <div ref={titleRef} className="text-center space-y-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-[#1E1F24] tracking-tight">
             Menangani Berbagai Skala Proyek
           </h2>
-          <div className="mx-auto h-1 w-20 bg-[#E76F1D] rounded-full" />
+          <div ref={lineRef} className="mx-auto h-1.5 w-52 sm:w-64 md:w-72 bg-[#E76F1D] rounded-full" />
         </div>
 
         {/* Card Grid */}
@@ -98,7 +148,7 @@ export function AboutCategoriesSection({
             return (
               <div
                 key={cat.id}
-                className="group relative h-[380px] sm:h-[420px] rounded-2xl overflow-hidden shadow-lg border border-[#E2E4EB] transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5"
+                className="group relative h-[440px] sm:h-[480px] rounded-2xl overflow-hidden shadow-lg border border-[#E2E4EB] transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5 bg-zinc-900"
               >
                 {/* Background Image */}
                 <Image
@@ -106,24 +156,23 @@ export function AboutCategoriesSection({
                   alt={name}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110 filter brightness-[0.7] group-hover:brightness-[0.6]"
+                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                 />
 
-                {/* Gradient Overlays for Deep Contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0e214d]/95 via-[#0e214d]/40 to-transparent opacity-90 transition-opacity" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/40" />
+                {/* Deep Blue Gradient Overlay at Bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#15367d] via-[#15367d]/75 via-40% to-transparent opacity-95 transition-opacity" />
 
                 {/* Card Content at the Bottom */}
-                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7 flex flex-col justify-end space-y-2.5">
-                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide drop-shadow-md">
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7 flex flex-col justify-end space-y-1.5 z-10">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-normal drop-shadow-sm">
                     {name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-normal line-clamp-2">
+                  <p className="text-xs sm:text-sm text-white/85 leading-relaxed font-normal line-clamp-2">
                     {desc}
                   </p>
 
                   {/* Accent Line indicator */}
-                  <div className="h-0.5 w-12 bg-[#E76F1D] group-hover:w-20 transition-all duration-300 rounded-full mt-1" />
+                  <div className="h-1.5 w-14 bg-[#E76F1D] group-hover:w-20 transition-all duration-300 rounded-full mt-3" />
                 </div>
               </div>
             );
@@ -136,7 +185,7 @@ export function AboutCategoriesSection({
             <Button
               variant="outline"
               size="lg"
-              className="group border border-[#E2E4EB] bg-white px-8 py-3 text-sm font-bold text-[#1E1F24] hover:bg-[#EEF2FA] hover:text-[#20449A] hover:border-[#20449A]/30 transition-all duration-200 shadow-sm"
+              className="group border border-[#E2E4EB] bg-[#F8F9FA] px-7 py-3 text-xs sm:text-sm font-semibold text-[#1E1F24] hover:bg-[#EEF2FA] hover:text-[#20449A] hover:border-[#20449A]/30 transition-all duration-200 shadow-sm rounded-lg"
             >
               <span>Lihat Portfolio Kami</span>
               <ArrowRight className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />

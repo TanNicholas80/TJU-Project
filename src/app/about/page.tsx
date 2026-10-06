@@ -73,7 +73,13 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
-      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
@@ -85,8 +91,53 @@ export default async function AboutPage() {
     getCategoriesPortfolio(),
   ]);
 
+  // Schema.org Structured Data for About Us & Breadcrumbs
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": "https://tjutruss.com/about/#webpage",
+        url: "https://tjutruss.com/about",
+        name: "Tentang Kami | TJU TRUSS SYSTEM - Membangun Pondasi Kepercayaan",
+        description:
+          "Mengenal CV. Tri Jaya Utama (TJU Truss) sejak tahun 2000. Spesialis fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun.",
+        inLanguage: "id-ID",
+        isPartOf: {
+          "@type": "WebSite",
+          "@id": "https://tjutruss.com/#website",
+          url: "https://tjutruss.com",
+          name: "TJU TRUSS SYSTEM",
+        },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://tjutruss.com",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Tentang Kami",
+              item: "https://tjutruss.com/about",
+            },
+          ],
+        },
+      },
+    ],
+  };
+
   return (
     <PublicLayout>
+      {/* JSON-LD Rich Snippet for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="flex flex-col w-full">
         {/* 1. Hero Banner (DINAMIS dari CMS tabel PAGE_BANNERS) */}
         <AboutHeroBanner banner={banner} />

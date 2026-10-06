@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
 import path from "path";
-import { createClient } from "@supabase/supabase-js";
+import { storage } from "@/lib/storage";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,45 +19,14 @@ export async function POST(req: NextRequest) {
     const baseName = path.basename(file.name, ext).replace(/[^a-zA-Z0-9_-]/g, "_");
     const uniqueFileName = `${baseName}_${Date.now()}${ext}`;
 
-    // 1. Try Supabase Storage if env exists
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_API_KEY;
-    const bucket = process.env.SUPABASE_STORAGE_BUCKET || "tju-assets";
-
-    if (supabaseUrl && supabaseKey && !supabaseUrl.includes("{project-ref}")) {
-      try {
-        const supabase = createClient(supabaseUrl, supabaseKey);
-        const { data, error } = await supabase.storage.from(bucket).upload(uniqueFileName, buffer, {
-          contentType: file.type || "image/png",
-          upsert: true,
-        });
-
-        if (!error && data) {
-          const { data: publicData } = supabase.storage.from(bucket).getPublicUrl(uniqueFileName);
-          return NextResponse.json({
-            success: true,
-            url: publicData.publicUrl,
-            message: "Berhasil diunggah ke Supabase Storage",
-          });
-        }
-      } catch (sbErr) {
-        console.warn("[Upload API] Supabase storage upload failed, falling back to local:", sbErr);
-      }
-    }
-
-    // 2. Fallback: Save to local /public/uploads/
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
-
-    const filePath = path.join(uploadsDir, uniqueFileName);
-    await writeFile(filePath, buffer);
-
-    const publicUrl = `/uploads/${uniqueFileName}`;
-    return NextResponse.json({
-      success: true,
-      url: publicUrl,
-      message: "Berhasil diunggah secara lokal",
+    // Upload using modular storage driver (resolved by process.env.STORAGE_PROVIDER)
+    const result = await storage.upload({
+      buffer,
+      fileName: uniqueFileName,
+      contentType: file.type || "image/png",
     });
+
+    return NextResponse.json(result);
   } catch (error: any) {
     console.error("[Upload API] Error:", error);
     return NextResponse.json(

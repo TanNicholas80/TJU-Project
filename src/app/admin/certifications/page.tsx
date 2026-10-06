@@ -13,7 +13,6 @@ import {
   X,
   Award,
   Loader2,
-  Globe,
   ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,7 +44,6 @@ export default function AdminCertificationsPage() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [editingItem, setEditingItem] = React.useState<any | null>(null);
-  const [activeTab, setActiveTab] = React.useState<"id" | "en" | "zh">("id");
 
   const [deleteTarget, setDeleteTarget] = React.useState<any | null>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
@@ -88,7 +86,6 @@ export default function AdminCertificationsPage() {
 
   const handleOpenCreate = () => {
     setEditingItem(null);
-    setActiveTab("id");
     reset({
       titleId: "",
       titleEn: "",
@@ -102,7 +99,6 @@ export default function AdminCertificationsPage() {
 
   const handleOpenEdit = (item: any) => {
     setEditingItem(item);
-    setActiveTab("id");
     reset({
       titleId: item.titleI18n?.id || "",
       titleEn: item.titleI18n?.en || "",
@@ -286,7 +282,7 @@ export default function AdminCertificationsPage() {
                   {editingItem ? "Edit Sertifikasi" : "Tambah Sertifikasi Baru"}
                 </h3>
                 <p className="text-xs text-[#62636C]">
-                  Lengkapi nama sertifikasi dalam multibahasa dan unggah logo
+                  Lengkapi nama sertifikasi dan unggah logo resmi
                 </p>
               </div>
               <button
@@ -303,96 +299,23 @@ export default function AdminCertificationsPage() {
               onSubmit={handleSubmit(onSubmit)}
               className="flex-1 overflow-y-auto p-6 space-y-5"
             >
-              {/* Language Switcher */}
-              <div className="flex items-center justify-between border-b border-[#E2E4EB] pb-3">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#62636C]">
-                  <Globe className="h-4 w-4 text-[#20449A]" />
-                  <span>Bahasa Nama Sertifikat:</span>
-                </div>
-                <div className="flex rounded-lg bg-[#F9F9FB] p-1 border border-[#E2E4EB]">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("id")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "id"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇮🇩 ID
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("en")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "en"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇬🇧 EN
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("zh")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "zh"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇨🇳 ZH
-                  </button>
-                </div>
+              {/* Title Input */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
+                  Nama Sertifikat (Bahasa Indonesia) *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Contoh: Standar Nasional Indonesia SNI 8399:2017"
+                  {...register("titleId")}
+                  className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A] ${
+                    errors.titleId ? "border-red-500" : "border-[#E2E4EB]"
+                  }`}
+                />
+                {errors.titleId && (
+                  <p className="text-xs text-red-500">{errors.titleId.message}</p>
+                )}
               </div>
-
-              {/* Title Inputs per Tab */}
-              {activeTab === "id" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Nama Sertifikat (Bahasa Indonesia) *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Contoh: Standar Nasional Indonesia SNI 8399:2017"
-                    {...register("titleId")}
-                    className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A] ${
-                      errors.titleId ? "border-red-500" : "border-[#E2E4EB]"
-                    }`}
-                  />
-                  {errors.titleId && (
-                    <p className="text-xs text-red-500">{errors.titleId.message}</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === "en" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Certificate Name (English)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="E.g. Indonesian National Standard SNI 8399:2017"
-                    {...register("titleEn")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {activeTab === "zh" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    证书名称 (中文)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="例如: 印度尼西亚国家标准 SNI 8399:2017"
-                    {...register("titleZh")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
 
               {/* Logo Upload / URL */}
               <div className="pt-2">

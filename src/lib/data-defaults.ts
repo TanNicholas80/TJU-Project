@@ -168,6 +168,17 @@ export const defaultQualityStandards = [
 export const defaultCategoriesPortfolio = [
   {
     id: 1,
+    slug: "komersial",
+    nameI18n: { id: "Komersial", en: "Commercial", zh: "商业建筑" },
+    descriptionI18n: {
+      id: "Pusat Perbelanjaan, Ruko Modern, Gedung Perkantoran, Bandara, Rumah Sakit",
+      en: "Shopping Centers, Modern Shophouses, Office Buildings, Airports, Hospitals",
+      zh: "商业中心、现代商铺、办公大楼、机场、医院",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: 2,
     slug: "industrial",
     nameI18n: { id: "Industrial", en: "Industrial", zh: "工业设施" },
     descriptionI18n: {
@@ -175,29 +186,18 @@ export const defaultCategoriesPortfolio = [
       en: "Factories, Warehouses, Large Scale Production Facilities",
       zh: "厂房、仓库、大型生产设施",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: 2,
-    slug: "commercial",
-    nameI18n: { id: "Commercial", en: "Commercial", zh: "商业建筑" },
-    descriptionI18n: {
-      id: "Pusat Perbelanjaan, Ruko Modern, Gedung Perkantoran",
-      en: "Shopping Centers, Modern Shophouses, Office Buildings",
-      zh: "商业中心、现代商铺、办公大楼",
-    },
-    coverImageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: 3,
-    slug: "residential",
-    nameI18n: { id: "Residential", en: "Residential", zh: "高端住宅" },
+    slug: "residensial",
+    nameI18n: { id: "Residensial", en: "Residential", zh: "高端住宅" },
     descriptionI18n: {
       id: "Kompleks Perumahan, Real Estate, Villa Eksklusif",
       en: "Housing Estates, Real Estate, Exclusive Villas",
       zh: "住宅小区、房地产、独栋别墅",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
   },
 ];
 
@@ -224,7 +224,67 @@ export const defaultPageBanners: Record<
       en: "Home > About US",
       zh: "首页 > 关于我们",
     },
-    backgroundImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1920&q=80",
+    backgroundImageUrl: "/images/core_background.png",
+  },
+  "blog": {
+    id: 2,
+    pageSlug: "blog",
+    titleI18n: {
+      id: "Blog & Artikel",
+      en: "Blog & Articles",
+      zh: "博客与文章",
+    },
+    breadcrumbI18n: {
+      id: "Home > Blog",
+      en: "Home > Blog",
+      zh: "首页 > 博客",
+    },
+    backgroundImageUrl: "/images/core_background.png",
+  },
+  "portofolio": {
+    id: 3,
+    pageSlug: "portofolio",
+    titleI18n: {
+      id: "Rekam Jejak TJU TRUSS",
+      en: "TJU TRUSS Track Record",
+      zh: "TJU TRUSS 经典业绩",
+    },
+    breadcrumbI18n: {
+      id: "Home > Portofolio",
+      en: "Home > Portfolio",
+      zh: "首页 > 业绩案例",
+    },
+    backgroundImageUrl: "/images/core_background.png",
+  },
+  "portfolio": {
+    id: 4,
+    pageSlug: "portfolio",
+    titleI18n: {
+      id: "Rekam Jejak TJU TRUSS",
+      en: "TJU TRUSS Track Record",
+      zh: "TJU TRUSS 经典业绩",
+    },
+    breadcrumbI18n: {
+      id: "Home > Portofolio",
+      en: "Home > Portfolio",
+      zh: "首页 > 业绩案例",
+    },
+    backgroundImageUrl: "/images/core_background.png",
+  },
+  "contact": {
+    id: 5,
+    pageSlug: "contact",
+    titleI18n: {
+      id: "Hubungi Kami",
+      en: "Contact Us",
+      zh: "联系我们",
+    },
+    breadcrumbI18n: {
+      id: "Home > Kontak",
+      en: "Home > Contact",
+      zh: "首页 > 联系我们",
+    },
+    backgroundImageUrl: "/images/core_background.png",
   },
 };
 
@@ -236,7 +296,7 @@ export const defaultCertifications = [
       en: "HAKI Structural Engineering Software Certification",
       zh: "HAKI结构工程软件认证",
     },
-    imageUrl: "/images/certifications/haki.svg",
+    imageUrl: "/images/certifications/logo_haki.png",
     sortOrder: 1,
     isActive: true,
   },
@@ -247,7 +307,7 @@ export const defaultCertifications = [
       en: "ISO 9001:2015 Quality Management System",
       zh: "ISO 9001:2015 质量管理体系",
     },
-    imageUrl: "/images/certifications/iso.svg",
+    imageUrl: "/images/certifications/logo_iso.png",
     sortOrder: 2,
     isActive: true,
   },
@@ -258,7 +318,7 @@ export const defaultCertifications = [
       en: "Indonesian National Standard SNI 8399:2017",
       zh: "印度尼西亚国家标准 SNI 8399:2017",
     },
-    imageUrl: "/images/certifications/sni.svg",
+    imageUrl: "/images/certifications/logo_sni.png",
     sortOrder: 3,
     isActive: true,
   },
@@ -269,19 +329,8 @@ export const defaultCertifications = [
       en: "Ministry of Industry Domestic Component Level (TKDN)",
       zh: "工业部本土成分含量认证 (TKDN)",
     },
-    imageUrl: "/images/certifications/tkdn.svg",
+    imageUrl: "/images/certifications/logo_tkdn.png",
     sortOrder: 4,
-    isActive: true,
-  },
-  {
-    id: 5,
-    titleI18n: {
-      id: "Garansi Resmi Struktural 10 Tahun & Standar K3",
-      en: "10-Year Official Structural Warranty & K3 Safety",
-      zh: "10年官方结构质保与K3安全标准",
-    },
-    imageUrl: "/images/certifications/garansi.svg",
-    sortOrder: 5,
     isActive: true,
   },
 ];
@@ -290,7 +339,25 @@ export const defaultPortfolios = [
   {
     id: 1,
     categoryPortfolioId: 1,
-    categoryName: "Fasilitas Pendidikan & Publik",
+    categoryName: "KOMERSIAL",
+    titleI18n: {
+      id: "Bandara NYIA",
+      en: "NYIA Airport Terminal",
+      zh: "日惹国际机场 (NYIA)",
+    },
+    location: "Kulon Progo, D.I. Yogyakarta",
+    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=1200&q=80",
+    views: 42,
+    status: "published",
+    createdAt: new Date("2026-09-08"),
+    images: [
+      { id: 1, imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+    ],
+  },
+  {
+    id: 2,
+    categoryPortfolioId: 1,
+    categoryName: "KOMERSIAL",
     titleI18n: {
       id: "Universitas Negeri Semarang (UNNES)",
       en: "Semarang State University (UNNES)",
@@ -298,19 +365,56 @@ export const defaultPortfolios = [
     },
     location: "Semarang, Jawa Tengah",
     coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
+    views: 36,
     status: "published",
-    createdAt: new Date("2026-03-15"),
+    createdAt: new Date("2026-09-08"),
     images: [
-      { id: 1, imageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
-      { id: 2, imageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80", sortOrder: 2 },
-      { id: 3, imageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80", sortOrder: 3 },
-      { id: 4, imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", sortOrder: 4 },
+      { id: 2, imageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+      { id: 3, imageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80", sortOrder: 2 },
+      { id: 4, imageUrl: "/images/gambar_1.JPG", sortOrder: 3 },
+      { id: 5, imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=1200&q=80", sortOrder: 4 },
     ],
   },
   {
-    id: 2,
+    id: 3,
+    categoryPortfolioId: 1,
+    categoryName: "KOMERSIAL",
+    titleI18n: {
+      id: "RSIA MITRA PERMATA HUSADA",
+      en: "Mitra Permata Husada Mother & Child Hospital",
+      zh: "Mitra Permata Husada 妇幼医院",
+    },
+    location: "Kendal, Jawa Tengah",
+    coverImageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
+    views: 30,
+    status: "published",
+    createdAt: new Date("2026-09-08"),
+    images: [
+      { id: 4, imageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+    ],
+  },
+  {
+    id: 4,
+    categoryPortfolioId: 1,
+    categoryName: "KOMERSIAL",
+    titleI18n: {
+      id: "RS RANDU DONGKAL",
+      en: "Randu Dongkal Regional Hospital",
+      zh: "Randu Dongkal 医院",
+    },
+    location: "Pemalang, Jawa Tengah",
+    coverImageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    views: 25,
+    status: "published",
+    createdAt: new Date("2026-09-08"),
+    images: [
+      { id: 5, imageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+    ],
+  },
+  {
+    id: 5,
     categoryPortfolioId: 2,
-    categoryName: "Gedung Komersial",
+    categoryName: "INDUSTRIAL",
     titleI18n: {
       id: "Kawasan Industri Kendal (KIK) Warehouse",
       en: "Kendal Industrial Park Warehouse",
@@ -318,16 +422,17 @@ export const defaultPortfolios = [
     },
     location: "Kendal, Jawa Tengah",
     coverImageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+    views: 20,
     status: "published",
-    createdAt: new Date("2026-02-10"),
+    createdAt: new Date("2026-07-21"),
     images: [
-      { id: 5, imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+      { id: 6, imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
     ],
   },
   {
-    id: 3,
+    id: 6,
     categoryPortfolioId: 3,
-    categoryName: "Residensial Mewah",
+    categoryName: "RESIDENSIAL",
     titleI18n: {
       id: "Cluster Graha Estetika Residensial",
       en: "Graha Estetika Residential Cluster",
@@ -335,27 +440,47 @@ export const defaultPortfolios = [
     },
     location: "Banyumanik, Semarang",
     coverImageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    views: 16,
     status: "published",
-    createdAt: new Date("2026-01-20"),
+    createdAt: new Date("2026-06-15"),
     images: [
-      { id: 6, imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+      { id: 7, imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
     ],
   },
   {
-    id: 4,
-    categoryPortfolioId: 4,
-    categoryName: "Kanopi & Struktur Khusus",
+    id: 7,
+    categoryPortfolioId: 2,
+    categoryName: "INDUSTRIAL",
     titleI18n: {
-      id: "Kanopi Bentang Lebar RSUD Tugurejo",
-      en: "Wide-Span Canopy Tugurejo Hospital",
-      zh: "图古雷霍医院大跨度阳光雨棚",
+      id: "Gudang Logistik Modern Pelabuhan Tanjung Emas",
+      en: "Tanjung Emas Port Modern Logistic Warehouse",
+      zh: "丹绒马斯港现代化物流仓库",
     },
-    location: "Semarang Barat, Jawa Tengah",
-    coverImageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+    location: "Semarang Utara, Jawa Tengah",
+    coverImageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    views: 13,
     status: "published",
-    createdAt: new Date("2026-01-05"),
+    createdAt: new Date("2026-05-10"),
     images: [
-      { id: 7, imageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+      { id: 8, imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
+    ],
+  },
+  {
+    id: 8,
+    categoryPortfolioId: 3,
+    categoryName: "RESIDENSIAL",
+    titleI18n: {
+      id: "Villa Mewah Bukit Semarang Baru (BSB)",
+      en: "BSB City Exclusive Luxury Villa",
+      zh: "BSB City 独栋奢华别墅",
+    },
+    location: "Mijen, Semarang",
+    coverImageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+    views: 9,
+    status: "published",
+    createdAt: new Date("2026-04-02"),
+    images: [
+      { id: 9, imageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80", sortOrder: 1 },
     ],
   },
 ];
@@ -377,23 +502,41 @@ export const defaultPosts = [
       zh: "了解HAKI认证结构计算软件在屋架设计中的关键作用",
     },
     excerptI18n: {
-      id: "Kekuatan rangka atap baja ringan tidak ditentukan oleh kerapian semata, namun perhitungan akurasi beban struktural secara digital.",
-      en: "The strength of light steel roof trusses is not just about neatness, but precise digital structural load calculations.",
-      zh: "轻钢屋架的安全不仅取决于安装工艺，更核心在于精密数字载荷分析与力学模拟。",
+      id: "Jangan pertaruhkan keselamatan bangunan dengan 'ilmu kira-kira'. Mari pelajari bagaimana software tersertifikasi membagi beban struktur atap secara presisi dan aman.",
+      en: "Do not compromise building safety with guesswork. Learn how certified software distributes roof structural loads accurately and safely.",
+      zh: "请勿凭借猜测评估建筑安全。了解专业认证软件如何精确合理地分配屋架结构载荷。",
     },
     contentHtmlI18n: {
-      id: "<p>Kekuatan rangka atap baja ringan tidak ditentukan oleh kerapian pemasangan semata. Keamanan struktur sepenuhnya bergantung pada akurasi perhitungan beban dan desain kuda-kuda. Di sinilah pentingnya penggunaan software engineering bersertifikasi HAKI.</p><h3>Apa Itu Software Bersertifikasi HAKI?</h3><p>Dalam industri baja ringan, sertifikasi HAKI menandakan bahwa software perhitungan struktur yang digunakan telah diuji, divalidasi, dan diakui kelayakannya secara legal.</p>",
-      en: "<p>The strength of light steel roof trusses is not determined by assembly neatness alone. Structural safety depends on accurate load calculation.</p>",
-      zh: "<p>轻钢屋架的结构安全性取决于准确的荷载计算与力学验算。</p>",
+      id: `<p class="mb-5 leading-relaxed text-slate-700">Kekuatan rangka atap baja ringan tidak ditentukan oleh kerapian pemasangan semata. Keamanan struktur sepenuhnya bergantung pada akurasi perhitungan beban dan desain kuda-kuda. Di sinilah pentingnya penggunaan software engineering bersertifikasi HAKI.</p>
+
+<h3 class="text-xl sm:text-2xl font-bold text-[#1E1F24] mt-8 mb-3">Apa Itu Software Bersertifikasi HAKI?</h3>
+<p class="mb-5 leading-relaxed text-slate-700">Dalam industri baja ringan, sertifikasi HAKI (Hak Kekayaan Intelektual) menandakan bahwa software perhitungan struktur yang digunakan telah diuji, divalidasi, dan diakui kelayakannya secara legal. Perangkat lunak ini dirancang khusus untuk mensimulasikan dan menganalisis kekuatan rangka baja ringan sebelum proses perakitan dilakukan.</p>
+
+<h3 class="text-xl sm:text-2xl font-bold text-[#1E1F24] mt-8 mb-3">Mengapa Perhitungan Software Sangat Vital?</h3>
+<p class="mb-4 leading-relaxed text-slate-700">Membangun atap tanpa perhitungan software sama dengan menggunakan "ilmu kira-kira". Berikut alasan mengapa perhitungan presisi bersifat mutlak:</p>
+
+<p class="mb-4 leading-relaxed text-slate-700"><strong>1. Akurasi Distribusi Beban</strong> Software menghitung seluruh gaya yang bekerja pada atap secara detail. Ini mencakup beban mati (berat material baja dan genteng), beban hidup (pekerja saat pemeliharaan), hingga beban cuaca (kecepatan angin dan curah hujan).</p>
+
+<p class="mb-4 leading-relaxed text-slate-700"><strong>2. Optimalisasi Titik Sambungan</strong> Setiap sambungan (simpul) pada baja ringan memiliki batas toleransi tegangan. Perhitungan digital memastikan posisi sekrup dan ketebalan material (seperti baja AS100) mampu menahan gaya tarik dan tekan secara maksimal.</p>
+
+<p class="mb-5 leading-relaxed text-slate-700"><strong>3. Mencegah Kegagalan Struktural</strong> Analisis software mengidentifikasi titik lemah pada desain sebelum rangka dipasang. Hal ini mengeliminasi risiko atap melendut atau ambruk di kemudian hari.</p>
+
+<h3 class="text-xl sm:text-2xl font-bold text-[#1E1F24] mt-8 mb-3">Standar Keamanan TJU TRUSS</h3>
+<p class="mb-4 leading-relaxed text-slate-700">TJU TRUSS menolak segala bentuk kompromi terkait keselamatan bangunan. Sebagai bagian dari pilar Structure, kami wajib menggunakan software perhitungan yang telah diverifikasi oleh HAKI dan memiliki sertifikat layak pakai.</p>
+<p class="mb-4 leading-relaxed text-slate-700">Kami memastikan setiap desain rangka atap Anda didasarkan pada ilmu pasti dan standar engineering yang ketat, bukan sekadar asumsi lapangan.</p>
+<p class="mb-5 leading-relaxed text-slate-700">Pastikan keamanan aset Anda terjamin. Diskusikan kebutuhan struktur atap Anda bersama tim ahli TJU TRUSS hari ini.</p>`,
+      en: "<p>Construction strength requires engineering precision and load accuracy.</p>",
+      zh: "<p>建筑结构强度取决于工程精密度与荷载计算准确性。</p>",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "/images/gambar_1.JPG",
+    views: 24,
     status: "published",
-    createdAt: new Date("2026-03-20"),
+    createdAt: new Date("2026-09-30"),
   },
   {
     id: 2,
-    categoryPostId: 2,
-    categoryName: "Edukasi & Tips",
+    categoryPostId: 1,
+    categoryName: "Engineering",
     titleI18n: {
       id: "Panduan Memilih Ketebalan Baja Ringan untuk Rumah 2 Lantai",
       en: "Guide to Choosing Light Steel Thickness for 2-Story Houses",
@@ -407,16 +550,17 @@ export const defaultPosts = [
     contentHtmlI18n: {
       id: "<p>Memilih profil baja ringan yang tepat sangat krusial untuk bangunan bertingkat. Ketebalan minimum profil C75 yang disarankan adalah 0.75 mm TCT.</p>",
       en: "<p>Choosing the right light steel profile is crucial for multi-story buildings.</p>",
-      zh: "<p>为多层建筑选择合适的轻钢型材至关重要。</p>",
+      zh: "<p>为多层建筑选择合适的轻钢型材至载至关重要。</p>",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "/images/gambar_1.JPG",
+    views: 20,
     status: "published",
-    createdAt: new Date("2026-03-12"),
+    createdAt: new Date("2026-09-16"),
   },
   {
     id: 3,
-    categoryPostId: 3,
-    categoryName: "Berita & Proyek",
+    categoryPostId: 2,
+    categoryName: "Edukasi & Tips",
     titleI18n: {
       id: "Inovasi Fabrikasi Rangka Atap Bentang Lebar Bebas Kolom",
       en: "Column-Free Wide Span Roof Truss Fabrication Innovation",
@@ -432,9 +576,182 @@ export const defaultPosts = [
       en: "<p>Wide span roof trusses require precise moment of inertia calculation to prevent deflection.</p>",
       zh: "<p>大跨度屋架需要精确的转动惯量与挠度验算，以防止中间跨度下垂。</p>",
     },
-    coverImageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    coverImageUrl: "/images/gambar_1.JPG",
+    views: 18,
     status: "published",
-    createdAt: new Date("2026-03-01"),
+    createdAt: new Date("2026-08-07"),
+  },
+  {
+    id: 4,
+    categoryPostId: 3,
+    categoryName: "Berita & Proyek",
+    titleI18n: {
+      id: "Penyelesaian Pemasangan Struktur Rangka Baja Bandara NYIA",
+      en: "Completion of Steel Truss Installation for NYIA Airport Project",
+      zh: "日惹国际机场屋架钢结构工程顺利完工",
+    },
+    excerptI18n: {
+      id: "TJU TRUSS berhasil menyelesaikan instalasi struktur bentang khusus pada fasilitas pendukung bandara dengan pengawasan mutu ketat.",
+      en: "TJU TRUSS successfully completed special-span structural installation with strict quality supervision.",
+      zh: "TJU TRUSS顺利完成机场配套设施大跨度屋架结构安装，全程严控工程品质。",
+    },
+    contentHtmlI18n: {
+      id: "<p>Proyek konstruksi fasilitas pendukung bandara membutuhkan kecepatan dan akurasi tinggi. Seluruh modul truss dirakit secara presisi.</p>",
+      en: "<p>Airport facility construction requires speed, safety, and utmost precision.</p>",
+      zh: "<p>机场配套设施施工对工期效率与工程精度要求极高。</p>",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    views: 15,
+    status: "published",
+    createdAt: new Date("2026-07-03"),
+  },
+  {
+    id: 5,
+    categoryPostId: 1,
+    categoryName: "Engineering",
+    titleI18n: {
+      id: "Standar SNI Profil C75 dan Reng Asimetris G550",
+      en: "SNI Standard for C75 Profile and G550 Asymmetric Batten",
+      zh: "C75型钢与G550不对称挂瓦条SNI标准规范",
+    },
+    excerptI18n: {
+      id: "Pelajari bagaimana standar SNI 8399:2017 menjamin komposisi lapisan pelindung anti-karat AZ100 tahan terhadap cuaca ekstrem.",
+      en: "Learn how SNI 8399:2017 standard guarantees AZ100 anti-rust coating durability against extreme weather.",
+      zh: "了解SNI 8399:2017国家标准如何保障AZ100防锈镀层在极端天气下的耐用性。",
+    },
+    contentHtmlI18n: {
+      id: "<p>Baja ringan bermutu tinggi menggunakan bahan dasar cold-formed high tensile steel G550 dengan kuat tarik leleh 550 MPa.</p>",
+      en: "<p>High grade light steel utilizes cold-formed high tensile steel G550 with yield strength of 550 MPa.</p>",
+      zh: "<p>优质轻钢采用冷弯高抗拉强度G550钢材，屈服强度达到550 MPa。</p>",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+    views: 13,
+    status: "published",
+    createdAt: new Date("2026-07-03"),
+  },
+  {
+    id: 6,
+    categoryPostId: 1,
+    categoryName: "Engineering",
+    titleI18n: {
+      id: "Keunggulan Baja Galvalum Zincalume G550 Anti-Karat",
+      en: "Advantages of Rust-Resistant Galvalume Zincalume G550 Steel",
+      zh: "高抗腐蚀G550镀铝锌钢材的核心优势解析",
+    },
+    excerptI18n: {
+      id: "Komposisi paduan 55% aluminium, 43.5% seng, dan 1.5% silikon memberikan perlindungan korosi hingga 4 kali lebih baik dari galvanis biasa.",
+      en: "Alloy composition of 55% aluminum provides up to 4x better corrosion resistance than standard galvanized steel.",
+      zh: "55%铝合金配方提供比普通镀锌高出4倍的耐腐蚀防护性能。",
+    },
+    contentHtmlI18n: {
+      id: "<p>Lapisan pelindung AZ100 aktif memperbaiki permukaan secara alami jika terjadi goresan saat fabrikasi dan pemasangan.</p>",
+      en: "<p>AZ100 coating provides active self-healing protection against scratch damage.</p>",
+      zh: "<p>AZ100涂层具有优异的自愈保护特性，防止加工划伤后发生锈蚀。</p>",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=1200&q=80",
+    views: 10,
+    status: "published",
+    createdAt: new Date("2026-06-20"),
+  },
+  {
+    id: 7,
+    categoryPostId: 2,
+    categoryName: "Edukasi & Tips",
+    titleI18n: {
+      id: "Tips Mencegah Kebocoran dan Lendutan pada Atap Bentang Panjang",
+      en: "Tips to Prevent Leaks and Deflection on Long Span Roofs",
+      zh: "预防大跨度屋顶漏水与下沉挠度的技术要点",
+    },
+    excerptI18n: {
+      id: "Kunci utama terletak pada kemiringan atap minimum dan kerapatan jarak ikatan angin (wind bracing) yang sesuai standar.",
+      en: "Key factors lie in minimum roof pitch and proper wind bracing spacing.",
+      zh: "核心在于合理的最小屋面坡度与符合规范的抗风支撑间距。",
+    },
+    contentHtmlI18n: {
+      id: "<p>Kemiringan atap harus disesuaikan dengan jenis penutup genteng yang dipilih untuk menghindari tampias saat hujan lebat.</p>",
+      en: "<p>Roof pitch must match selected tile materials to prevent backflow during storms.</p>",
+      zh: "<p>屋面坡度必须与所选瓦片类型精准匹配，防止暴雨时回水渗漏。</p>",
+    },
+    coverImageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    views: 0,
+    status: "published",
+    createdAt: new Date("2026-05-15"),
+  },
+  {
+    id: 8,
+    categoryPostId: 1,
+    categoryName: "Engineering",
+    titleI18n: {
+      id: "Perbandingan Rangka Baja Ringan vs Kayu untuk Bangunan Komersial",
+      en: "Light Steel vs Timber Roof Truss Comparison for Commercial Buildings",
+      zh: "商业建筑中轻钢屋架与传统木结构的综合对比",
+    },
+    excerptI18n: {
+      id: "Analisis komparatif efisiensi biaya, kecepatan instalasi, ketahanan rayap, dan nilai jangka panjang bangunan.",
+      en: "Comparative analysis of cost efficiency, installation speed, termite resistance, and long-term value.",
+      zh: "成本效益、施工速度、防白蚁性能与长期投资价值的全面对比分析。",
+    },
+    contentHtmlI18n: {
+      id: "<p>Baja ringan tidak membebani pondasi bangunan, anti rayap seumur hidup, dan tidak mengalami muai-susut akibat kelembaban.</p>",
+      en: "<p>Light steel does not overload foundations and eliminates termite risks completely.</p>",
+      zh: "<p>轻钢减轻地基承重负荷，终身杜绝白蚁隐患，不会因潮湿发生热胀冷缩变形。</p>",
+    },
+    coverImageUrl: "/images/gambar_1.JPG",
+    views: 0,
+    status: "published",
+    createdAt: new Date("2026-04-10"),
+  },
+];
+
+export const defaultProducts = [
+  {
+    id: 1,
+    name: "Kaca Tempered Riben",
+    category: "Solar Control",
+    views: 18,
+    createdAt: new Date("2026-07-15"),
+  },
+  {
+    id: 2,
+    name: "Kaca Tempered Sandblast (Buram)",
+    category: "Decorative Glass",
+    views: 16,
+    createdAt: new Date("2026-07-15"),
+  },
+  {
+    id: 3,
+    name: "Kaca Tempered Clear (Bening)",
+    category: "Tempered Glass",
+    views: 15,
+    createdAt: new Date("2026-07-15"),
+  },
+  {
+    id: 4,
+    name: "Kaca Laminated",
+    category: "Safety Glass",
+    views: 12,
+    createdAt: new Date("2026-06-29"),
+  },
+  {
+    id: 5,
+    name: "Kaca Tempered Laminated",
+    category: "High Safety",
+    views: 10,
+    createdAt: new Date("2026-06-29"),
+  },
+  {
+    id: 6,
+    name: "Profil C75 Baja Ringan G550",
+    category: "Rangka Atap",
+    views: 9,
+    createdAt: new Date("2026-06-10"),
+  },
+  {
+    id: 7,
+    name: "Reng Asimetris AZ100",
+    category: "Batten",
+    views: 7,
+    createdAt: new Date("2026-05-20"),
   },
 ];
 

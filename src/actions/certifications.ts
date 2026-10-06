@@ -8,6 +8,8 @@ import { cache } from "@/lib/cache";
 import { defaultCertifications } from "@/lib/data-defaults";
 import * as z from "zod";
 
+import { translateContentBatch } from "@/lib/translator";
+
 function safeRevalidate(path: string) {
   try {
     revalidatePath(path);
@@ -45,12 +47,30 @@ export async function createCertification(input: CertificationInput) {
   try {
     const validated = certificationSchema.parse(input);
 
+    let titleEn = validated.titleEn;
+    let titleZh = validated.titleZh;
+
+    // Auto-translation via Gemini AI with L1/L2 cache
+    if (!titleEn || !titleZh) {
+      try {
+        const trans = await translateContentBatch({
+          title: validated.titleId,
+        });
+        titleEn = titleEn || trans.en.title || validated.titleId;
+        titleZh = titleZh || trans.zh.title || validated.titleId;
+      } catch (tErr) {
+        console.warn("[Certification Action] Auto-translate error:", tErr);
+        titleEn = titleEn || validated.titleId;
+        titleZh = titleZh || validated.titleId;
+      }
+    }
+
     try {
       await db.insert(schema.certifications).values({
         titleI18n: {
           id: validated.titleId,
-          en: validated.titleEn || validated.titleId,
-          zh: validated.titleZh || validated.titleId,
+          en: titleEn,
+          zh: titleZh,
         },
         imageUrl: validated.imageUrl,
         sortOrder: validated.sortOrder,
@@ -78,14 +98,32 @@ export async function updateCertification(id: number, input: CertificationInput)
   try {
     const validated = certificationSchema.parse(input);
 
+    let titleEn = validated.titleEn;
+    let titleZh = validated.titleZh;
+
+    // Auto-translation via Gemini AI with L1/L2 cache
+    if (!titleEn || !titleZh) {
+      try {
+        const trans = await translateContentBatch({
+          title: validated.titleId,
+        });
+        titleEn = titleEn || trans.en.title || validated.titleId;
+        titleZh = titleZh || trans.zh.title || validated.titleId;
+      } catch (tErr) {
+        console.warn("[Certification Action] Auto-translate error:", tErr);
+        titleEn = titleEn || validated.titleId;
+        titleZh = titleZh || validated.titleId;
+      }
+    }
+
     try {
       await db
         .update(schema.certifications)
         .set({
           titleI18n: {
             id: validated.titleId,
-            en: validated.titleEn || validated.titleId,
-            zh: validated.titleZh || validated.titleId,
+            en: titleEn,
+            zh: titleZh,
           },
           imageUrl: validated.imageUrl,
           sortOrder: validated.sortOrder,

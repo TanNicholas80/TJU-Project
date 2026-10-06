@@ -6,6 +6,7 @@ import * as schema from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { cache } from "@/lib/cache";
 import { defaultHeroCarousels } from "@/lib/data-defaults";
+import { translateContentBatch } from "@/lib/translator";
 import * as z from "zod";
 
 function safeRevalidate(path: string) {
@@ -57,13 +58,72 @@ export async function getCarouselsAdmin() {
   }
 }
 
+export async function getCarouselById(id: number) {
+  try {
+    const data = await db
+      .select()
+      .from(schema.heroCarousels)
+      .where(eq(schema.heroCarousels.id, id))
+      .limit(1);
+
+    if (data && data.length > 0) {
+      return { success: true, data: data[0] };
+    }
+
+    const defaultItem = defaultHeroCarousels.find((item) => item.id === id);
+    if (defaultItem) {
+      return { success: true, data: defaultItem };
+    }
+
+    return { success: false, message: "Slide carousel tidak ditemukan" };
+  } catch (error) {
+    const defaultItem = defaultHeroCarousels.find((item) => item.id === id);
+    if (defaultItem) {
+      return { success: true, data: defaultItem };
+    }
+    return { success: false, message: "Gagal mengambil data slide carousel" };
+  }
+}
+
 export async function createCarousel(input: CarouselInput) {
   try {
     const validated = carouselSchema.parse(input);
 
     const descId = validated.descriptionId || validated.subtitleId || "";
-    const descEn = validated.descriptionEn || validated.subtitleEn || descId;
-    const descZh = validated.descriptionZh || validated.subtitleZh || descId;
+
+    // Trigger Gemini auto-translation jika EN atau ZH belum disediakan
+    let autoEn: Record<string, string> = {};
+    let autoZh: Record<string, string> = {};
+    if (!validated.titleEn || !validated.titleZh) {
+      try {
+        const trans = await translateContentBatch({
+          subheader: validated.subheaderId,
+          title: validated.titleId,
+          description: descId,
+          loadingTitle: validated.loadingTitleId,
+          ctaText: validated.ctaTextId,
+        });
+        autoEn = trans.en;
+        autoZh = trans.zh;
+      } catch (tErr) {
+        console.warn("[Carousel Action] Auto-translate error:", tErr);
+      }
+    }
+
+    const subheaderEn = validated.subheaderEn || autoEn.subheader || validated.subheaderId;
+    const subheaderZh = validated.subheaderZh || autoZh.subheader || validated.subheaderId;
+
+    const titleEn = validated.titleEn || autoEn.title || validated.titleId;
+    const titleZh = validated.titleZh || autoZh.title || validated.titleId;
+
+    const descEn = validated.descriptionEn || validated.subtitleEn || autoEn.description || descId;
+    const descZh = validated.descriptionZh || validated.subtitleZh || autoZh.description || descId;
+
+    const loadingTitleEn = validated.loadingTitleEn || autoEn.loadingTitle || validated.loadingTitleId;
+    const loadingTitleZh = validated.loadingTitleZh || autoZh.loadingTitle || validated.loadingTitleId;
+
+    const ctaTextEn = validated.ctaTextEn || autoEn.ctaText || "Project Consultation";
+    const ctaTextZh = validated.ctaTextZh || autoZh.ctaText || "项目咨询";
 
     try {
       await db.insert(schema.heroCarousels).values({
@@ -71,14 +131,14 @@ export async function createCarousel(input: CarouselInput) {
         subheaderI18n: validated.subheaderId
           ? {
               id: validated.subheaderId,
-              en: validated.subheaderEn || validated.subheaderId,
-              zh: validated.subheaderZh || validated.subheaderId,
+              en: subheaderEn || validated.subheaderId,
+              zh: subheaderZh || validated.subheaderId,
             }
           : null,
         titleI18n: {
           id: validated.titleId,
-          en: validated.titleEn || validated.titleId,
-          zh: validated.titleZh || validated.titleId,
+          en: titleEn,
+          zh: titleZh,
         },
         descriptionI18n: descId
           ? {
@@ -97,14 +157,14 @@ export async function createCarousel(input: CarouselInput) {
         loadingTitleI18n: validated.loadingTitleId
           ? {
               id: validated.loadingTitleId,
-              en: validated.loadingTitleEn || validated.loadingTitleId,
-              zh: validated.loadingTitleZh || validated.loadingTitleId,
+              en: loadingTitleEn || validated.loadingTitleId,
+              zh: loadingTitleZh || validated.loadingTitleId,
             }
           : null,
         ctaTextI18n: {
           id: validated.ctaTextId || "Konsultasi Proyek",
-          en: validated.ctaTextEn || "Project Consultation",
-          zh: validated.ctaTextZh || "项目咨询",
+          en: ctaTextEn,
+          zh: ctaTextZh,
         },
         ctaLink: validated.ctaLink || "#contact",
         sortOrder: validated.sortOrder,
@@ -132,8 +192,40 @@ export async function updateCarousel(id: number, input: CarouselInput) {
     const validated = carouselSchema.parse(input);
 
     const descId = validated.descriptionId || validated.subtitleId || "";
-    const descEn = validated.descriptionEn || validated.subtitleEn || descId;
-    const descZh = validated.descriptionZh || validated.subtitleZh || descId;
+
+    // Trigger Gemini auto-translation jika EN atau ZH belum disediakan
+    let autoEn: Record<string, string> = {};
+    let autoZh: Record<string, string> = {};
+    if (!validated.titleEn || !validated.titleZh) {
+      try {
+        const trans = await translateContentBatch({
+          subheader: validated.subheaderId,
+          title: validated.titleId,
+          description: descId,
+          loadingTitle: validated.loadingTitleId,
+          ctaText: validated.ctaTextId,
+        });
+        autoEn = trans.en;
+        autoZh = trans.zh;
+      } catch (tErr) {
+        console.warn("[Carousel Action] Auto-translate error:", tErr);
+      }
+    }
+
+    const subheaderEn = validated.subheaderEn || autoEn.subheader || validated.subheaderId;
+    const subheaderZh = validated.subheaderZh || autoZh.subheader || validated.subheaderId;
+
+    const titleEn = validated.titleEn || autoEn.title || validated.titleId;
+    const titleZh = validated.titleZh || autoZh.title || validated.titleId;
+
+    const descEn = validated.descriptionEn || validated.subtitleEn || autoEn.description || descId;
+    const descZh = validated.descriptionZh || validated.subtitleZh || autoZh.description || descId;
+
+    const loadingTitleEn = validated.loadingTitleEn || autoEn.loadingTitle || validated.loadingTitleId;
+    const loadingTitleZh = validated.loadingTitleZh || autoZh.loadingTitle || validated.loadingTitleId;
+
+    const ctaTextEn = validated.ctaTextEn || autoEn.ctaText || "Project Consultation";
+    const ctaTextZh = validated.ctaTextZh || autoZh.ctaText || "项目咨询";
 
     try {
       await db
@@ -143,14 +235,14 @@ export async function updateCarousel(id: number, input: CarouselInput) {
           subheaderI18n: validated.subheaderId
             ? {
                 id: validated.subheaderId,
-                en: validated.subheaderEn || validated.subheaderId,
-                zh: validated.subheaderZh || validated.subheaderId,
+                en: subheaderEn || validated.subheaderId,
+                zh: subheaderZh || validated.subheaderId,
               }
             : null,
           titleI18n: {
             id: validated.titleId,
-            en: validated.titleEn || validated.titleId,
-            zh: validated.titleZh || validated.titleId,
+            en: titleEn,
+            zh: titleZh,
           },
           descriptionI18n: descId
             ? {
@@ -169,14 +261,14 @@ export async function updateCarousel(id: number, input: CarouselInput) {
           loadingTitleI18n: validated.loadingTitleId
             ? {
                 id: validated.loadingTitleId,
-                en: validated.loadingTitleEn || validated.loadingTitleId,
-                zh: validated.loadingTitleZh || validated.loadingTitleId,
+                en: loadingTitleEn || validated.loadingTitleId,
+                zh: loadingTitleZh || validated.loadingTitleId,
               }
             : null,
           ctaTextI18n: {
             id: validated.ctaTextId || "Konsultasi Proyek",
-            en: validated.ctaTextEn || "Project Consultation",
-            zh: validated.ctaTextZh || "项目咨询",
+            en: ctaTextEn,
+            zh: ctaTextZh,
           },
           ctaLink: validated.ctaLink || "#contact",
           sortOrder: validated.sortOrder,

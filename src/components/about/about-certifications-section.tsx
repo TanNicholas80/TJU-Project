@@ -3,8 +3,15 @@
 import * as React from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
+
+import { defaultCertifications } from "@/lib/data-defaults";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export interface CertificationItem {
   id: number;
@@ -18,6 +25,13 @@ interface AboutCertificationsSectionProps {
   certifications: CertificationItem[];
 }
 
+const certImageMap: Record<string, string> = {
+  "/images/certifications/haki.svg": "/images/certifications/logo_haki.png",
+  "/images/certifications/iso.svg": "/images/certifications/logo_iso.png",
+  "/images/certifications/sni.svg": "/images/certifications/logo_sni.png",
+  "/images/certifications/tkdn.svg": "/images/certifications/logo_tkdn.png",
+};
+
 export function AboutCertificationsSection({
   certifications,
 }: AboutCertificationsSectionProps) {
@@ -26,9 +40,39 @@ export function AboutCertificationsSection({
   const headerRef = React.useRef<HTMLDivElement>(null);
   const logosRef = React.useRef<HTMLDivElement>(null);
 
-  const activeCertifications = certifications.filter(
-    (c) => c.isActive !== false
-  );
+  const rawList = certifications && certifications.length > 0 ? certifications : defaultCertifications;
+
+  const officialLogos = [
+    {
+      id: 1,
+      title: "Sertifikasi Software Rekayasa Struktur HAKI",
+      imageUrl: "/images/certifications/logo_haki.png",
+    },
+    {
+      id: 2,
+      title: "Sistem Manajemen Mutu ISO 9001:2015",
+      imageUrl: "/images/certifications/logo_iso.png",
+    },
+    {
+      id: 3,
+      title: "Standar Nasional Indonesia SNI 8399:2017",
+      imageUrl: "/images/certifications/logo_sni.png",
+    },
+    {
+      id: 4,
+      title: "Tingkat Komponen Dalam Negeri (TKDN) Kemenperin",
+      imageUrl: "/images/certifications/logo_tkdn.png",
+    },
+  ];
+
+  const activeCertifications = officialLogos.map((item, idx) => {
+    const raw = rawList[idx];
+    return {
+      id: item.id,
+      titleI18n: raw?.titleI18n || { id: item.title, en: item.title, zh: item.title },
+      imageUrl: item.imageUrl,
+    };
+  });
 
   React.useEffect(() => {
     if (!sectionRef.current) return;
@@ -37,21 +81,36 @@ export function AboutCertificationsSection({
         gsap.fromTo(
           headerRef.current,
           { opacity: 0, y: 25 },
-          { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 82%",
+              once: true,
+            },
+          }
         );
       }
       if (logosRef.current) {
         gsap.fromTo(
           logosRef.current.children,
-          { opacity: 0, scale: 0.85, y: 20 },
+          { opacity: 0, scale: 0.9, y: 20 },
           {
             opacity: 1,
             scale: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "back.out(1.4)",
-            delay: 0.2,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: "power3.out",
+            delay: 0.15,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 82%",
+              once: true,
+            },
           }
         );
       }
@@ -63,40 +122,28 @@ export function AboutCertificationsSection({
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 bg-[#20449A] text-white overflow-hidden shadow-inner"
+      className="relative w-full py-16 sm:py-20 lg:py-24 bg-[#20449A] text-white overflow-hidden shadow-inner"
     >
-      {/* Background Decorative Truss Line Accent */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="cert-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 40 M 0 0 L 40 40" fill="none" stroke="white" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#cert-grid)" />
-        </svg>
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
         {/* Section Header */}
-        <div ref={headerRef} className="mx-auto max-w-3xl text-center space-y-3">
-          <span className="text-xs sm:text-sm font-black tracking-widest uppercase text-blue-200">
+        <div ref={headerRef} className="mx-auto max-w-3xl text-center space-y-3.5">
+          <span className="text-base sm:text-lg md:text-xl font-bold tracking-[0.2em] uppercase text-white/90">
             SERTIFIKASI & STANDAR
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-white tracking-tight leading-tight">
             Standar Mutu Tanpa Kompromi
           </h2>
-          <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed font-normal max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal max-w-2xl sm:max-w-3xl mx-auto">
             Seluruh material dan sistem perhitungan kami telah memenuhi standar
             kualitas nasional secara ketat, menjamin keamanan dan keandalan
             struktural di setiap proyek Anda.
           </p>
         </div>
 
-        {/* Logos Flex/Grid */}
+        {/* Logos Row - 4 Logo PNG Resmi Tanpa Container dengan Animasi Hover */}
         <div
           ref={logosRef}
-          className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 lg:gap-10 pt-4"
+          className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 lg:gap-16 pt-4 sm:pt-6"
         >
           {activeCertifications.map((item) => {
             const label =
@@ -107,21 +154,16 @@ export function AboutCertificationsSection({
             return (
               <div
                 key={item.id}
-                className="group relative flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1.5"
+                className="group relative flex items-center justify-center p-2 cursor-pointer transition-all duration-300 ease-out hover:scale-115 hover:-translate-y-2 hover:drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)]"
                 title={label}
               >
-                <div className="relative flex h-20 w-24 sm:h-24 sm:w-28 items-center justify-center rounded-2xl bg-white/10 p-3.5 backdrop-blur-md border border-white/20 shadow-lg group-hover:bg-white/20 group-hover:border-white/40 group-hover:shadow-blue-900/50 transition-all">
-                  <Image
-                    src={item.imageUrl}
-                    alt={label}
-                    width={90}
-                    height={70}
-                    className="max-h-14 w-auto object-contain filter drop-shadow transition-transform group-hover:scale-110"
-                  />
-                </div>
-                <span className="mt-2 text-[11px] font-medium text-blue-100 opacity-0 group-hover:opacity-100 transition-opacity text-center max-w-[120px] line-clamp-1 pointer-events-none">
-                  {label}
-                </span>
+                <Image
+                  src={item.imageUrl}
+                  alt={label}
+                  width={260}
+                  height={100}
+                  className="h-16 sm:h-20 md:h-22 lg:h-24 w-auto object-contain transition-transform duration-300"
+                />
               </div>
             );
           })}

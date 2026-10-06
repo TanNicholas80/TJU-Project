@@ -13,7 +13,6 @@ import {
   X,
   FolderTree,
   Loader2,
-  Globe,
   Layers,
   Sparkles,
 } from "lucide-react";
@@ -58,7 +57,6 @@ export default function AdminPortfolioCategoriesPage() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [editingItem, setEditingItem] = React.useState<any | null>(null);
-  const [activeTab, setActiveTab] = React.useState<"id" | "en" | "zh">("id");
 
   const [deleteTarget, setDeleteTarget] = React.useState<any | null>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
@@ -105,7 +103,6 @@ export default function AdminPortfolioCategoriesPage() {
 
   const handleOpenCreate = () => {
     setEditingItem(null);
-    setActiveTab("id");
     reset({
       nameId: "",
       nameEn: "",
@@ -121,7 +118,6 @@ export default function AdminPortfolioCategoriesPage() {
 
   const handleOpenEdit = (item: any) => {
     setEditingItem(item);
-    setActiveTab("id");
     reset({
       nameId: item.nameI18n?.id || "",
       nameEn: item.nameI18n?.en || "",
@@ -209,9 +205,16 @@ export default function AdminPortfolioCategoriesPage() {
             <p className="font-bold text-[#1E1F24] line-clamp-1">
               {row.nameI18n?.id || "Tanpa Nama"}
             </p>
-            <p className="text-xs font-mono text-[#20449A]">
-              /{row.slug}
-            </p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-xs font-mono text-[#20449A]">
+                /{row.slug}
+              </span>
+              {row.nameI18n?.en && (
+                <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-500 font-medium">
+                  EN: {row.nameI18n.en}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       ),
@@ -319,97 +322,24 @@ export default function AdminPortfolioCategoriesPage() {
               onSubmit={handleSubmit(onSubmit)}
               className="flex-1 overflow-y-auto p-6 space-y-5"
             >
-              {/* Language Switcher */}
-              <div className="flex items-center justify-between border-b border-[#E2E4EB] pb-3">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#62636C]">
-                  <Globe className="h-4 w-4 text-[#20449A]" />
-                  <span>Bahasa Teks:</span>
-                </div>
-                <div className="flex rounded-lg bg-[#F9F9FB] p-1 border border-[#E2E4EB]">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("id")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "id"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇮🇩 ID
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("en")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "en"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇬🇧 EN
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("zh")}
-                    className={`rounded-md px-3 py-1 text-xs font-bold transition-all ${
-                      activeTab === "zh"
-                        ? "bg-[#20449A] text-white shadow-xs"
-                        : "text-[#62636C] hover:text-[#1E1F24]"
-                    }`}
-                  >
-                    🇨🇳 ZH
-                  </button>
-                </div>
+              {/* Name Field */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
+                  Nama Kategori (Bahasa Indonesia) *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Contoh: Industrial"
+                  {...register("nameId")}
+                  onChange={handleNameChange}
+                  className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A] ${
+                    errors.nameId ? "border-red-500" : "border-[#E2E4EB]"
+                  }`}
+                />
+                {errors.nameId && (
+                  <p className="text-xs text-red-500">{errors.nameId.message}</p>
+                )}
               </div>
-
-              {/* Name Field per Tab */}
-              {activeTab === "id" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Nama Kategori (Bahasa Indonesia) *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Contoh: Industrial"
-                    {...register("nameId")}
-                    onChange={handleNameChange}
-                    className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A] ${
-                      errors.nameId ? "border-red-500" : "border-[#E2E4EB]"
-                    }`}
-                  />
-                  {errors.nameId && (
-                    <p className="text-xs text-red-500">{errors.nameId.message}</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === "en" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Category Name (English)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="E.g. Industrial"
-                    {...register("nameEn")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {activeTab === "zh" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    分类名称 (中文)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="例如: 工业设施"
-                    {...register("nameZh")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
 
               {/* Slug Field */}
               <div className="space-y-1.5">
@@ -434,48 +364,18 @@ export default function AdminPortfolioCategoriesPage() {
                 )}
               </div>
 
-              {/* Description Field (Standard Textarea - no Tiptap as requested) */}
-              {activeTab === "id" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Deskripsi Singkat (Bahasa Indonesia)
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="Contoh: Pabrik, Gudang, Fasilitas Produksi Skala Besar"
-                    {...register("descriptionId")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {activeTab === "en" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    Short Description (English)
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="E.g. Factories, Warehouses, Large Scale Production Facilities"
-                    {...register("descriptionEn")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
-
-              {activeTab === "zh" && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
-                    简短描述 (中文)
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="例如: 厂房、仓库、大型生产设施"
-                    {...register("descriptionZh")}
-                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
-                  />
-                </div>
-              )}
+              {/* Description Field */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
+                  Deskripsi Singkat (Bahasa Indonesia)
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="Contoh: Pabrik, Gudang, Fasilitas Produksi Skala Besar"
+                  {...register("descriptionId")}
+                  className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
+                />
+              </div>
 
               {/* Cover Image Upload / URL */}
               <div className="pt-2">

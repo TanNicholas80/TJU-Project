@@ -1,8 +1,14 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "@/lib/i18n";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function AboutVisionMissionSection() {
   const { locale } = useI18n();
@@ -39,21 +45,37 @@ export function AboutVisionMissionSection() {
       if (containerRef.current) {
         gsap.fromTo(
           containerRef.current,
-          { opacity: 0, y: 35 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+          { opacity: 0, scale: 0.96, y: 35 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 82%",
+              once: true,
+            },
+          }
         );
       }
       if (missionGridRef.current) {
         gsap.fromTo(
           missionGridRef.current.children,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 25 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.12,
-            ease: "power2.out",
+            duration: 0.7,
+            stagger: 0.1,
+            ease: "power3.out",
             delay: 0.25,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 82%",
+              once: true,
+            },
           }
         );
       }
@@ -65,7 +87,7 @@ export function AboutVisionMissionSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 lg:py-24 bg-[#F9F9FB] overflow-hidden"
+      className="relative w-full py-16 sm:py-20 lg:py-24 bg-white overflow-hidden"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Blue Card Container */}
@@ -73,29 +95,32 @@ export function AboutVisionMissionSection() {
           ref={containerRef}
           className="relative overflow-hidden rounded-3xl bg-[#1B3F93] p-8 sm:p-12 lg:p-16 text-white shadow-2xl border border-blue-800/40"
         >
-          {/* Decorative Subtle Diagonal Geometric Lines */}
-          <div className="absolute inset-0 pointer-events-none opacity-10">
-            <svg
-              className="h-full w-full"
-              viewBox="0 0 1000 600"
-              preserveAspectRatio="none"
-              fill="none"
-              stroke="white"
-              strokeWidth="2"
-            >
-              <line x1="0" y1="0" x2="300" y2="600" />
-              <line x1="100" y1="0" x2="400" y2="600" />
-              <line x1="200" y1="0" x2="500" y2="600" />
-              <line x1="800" y1="0" x2="1000" y2="400" />
-              <line x1="880" y1="0" x2="1080" y2="400" />
-              <polygon points="50,50 150,20 120,120" strokeWidth="1.5" />
-            </svg>
+          {/* Accent 1: Pojok Kiri Atas (accent_vision.png) */}
+          <div className="absolute top-0 left-0 w-64 sm:w-80 md:w-96 lg:w-[420px] aspect-square pointer-events-none select-none">
+            <Image
+              src="/images/accent_vision.png"
+              alt="Aksen Visi TJU Truss"
+              fill
+              className="object-contain object-left-top"
+              priority
+            />
+          </div>
+
+          {/* Accent 2: Pojok Kanan Bawah (accent_vision2.png) */}
+          <div className="absolute bottom-0 right-0 w-56 sm:w-72 md:w-80 lg:w-[380px] aspect-square pointer-events-none select-none">
+            <Image
+              src="/images/accent_vision2.png"
+              alt="Aksen Misi TJU Truss"
+              fill
+              className="object-contain object-right-bottom"
+              priority
+            />
           </div>
 
           <div className="relative z-10 space-y-12">
             {/* Visi Perusahaan */}
             <div className="text-center space-y-4 max-w-3xl mx-auto">
-              <span className="text-xs sm:text-sm font-black tracking-widest uppercase text-blue-200">
+              <span className="text-base sm:text-lg md:text-xl font-bold tracking-[0.2em] uppercase text-[#DDDDDD]">
                 VISI PERUSAHAAN
               </span>
               <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-snug sm:leading-tight">
@@ -106,7 +131,7 @@ export function AboutVisionMissionSection() {
 
             {/* Misi Perusahaan Header */}
             <div className="text-center pt-2">
-              <span className="text-xs sm:text-sm font-black tracking-widest uppercase text-blue-200">
+              <span className="text-base sm:text-lg md:text-xl font-bold tracking-[0.2em] uppercase text-[#DDDDDD]">
                 MISI PERUSAHAAN
               </span>
             </div>

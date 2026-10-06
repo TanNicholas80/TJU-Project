@@ -14,6 +14,7 @@ if (typeof window !== "undefined") {
 import { useI18n, Locale } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
 import { cn } from "@/lib/utils";
+import { markViewIntent } from "@/lib/view-tracker";
 
 export interface PortfolioCategoryItem {
   id: number;
@@ -234,9 +235,11 @@ export function FeaturedPortfolioSection({
                 : item.categoryName || "KOMERSIAL";
 
               return (
-                <div
+                <Link
                   key={item.id}
-                  className="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-[280px] sm:h-[340px] md:h-[380px]"
+                  href={`/portofolio/${item.id}`}
+                  onClick={() => markViewIntent("portfolio", item.id)}
+                  className="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-[280px] sm:h-[340px] md:h-[380px] block cursor-pointer"
                 >
                   {/* Gambar Portofolio */}
                   <Image
@@ -262,7 +265,7 @@ export function FeaturedPortfolioSection({
                       {title}
                     </h3>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

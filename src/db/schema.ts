@@ -103,6 +103,7 @@ export const posts = pgTable("posts", {
   excerptI18n: jsonb("excerpt_i18n").$type<I18nString>(),
   contentHtmlI18n: jsonb("content_html_i18n").$type<I18nString>().notNull(),
   coverImageUrl: varchar("cover_image_url", { length: 500 }),
+  views: integer("views").default(0).notNull(),
   status: varchar("status", { length: 20 }).default("draft").notNull(), // 'published' | 'draft'
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -119,6 +120,7 @@ export const portfolios = pgTable("portfolios", {
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
   location: varchar("location", { length: 255 }).notNull(),
   coverImageUrl: varchar("cover_image_url", { length: 500 }).notNull(),
+  views: integer("views").default(0).notNull(),
   status: varchar("status", { length: 20 }).default("draft").notNull(), // 'published' | 'draft'
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -148,6 +150,18 @@ export const companyProfile = pgTable("company_profile", {
   googleMapsIframe: text("google_maps_iframe"),
   socialLinks: jsonb("social_links").$type<SocialLinks>(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// ==========================================
+// 9. TRANSLATION CACHE (PRD Section 5.3 & 7)
+// ==========================================
+export const translationCache = pgTable("translation_cache", {
+  hashKey: varchar("hash_key", { length: 64 }).primaryKey(),
+  sourceText: text("source_text").notNull(),
+  sourceLang: varchar("source_lang", { length: 10 }).default("id").notNull(),
+  targetLang: varchar("target_lang", { length: 10 }).notNull(),
+  translatedText: text("translated_text").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 // ==========================================
