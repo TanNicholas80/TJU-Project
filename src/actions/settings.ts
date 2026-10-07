@@ -7,6 +7,12 @@ import { cache } from "@/lib/cache";
 import { defaultCompanyProfile } from "@/lib/data-defaults";
 import * as z from "zod";
 
+function safeRevalidate(path: string) {
+  try {
+    revalidatePath(path);
+  } catch {}
+}
+
 const settingsSchema = z.object({
   phone: z.string().optional(),
   whatsapp: z.string().optional(),
@@ -71,14 +77,19 @@ export async function updateCompanyProfile(input: SettingsInput) {
     }
 
     await cache.del("public:company_profile");
-    revalidatePath("/");
-    revalidatePath("/admin/settings");
+    safeRevalidate("/");
+    safeRevalidate("/admin/settings");
 
     return { success: true, message: "Berhasil menyimpan pengaturan kontak perusahaan" };
   } catch (err: any) {
+    const msg =
+      err?.issues?.[0]?.message ||
+      err?.errors?.[0]?.message ||
+      err?.message ||
+      "Gagal menyimpan pengaturan kontak.";
     return {
       success: false,
-      message: err.errors ? err.errors[0]?.message : "Gagal menyimpan pengaturan kontak.",
+      message: msg,
     };
   }
 }

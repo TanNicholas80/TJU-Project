@@ -11,6 +11,37 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Tidak ada file yang diunggah" }, { status: 400 });
     }
 
+    // Whitelist MIME types sesuai PRD 8.2
+    const ALLOWED_MIME_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "application/pdf",
+    ];
+
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Format berkas (${file.type || "unknown"}) tidak diizinkan. Hanya format JPEG, PNG, WebP, GIF, atau PDF yang didukung.`,
+        },
+        { status: 400 }
+      );
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Ukuran berkas melebihi batas maksimum 5MB.",
+        },
+        { status: 400 }
+      );
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 

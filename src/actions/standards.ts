@@ -38,6 +38,12 @@ export async function getStandardsAdmin() {
   }
 }
 
+function safeRevalidate(path: string) {
+  try {
+    revalidatePath(path);
+  } catch {}
+}
+
 export async function createStandard(input: StandardInput) {
   try {
     const validated = standardSchema.parse(input);
@@ -63,14 +69,19 @@ export async function createStandard(input: StandardInput) {
     }
 
     await cache.del("public:quality_standards");
-    revalidatePath("/");
-    revalidatePath("/admin/standards");
+    safeRevalidate("/");
+    safeRevalidate("/admin/standards");
 
     return { success: true, message: "Berhasil menambahkan standar kualitas" };
   } catch (err: any) {
+    const msg =
+      err?.issues?.[0]?.message ||
+      err?.errors?.[0]?.message ||
+      err?.message ||
+      "Gagal menambahkan standar kualitas.";
     return {
       success: false,
-      message: err.errors ? err.errors[0]?.message : "Gagal menambahkan standar kualitas.",
+      message: msg,
     };
   }
 }

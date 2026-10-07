@@ -141,10 +141,10 @@ export async function getPostById(id: string) {
           categoryName: row.category?.nameI18n?.id || "Umum",
         };
       }
-      return defaultPosts.find((p) => String(p.id) === String(id)) || defaultPosts[0];
+      return defaultPosts.find((p) => String(p.id) === String(id)) || null;
     } catch (err) {
       console.warn(`[DataService] Database query for post ${id} failed, using default:`, err);
-      return defaultPosts.find((p) => String(p.id) === String(id)) || defaultPosts[0];
+      return defaultPosts.find((p) => String(p.id) === String(id)) || null;
     }
   }, 3600);
 }
@@ -171,10 +171,10 @@ export async function getPortfolioById(id: string) {
           categoryName: row.category?.nameI18n?.id || "Komersial",
         };
       }
-      return defaultPortfolios.find((p) => String(p.id) === String(id)) || defaultPortfolios[0];
+      return defaultPortfolios.find((p) => String(p.id) === String(id)) || null;
     } catch (err) {
       console.warn(`[DataService] Database query for portfolio ${id} failed, using default:`, err);
-      return defaultPortfolios.find((p) => String(p.id) === String(id)) || defaultPortfolios[0];
+      return defaultPortfolios.find((p) => String(p.id) === String(id)) || null;
     }
   }, 3600);
 }
