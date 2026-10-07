@@ -17,18 +17,18 @@ import { cn } from "@/lib/utils";
 import { markViewIntent } from "@/lib/view-tracker";
 
 export interface PortfolioCategoryItem {
-  id: number;
+  id: string | number;
   slug?: string;
   nameI18n: I18nString;
 }
 
 export interface PortfolioItem {
-  id: number;
+  id: string | number;
   titleI18n: I18nString;
   location?: string;
   coverImageUrl: string;
   status: string;
-  categoryPortfolioId?: number | null;
+  categoryPortfolioId?: string | number | null;
   categoryName?: string;
   categorySlug?: string;
   categoryNameI18n?: I18nString;
@@ -45,7 +45,7 @@ export function FeaturedPortfolioSection({
   categories = [],
 }: FeaturedPortfolioSectionProps) {
   const { t, locale } = useI18n();
-  const [selectedCategoryId, setSelectedCategoryId] = React.useState<number | "all">("all");
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState<string | number | "all">("all");
 
   const sectionRef = React.useRef<HTMLElement>(null);
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -64,7 +64,7 @@ export function FeaturedPortfolioSection({
       return portfolios.slice(0, 4);
     }
     return portfolios
-      .filter((item) => item.categoryPortfolioId === selectedCategoryId)
+      .filter((item) => String(item.categoryPortfolioId) === String(selectedCategoryId))
       .slice(0, 4);
   }, [portfolios, selectedCategoryId]);
 

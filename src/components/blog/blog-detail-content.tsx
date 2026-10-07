@@ -13,7 +13,7 @@ if (typeof window !== "undefined") {
 }
 
 export interface RelatedPost {
-  id: number;
+  id: string | number;
   title: string;
   coverImageUrl: string;
   categoryName?: string;

@@ -5,7 +5,25 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, X, Award, Loader2, ShieldCheck, Calculator } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  X,
+  Award,
+  Loader2,
+  ShieldCheck,
+  Calculator,
+  Cpu,
+  CheckCircle2,
+  Layers,
+  Sparkles,
+  Wrench,
+  Compass,
+  FileCheck,
+  Zap,
+  LucideIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable, ColumnDef } from "@/components/admin/data-table";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
@@ -16,6 +34,85 @@ import {
   deleteStandard,
   StandardInput,
 } from "@/actions/standards";
+
+const AVAILABLE_ICONS: {
+  name: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    name: "ShieldCheck",
+    label: "ShieldCheck",
+    description: "Perlindungan & SNI Mutu Baja",
+    icon: ShieldCheck,
+  },
+  {
+    name: "Calculator",
+    label: "Calculator",
+    description: "Analisis & Rekayasa Komputasi",
+    icon: Calculator,
+  },
+  {
+    name: "Award",
+    label: "Award",
+    description: "Garansi Resmi & Standar K3",
+    icon: Award,
+  },
+  {
+    name: "Cpu",
+    label: "Cpu",
+    description: "Teknologi & Presisi Tinggi",
+    icon: Cpu,
+  },
+  {
+    name: "CheckCircle2",
+    label: "CheckCircle2",
+    description: "Terverifikasi & Akurat",
+    icon: CheckCircle2,
+  },
+  {
+    name: "Layers",
+    label: "Layers",
+    description: "Struktur Berlapis & Material G550",
+    icon: Layers,
+  },
+  {
+    name: "Sparkles",
+    label: "Sparkles",
+    description: "Kualitas Unggul & Estetika",
+    icon: Sparkles,
+  },
+  {
+    name: "Wrench",
+    label: "Wrench",
+    description: "Aplikator & Fabrikasi Profesional",
+    icon: Wrench,
+  },
+  {
+    name: "Compass",
+    label: "Compass",
+    description: "Desain Arsitektural & Perencanaan",
+    icon: Compass,
+  },
+  {
+    name: "FileCheck",
+    label: "FileCheck",
+    description: "Sertifikasi HAKI & Uji Lab",
+    icon: FileCheck,
+  },
+  {
+    name: "Zap",
+    label: "Zap",
+    description: "Pemasangan Cepat & Efisiensi",
+    icon: Zap,
+  },
+];
+
+const iconMap: Record<string, LucideIcon> = AVAILABLE_ICONS.reduce(
+  (acc, item) => ({ ...acc, [item.name]: item.icon }),
+  {} as Record<string, LucideIcon>
+);
 
 const standardFormSchema = z.object({
   iconName: z.string().min(1, "Pilih nama ikon"),
@@ -45,6 +142,7 @@ export default function AdminStandardsPage() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<StandardFormData>({
     resolver: zodResolver(standardFormSchema) as any,
@@ -60,6 +158,10 @@ export default function AdminStandardsPage() {
       isActive: true,
     },
   });
+
+  const watchedIconName = watch("iconName") || "ShieldCheck";
+  const SelectedIcon = iconMap[watchedIconName] || ShieldCheck;
+  const selectedIconMeta = AVAILABLE_ICONS.find((i) => i.name === watchedIconName);
 
   const loadData = React.useCallback(async () => {
     setIsLoading(true);
@@ -157,29 +259,36 @@ export default function AdminStandardsPage() {
   const columns: ColumnDef<any>[] = [
     {
       header: "Standar Mutu",
-      cell: (row) => (
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EEF2FA] text-[#20449A]">
-            <Award className="h-5 w-5" />
+      cell: (row) => {
+        const RowIcon = iconMap[row.iconName] || Award;
+        return (
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EEF2FA] text-[#20449A] border border-[#20449A]/15 shadow-xs">
+              <RowIcon className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="font-bold text-[#1E1F24]">
+                {row.titleI18n?.id || "Tanpa Judul"}
+              </p>
+              <p className="text-xs text-[#62636C] line-clamp-1">
+                {row.descriptionI18n?.id || ""}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="font-bold text-[#1E1F24]">
-              {row.titleI18n?.id || "Tanpa Judul"}
-            </p>
-            <p className="text-xs text-[#62636C] line-clamp-1">
-              {row.descriptionI18n?.id || ""}
-            </p>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       header: "Ikon",
-      cell: (row) => (
-        <span className="rounded bg-zinc-100 px-2.5 py-1 text-xs font-mono text-zinc-700">
-          {row.iconName}
-        </span>
-      ),
+      cell: (row) => {
+        const RowIcon = iconMap[row.iconName] || Award;
+        return (
+          <div className="inline-flex items-center gap-1.5 rounded-lg border border-[#E2E4EB] bg-white px-2.5 py-1 text-xs font-medium text-[#1E1F24] shadow-xs">
+            <RowIcon className="h-3.5 w-3.5 text-[#F48902]" />
+            <span className="font-mono text-zinc-700">{row.iconName}</span>
+          </div>
+        );
+      },
     },
     {
       header: "Status",
@@ -265,9 +374,14 @@ export default function AdminStandardsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200">
           <div className="relative my-8 w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-[#E2E4EB] max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-[#E2E4EB] px-6 py-4 bg-[#F9F9FB]">
-              <h3 className="text-lg font-bold text-[#1E1F24]">
-                {editingItem ? "Edit Standar Kualitas" : "Tambah Standar Mutu Baru"}
-              </h3>
+              <div>
+                <h3 className="text-lg font-bold text-[#1E1F24]">
+                  {editingItem ? "Edit Standar Kualitas" : "Tambah Standar Mutu Baru"}
+                </h3>
+                <p className="text-xs text-[#62636C] mt-0.5">
+                  Pratinjau ikon menyesuaikan secara langsung saat Anda memilih pilihan ikon di bawah.
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
@@ -281,20 +395,55 @@ export default function AdminStandardsPage() {
               onSubmit={handleSubmit(onSubmit)}
               className="flex-1 overflow-y-auto p-6 space-y-4"
             >
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
-                  Ikon Lucide
-                </label>
-                <select
-                  {...register("iconName")}
-                  className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3 py-2 text-sm text-[#1E1F24]"
-                >
-                  <option value="ShieldCheck">ShieldCheck (Perlindungan/SNI)</option>
-                  <option value="Calculator">Calculator (Analisis Software)</option>
-                  <option value="Award">Award (Garansi & K3)</option>
-                  <option value="Cpu">Cpu (Teknologi/Komputasi)</option>
-                  <option value="CheckCircle2">CheckCircle2 (Terverifikasi)</option>
-                </select>
+              {/* Live Preview Card & Icon Selector */}
+              <div className="rounded-xl border border-[#E2E4EB] bg-[#F9F9FB] p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#62636C]">
+                    Pratinjau Ikon Terpilih
+                  </span>
+                  <span className="text-[11px] font-semibold text-[#20449A] bg-[#EEF2FA] px-2 py-0.5 rounded-md">
+                    Live Preview
+                  </span>
+                </div>
+
+                {/* Visual Preview Box matching Landing Page standard card look */}
+                <div className="flex items-center gap-3.5 rounded-xl border border-[#E2E4EB] bg-white p-3.5 shadow-xs">
+                  <div className="relative flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#20449A] to-[#152e69] text-white shadow-md shadow-[#20449A]/20 transition-all duration-300 transform hover:scale-105">
+                    <SelectedIcon className="h-7 w-7 transition-all duration-300" />
+                    <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF7A00] text-[9px] font-bold text-white shadow-xs">
+                      ✓
+                    </span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-bold text-[#1E1F24]">
+                        {selectedIconMeta?.name || watchedIconName}
+                      </p>
+                      <span className="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 px-1.5 py-0.2 rounded font-medium">
+                        Icon Card
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#62636C] mt-0.5">
+                      {selectedIconMeta?.description || "Standar mutu dan rekayasa presisi"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 pt-1">
+                  <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
+                    Pilih Ikon Lucide
+                  </label>
+                  <select
+                    {...register("iconName")}
+                    className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm text-[#1E1F24] font-medium focus:border-[#20449A] focus:ring-2 focus:ring-[#20449A]/15 outline-none transition-all"
+                  >
+                    {AVAILABLE_ICONS.map((item) => (
+                      <option key={item.name} value={item.name}>
+                        {item.label} — {item.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div className="space-y-1.5">

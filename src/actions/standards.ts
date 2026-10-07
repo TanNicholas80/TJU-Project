@@ -75,7 +75,7 @@ export async function createStandard(input: StandardInput) {
   }
 }
 
-export async function updateStandard(id: number, input: StandardInput) {
+export async function updateStandard(id: string, input: StandardInput) {
   try {
     const validated = standardSchema.parse(input);
 
@@ -115,7 +115,7 @@ export async function updateStandard(id: number, input: StandardInput) {
   }
 }
 
-export async function deleteStandard(id: number) {
+export async function deleteStandard(id: string) {
   try {
     try {
       await db.delete(schema.qualityStandards).where(eq(schema.qualityStandards.id, id));

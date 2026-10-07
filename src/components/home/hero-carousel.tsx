@@ -10,7 +10,7 @@ import { I18nString } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
 export interface HeroSlide {
-  id: number;
+  id: string | number;
   imageUrl: string;
   subheaderI18n?: I18nString | null;
   titleI18n: I18nString;

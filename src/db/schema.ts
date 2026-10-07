@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, varchar, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
 
 export type I18nString = {
   id: string;
@@ -18,7 +18,7 @@ export type SocialLinks = {
 // 1. HERO CAROUSELS
 // ==========================================
 export const heroCarousels = pgTable("hero_carousels", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   imageUrl: varchar("image_url", { length: 500 }).notNull(),
   subheaderI18n: jsonb("subheader_i18n").$type<I18nString>(),
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
@@ -36,7 +36,7 @@ export const heroCarousels = pgTable("hero_carousels", {
 // 2. QUALITY STANDARDS
 // ==========================================
 export const qualityStandards = pgTable("quality_standards", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   iconName: varchar("icon_name", { length: 100 }).notNull(),
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
   descriptionI18n: jsonb("description_i18n").$type<I18nString>().notNull(),
@@ -49,7 +49,7 @@ export const qualityStandards = pgTable("quality_standards", {
 // 3. CATEGORIES POST (BLOG)
 // ==========================================
 export const categoriesPost = pgTable("categories_post", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   nameI18n: jsonb("name_i18n").$type<I18nString>().notNull(),
   slug: varchar("slug", { length: 150 }).notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -59,7 +59,7 @@ export const categoriesPost = pgTable("categories_post", {
 // 4. CATEGORIES PORTFOLIO
 // ==========================================
 export const categoriesPortfolio = pgTable("categories_portfolio", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   slug: varchar("slug", { length: 150 }).notNull().unique(),
   nameI18n: jsonb("name_i18n").$type<I18nString>().notNull(),
   descriptionI18n: jsonb("description_i18n").$type<I18nString>(),
@@ -71,7 +71,7 @@ export const categoriesPortfolio = pgTable("categories_portfolio", {
 // 4B. PAGE BANNERS (Untuk Banner Header per Halaman)
 // ==========================================
 export const pageBanners = pgTable("page_banners", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   pageSlug: varchar("page_slug", { length: 100 }).notNull().unique(),
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
   breadcrumbI18n: jsonb("breadcrumb_i18n").$type<I18nString>(),
@@ -83,7 +83,7 @@ export const pageBanners = pgTable("page_banners", {
 // 4C. CERTIFICATIONS (Sertifikasi & Standar Mutu)
 // ==========================================
 export const certifications = pgTable("certifications", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   titleI18n: jsonb("title_i18n").$type<I18nString>(),
   imageUrl: varchar("image_url", { length: 500 }).notNull(),
   sortOrder: integer("sort_order").default(0).notNull(),
@@ -95,8 +95,8 @@ export const certifications = pgTable("certifications", {
 // 5. POSTS (BLOG)
 // ==========================================
 export const posts = pgTable("posts", {
-  id: serial("id").primaryKey(),
-  categoryPostId: integer("category_post_id").references(() => categoriesPost.id, {
+  id: uuid("id").defaultRandom().primaryKey(),
+  categoryPostId: uuid("category_post_id").references(() => categoriesPost.id, {
     onDelete: "set null",
   }),
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
@@ -113,8 +113,8 @@ export const posts = pgTable("posts", {
 // 6. PORTFOLIOS
 // ==========================================
 export const portfolios = pgTable("portfolios", {
-  id: serial("id").primaryKey(),
-  categoryPortfolioId: integer("category_portfolio_id").references(() => categoriesPortfolio.id, {
+  id: uuid("id").defaultRandom().primaryKey(),
+  categoryPortfolioId: uuid("category_portfolio_id").references(() => categoriesPortfolio.id, {
     onDelete: "set null",
   }),
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
@@ -130,8 +130,8 @@ export const portfolios = pgTable("portfolios", {
 // 7. PORTFOLIO IMAGES (One-to-Many with PORTFOLIOS)
 // ==========================================
 export const portfolioImages = pgTable("portfolio_images", {
-  id: serial("id").primaryKey(),
-  portfolioId: integer("portfolio_id")
+  id: uuid("id").defaultRandom().primaryKey(),
+  portfolioId: uuid("portfolio_id")
     .references(() => portfolios.id, { onDelete: "cascade" })
     .notNull(),
   imageUrl: varchar("image_url", { length: 500 }).notNull(),
@@ -142,7 +142,7 @@ export const portfolioImages = pgTable("portfolio_images", {
 // 8. COMPANY PROFILE
 // ==========================================
 export const companyProfile = pgTable("company_profile", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   phone: varchar("phone", { length: 50 }),
   whatsapp: varchar("whatsapp", { length: 50 }),
   email: varchar("email", { length: 150 }),

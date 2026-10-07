@@ -16,20 +16,19 @@ export async function generateMetadata({ params }: EditBannerPageProps): Promise
 
 export default async function EditBannerPage({ params }: EditBannerPageProps) {
   const { id } = await params;
-  const bannerId = parseInt(id, 10);
 
-  if (isNaN(bannerId)) {
+  if (!id) {
     notFound();
   }
 
-  const res = await getBannerById(bannerId);
+  const res = await getBannerById(id);
   if (!res.success || !res.data) {
     notFound();
   }
 
   return (
     <div className="w-full">
-      <BannerForm initialData={res.data} bannerId={bannerId} isEdit={true} />
+      <BannerForm initialData={res.data} bannerId={id} isEdit={true} />
     </div>
   );
 }

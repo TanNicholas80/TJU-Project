@@ -3,10 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 import { cache } from "@/lib/cache";
 import { defaultPortfolios } from "@/lib/data-defaults";
 import * as z from "zod";
+import { translateContentBatch } from "@/lib/translator";
 
 function safeRevalidate(path: string) {
   try {
@@ -30,7 +31,7 @@ const portfolioSchema = z.object({
   titleId: z.string().min(3, "Judul portofolio wajib diisi minimal 3 karakter"),
   titleEn: z.string().optional(),
   titleZh: z.string().optional(),
-  categoryPortfolioId: z.coerce.number().optional().nullable(),
+  categoryPortfolioId: z.string().optional().nullable(),
   location: z.string().min(2, "Lokasi proyek wajib diisi (misal: Semarang, Jawa Tengah)"),
   coverImageUrl: z.string().min(1, "Cover gambar wajib diisi"),
   status: z.enum(["published", "draft"]).default("published"),
@@ -70,14 +71,83 @@ export async function getPortfoliosAdmin() {
   }
 }
 
+export async function getPortfolioByIdAdmin(id: string) {
+  try {
+    const rows = await db
+      .select({
+        portfolio: schema.portfolios,
+        category: schema.categoriesPortfolio,
+      })
+      .from(schema.portfolios)
+      .leftJoin(
+        schema.categoriesPortfolio,
+        eq(schema.portfolios.categoryPortfolioId, schema.categoriesPortfolio.id)
+      )
+      .where(eq(schema.portfolios.id, id));
+
+    if (!rows || rows.length === 0) {
+      const fallback = defaultPortfolios.find((p) => String(p.id) === String(id));
+      if (fallback) {
+        return { success: true, data: fallback };
+      }
+      return { success: false, message: "Portofolio tidak ditemukan" };
+    }
+
+    const { portfolio, category } = rows[0];
+
+    // Fetch associated gallery images
+    const images = await db
+      .select()
+      .from(schema.portfolioImages)
+      .where(eq(schema.portfolioImages.portfolioId, id))
+      .orderBy(asc(schema.portfolioImages.sortOrder));
+
+    const galleryUrls = (images as any[]).map((img: any) => img.imageUrl);
+
+    return {
+      success: true,
+      data: {
+        ...portfolio,
+        categoryName: category?.nameI18n?.id || "Konstruksi Rangka Atap",
+        galleryUrls,
+      },
+    };
+  } catch (err: any) {
+    console.warn("[Portfolios Action] getPortfolioByIdAdmin error:", err);
+    const fallback = defaultPortfolios.find((p) => String(p.id) === String(id));
+    if (fallback) {
+      return { success: true, data: fallback };
+    }
+    return { success: false, message: err?.message || "Gagal memuat detail portofolio" };
+  }
+}
+
 export async function createPortfolio(input: PortfolioInput) {
   try {
     const validated = portfolioSchema.parse(input);
 
+    let titleEn = validated.titleEn;
+    let titleZh = validated.titleZh;
+
+    // Auto-translation via Gemini AI with L1/L2 cache
+    if (!titleEn || !titleZh) {
+      try {
+        const trans = await translateContentBatch({
+          title: validated.titleId,
+        });
+        titleEn = titleEn || trans.en.title || validated.titleId;
+        titleZh = titleZh || trans.zh.title || validated.titleId;
+      } catch (tErr) {
+        console.warn("[Portfolios Action] Auto-translate error:", tErr);
+        titleEn = titleEn || validated.titleId;
+        titleZh = titleZh || validated.titleId;
+      }
+    }
+
     const titleI18n = {
       id: validated.titleId,
-      en: validated.titleEn || validated.titleId,
-      zh: validated.titleZh || validated.titleId,
+      en: titleEn,
+      zh: titleZh,
     };
 
     try {
@@ -122,14 +192,32 @@ export async function createPortfolio(input: PortfolioInput) {
   }
 }
 
-export async function updatePortfolio(id: number, input: PortfolioInput) {
+export async function updatePortfolio(id: string, input: PortfolioInput) {
   try {
     const validated = portfolioSchema.parse(input);
 
+    let titleEn = validated.titleEn;
+    let titleZh = validated.titleZh;
+
+    // Auto-translation via Gemini AI with L1/L2 cache
+    if (!titleEn || !titleZh) {
+      try {
+        const trans = await translateContentBatch({
+          title: validated.titleId,
+        });
+        titleEn = titleEn || trans.en.title || validated.titleId;
+        titleZh = titleZh || trans.zh.title || validated.titleId;
+      } catch (tErr) {
+        console.warn("[Portfolios Action] Auto-translate error:", tErr);
+        titleEn = titleEn || validated.titleId;
+        titleZh = titleZh || validated.titleId;
+      }
+    }
+
     const titleI18n = {
       id: validated.titleId,
-      en: validated.titleEn || validated.titleId,
-      zh: validated.titleZh || validated.titleId,
+      en: titleEn,
+      zh: titleZh,
     };
 
     try {
@@ -144,6 +232,26 @@ export async function updatePortfolio(id: number, input: PortfolioInput) {
           updatedAt: new Date(),
         })
         .where(eq(schema.portfolios.id, id));
+
+      // Synchronize gallery images
+      if (validated.galleryUrls !== undefined) {
+        await db
+          .delete(schema.portfolioImages)
+          .where(eq(schema.portfolioImages.portfolioId, id));
+
+        if (validated.galleryUrls.length > 0) {
+          for (let i = 0; i < validated.galleryUrls.length; i++) {
+            const url = validated.galleryUrls[i];
+            if (url) {
+              await db.insert(schema.portfolioImages).values({
+                portfolioId: id,
+                imageUrl: url,
+                sortOrder: i + 1,
+              });
+            }
+          }
+        }
+      }
     } catch (dbErr) {
       console.warn("[Portfolios Action] DB update fallback:", dbErr);
     }
@@ -162,7 +270,7 @@ export async function updatePortfolio(id: number, input: PortfolioInput) {
   }
 }
 
-export async function deletePortfolio(id: number) {
+export async function deletePortfolio(id: string) {
   try {
     try {
       await db.delete(schema.portfolios).where(eq(schema.portfolios.id, id));

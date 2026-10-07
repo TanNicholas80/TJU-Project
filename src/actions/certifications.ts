@@ -94,7 +94,7 @@ export async function createCertification(input: CertificationInput) {
   }
 }
 
-export async function updateCertification(id: number, input: CertificationInput) {
+export async function updateCertification(id: string, input: CertificationInput) {
   try {
     const validated = certificationSchema.parse(input);
 
@@ -148,7 +148,7 @@ export async function updateCertification(id: number, input: CertificationInput)
   }
 }
 
-export async function deleteCertification(id: number) {
+export async function deleteCertification(id: string) {
   try {
     try {
       await db

@@ -13,12 +13,12 @@ if (typeof window !== "undefined") {
 }
 
 export interface PortfolioDetailGalleryImage {
-  id: number;
+  id: string | number;
   imageUrl: string;
 }
 
 export interface RelatedPortfolioProject {
-  id: number;
+  id: string | number;
   title: string;
   categoryName: string;
   coverImageUrl: string;

@@ -16,8 +16,8 @@ if (typeof window !== "undefined") {
 }
 
 export interface PostItem {
-  id: number;
-  categoryPostId?: number | null;
+  id: string | number;
+  categoryPostId?: string | number | null;
   categoryName?: string;
   titleI18n: I18nString;
   excerptI18n?: I18nString | null;
@@ -28,7 +28,7 @@ export interface PostItem {
 }
 
 export interface CategoryPostItem {
-  id: number;
+  id: string | number;
   slug: string;
   nameI18n: I18nString;
 }

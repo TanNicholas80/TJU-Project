@@ -22,7 +22,7 @@ import { useI18n, Locale } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
 
 export interface QualityStandardItem {
-  id: number;
+  id: string | number;
   iconName: string;
   titleI18n: I18nString;
   descriptionI18n: I18nString;

@@ -60,6 +60,7 @@ async function main() {
         })
         .onConflictDoNothing();
     }
+    const allPostCats = await db.select().from(schema.categoriesPost);
 
     // 4. Categories Portfolio
     console.log("Seeding Portfolio Categories...");
@@ -74,6 +75,7 @@ async function main() {
         })
         .onConflictDoNothing();
     }
+    const allPortCats = await db.select().from(schema.categoriesPortfolio);
 
     // 4B. Page Banners
     console.log("Seeding Page Banners...");
@@ -106,10 +108,14 @@ async function main() {
     // 5. Posts
     console.log("Seeding Posts...");
     for (const item of defaultPosts) {
+      const matchedCat = allPostCats.find(
+        (c: any) => c.nameI18n?.id?.toLowerCase() === (item as any).categoryName?.toLowerCase()
+      ) || allPostCats[0];
+
       await db
         .insert(schema.posts)
         .values({
-          categoryPostId: item.categoryPostId,
+          categoryPostId: matchedCat ? matchedCat.id : null,
           titleI18n: item.titleI18n,
           excerptI18n: item.excerptI18n,
           contentHtmlI18n: item.contentHtmlI18n,
@@ -123,10 +129,14 @@ async function main() {
     // 6. Portfolios
     console.log("Seeding Portfolios & Images...");
     for (const item of defaultPortfolios) {
+      const matchedCat = allPortCats.find(
+        (c: any) => c.nameI18n?.id?.toLowerCase() === (item as any).categoryName?.toLowerCase()
+      ) || allPortCats[0];
+
       const [inserted] = await db
         .insert(schema.portfolios)
         .values({
-          categoryPortfolioId: item.categoryPortfolioId,
+          categoryPortfolioId: matchedCat ? matchedCat.id : null,
           titleI18n: item.titleI18n,
           location: item.location,
           coverImageUrl: item.coverImageUrl,

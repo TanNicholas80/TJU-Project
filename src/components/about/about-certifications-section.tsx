@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
 }
 
 export interface CertificationItem {
-  id: number;
+  id: string | number;
   titleI18n?: I18nString | null;
   imageUrl: string;
   sortOrder?: number;

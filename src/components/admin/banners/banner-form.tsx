@@ -75,7 +75,7 @@ type BannerFormData = z.infer<typeof bannerFormSchema>;
 
 interface BannerFormProps {
   initialData?: any;
-  bannerId?: number;
+  bannerId?: string;
   isEdit?: boolean;
 }
 

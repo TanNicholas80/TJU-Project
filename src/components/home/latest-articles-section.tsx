@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
 }
 
 export interface PostItem {
-  id: number;
+  id: string | number;
   titleI18n: I18nString;
   excerptI18n?: I18nString | null;
   coverImageUrl?: string | null;

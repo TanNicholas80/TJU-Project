@@ -15,7 +15,7 @@ if (typeof window !== "undefined") {
 }
 
 export interface PortfolioCategoryItem {
-  id: number;
+  id: string | number;
   slug: string;
   nameI18n: I18nString;
   descriptionI18n?: I18nString | null;

@@ -18,7 +18,7 @@ export async function generateMetadata({
   params,
 }: PortfolioDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const portfolio = await getPortfolioById(Number(id));
+  const portfolio = await getPortfolioById(id);
 
   if (!portfolio) {
     return { title: "Portofolio Tidak Ditemukan | TJU TRUSS SYSTEM" };
@@ -75,7 +75,7 @@ export default async function PortfolioDetailPage({
   params,
 }: PortfolioDetailPageProps) {
   const { id } = await params;
-  const portfolio = await getPortfolioById(Number(id));
+  const portfolio = await getPortfolioById(id);
 
   if (!portfolio) {
     notFound();

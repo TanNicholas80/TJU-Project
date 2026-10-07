@@ -204,7 +204,7 @@ export const defaultCategoriesPortfolio = [
 export const defaultPageBanners: Record<
   string,
   {
-    id: number;
+    id: string | number;
     pageSlug: string;
     titleI18n: I18nString;
     breadcrumbI18n: I18nString;

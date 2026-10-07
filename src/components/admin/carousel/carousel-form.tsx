@@ -41,7 +41,7 @@ type CarouselFormData = z.infer<typeof carouselFormSchema>;
 
 interface CarouselFormProps {
   initialData?: any;
-  carouselId?: number;
+  carouselId?: string;
   isEdit?: boolean;
 }
 

@@ -53,7 +53,7 @@ export async function getAllBannersAdmin() {
 /**
  * Mengambil satu banner berdasarkan ID numerik
  */
-export async function getBannerById(id: number) {
+export async function getBannerById(id: string) {
   try {
     const [banner] = await db
       .select()
@@ -65,14 +65,14 @@ export async function getBannerById(id: number) {
       return { success: true, data: banner };
     }
 
-    const defaultItem = Object.values(defaultPageBanners).find((b) => b.id === id);
+    const defaultItem = Object.values(defaultPageBanners).find((b) => String(b.id) === String(id));
     if (defaultItem) {
       return { success: true, data: defaultItem };
     }
 
     return { success: false, message: "Banner tidak ditemukan" };
   } catch (error) {
-    const defaultItem = Object.values(defaultPageBanners).find((b) => b.id === id);
+    const defaultItem = Object.values(defaultPageBanners).find((b) => String(b.id) === String(id));
     if (defaultItem) {
       return { success: true, data: defaultItem };
     }
@@ -191,7 +191,7 @@ export async function createBanner(input: BannerInput) {
 /**
  * Memperbarui banner halaman berdasarkan ID
  */
-export async function updateBanner(id: number, input: BannerInput) {
+export async function updateBanner(id: string, input: BannerInput) {
   try {
     const validated = bannerSchema.parse(input);
 
@@ -259,7 +259,7 @@ export async function updateBanner(id: number, input: BannerInput) {
 /**
  * Menghapus banner halaman berdasarkan ID
  */
-export async function deleteBanner(id: number) {
+export async function deleteBanner(id: string) {
   try {
     const [banner] = await db
       .select()

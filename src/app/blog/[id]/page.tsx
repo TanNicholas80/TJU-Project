@@ -13,7 +13,7 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { id } = await params;
-  const post = await getPostById(Number(id));
+  const post = await getPostById(id);
 
   if (!post) {
     return { title: "Artikel Tidak Ditemukan | TJU TRUSS SYSTEM" };
@@ -67,7 +67,7 @@ export async function generateMetadata({
 
 export default async function BlogPostDetailPage({ params }: BlogPostPageProps) {
   const { id } = await params;
-  const post = await getPostById(Number(id));
+  const post = await getPostById(id);
 
   if (!post) {
     notFound();

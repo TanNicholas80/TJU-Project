@@ -103,7 +103,7 @@ export async function createPostCategory(input: PostCategoryInput) {
   }
 }
 
-export async function updatePostCategory(id: number, input: PostCategoryInput) {
+export async function updatePostCategory(id: string, input: PostCategoryInput) {
   try {
     const validated = postCategorySchema.parse(input);
     const finalSlug = validated.slug && validated.slug.trim().length > 0
@@ -158,7 +158,7 @@ export async function updatePostCategory(id: number, input: PostCategoryInput) {
   }
 }
 
-export async function deletePostCategory(id: number) {
+export async function deletePostCategory(id: string) {
   try {
     try {
       await db

@@ -119,7 +119,7 @@ export async function getPosts(limit: number = 3) {
   }, 3600);
 }
 
-export async function getPostById(id: number) {
+export async function getPostById(id: string) {
   return cache.getOrSet(`public:post:${id}`, async () => {
     try {
       const [row] = await db
@@ -141,15 +141,15 @@ export async function getPostById(id: number) {
           categoryName: row.category?.nameI18n?.id || "Umum",
         };
       }
-      return defaultPosts.find((p) => p.id === id) || defaultPosts[0];
+      return defaultPosts.find((p) => String(p.id) === String(id)) || defaultPosts[0];
     } catch (err) {
       console.warn(`[DataService] Database query for post ${id} failed, using default:`, err);
-      return defaultPosts.find((p) => p.id === id) || defaultPosts[0];
+      return defaultPosts.find((p) => String(p.id) === String(id)) || defaultPosts[0];
     }
   }, 3600);
 }
 
-export async function getPortfolioById(id: number) {
+export async function getPortfolioById(id: string) {
   return cache.getOrSet(`public:portfolio:${id}`, async () => {
     try {
       const [row] = await db
@@ -171,10 +171,10 @@ export async function getPortfolioById(id: number) {
           categoryName: row.category?.nameI18n?.id || "Komersial",
         };
       }
-      return defaultPortfolios.find((p) => p.id === id) || defaultPortfolios[0];
+      return defaultPortfolios.find((p) => String(p.id) === String(id)) || defaultPortfolios[0];
     } catch (err) {
       console.warn(`[DataService] Database query for portfolio ${id} failed, using default:`, err);
-      return defaultPortfolios.find((p) => p.id === id) || defaultPortfolios[0];
+      return defaultPortfolios.find((p) => String(p.id) === String(id)) || defaultPortfolios[0];
     }
   }, 3600);
 }

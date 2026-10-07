@@ -58,7 +58,7 @@ export async function getCarouselsAdmin() {
   }
 }
 
-export async function getCarouselById(id: number) {
+export async function getCarouselById(id: string) {
   try {
     const data = await db
       .select()
@@ -70,14 +70,14 @@ export async function getCarouselById(id: number) {
       return { success: true, data: data[0] };
     }
 
-    const defaultItem = defaultHeroCarousels.find((item) => item.id === id);
+    const defaultItem = defaultHeroCarousels.find((item) => String(item.id) === String(id));
     if (defaultItem) {
       return { success: true, data: defaultItem };
     }
 
     return { success: false, message: "Slide carousel tidak ditemukan" };
   } catch (error) {
-    const defaultItem = defaultHeroCarousels.find((item) => item.id === id);
+    const defaultItem = defaultHeroCarousels.find((item) => String(item.id) === String(id));
     if (defaultItem) {
       return { success: true, data: defaultItem };
     }
@@ -187,7 +187,7 @@ export async function createCarousel(input: CarouselInput) {
   }
 }
 
-export async function updateCarousel(id: number, input: CarouselInput) {
+export async function updateCarousel(id: string, input: CarouselInput) {
   try {
     const validated = carouselSchema.parse(input);
 
@@ -292,7 +292,7 @@ export async function updateCarousel(id: number, input: CarouselInput) {
   }
 }
 
-export async function deleteCarousel(id: number) {
+export async function deleteCarousel(id: string) {
   try {
     try {
       await db.delete(schema.heroCarousels).where(eq(schema.heroCarousels.id, id));

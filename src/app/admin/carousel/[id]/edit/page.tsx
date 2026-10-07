@@ -16,20 +16,19 @@ export async function generateMetadata({ params }: EditCarouselPageProps): Promi
 
 export default async function EditCarouselPage({ params }: EditCarouselPageProps) {
   const { id } = await params;
-  const carouselId = parseInt(id, 10);
 
-  if (isNaN(carouselId)) {
+  if (!id) {
     notFound();
   }
 
-  const res = await getCarouselById(carouselId);
+  const res = await getCarouselById(id);
   if (!res.success || !res.data) {
     notFound();
   }
 
   return (
     <div className="w-full">
-      <CarouselForm initialData={res.data} carouselId={carouselId} isEdit={true} />
+      <CarouselForm initialData={res.data} carouselId={id} isEdit={true} />
     </div>
   );
 }

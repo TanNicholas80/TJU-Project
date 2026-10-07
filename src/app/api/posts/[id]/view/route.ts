@@ -11,19 +11,18 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const numericId = parseInt(id, 10);
     let updatedViews = 0;
 
     // 1. Database Atomic Update
     try {
-      if (!isNaN(numericId)) {
+      if (id) {
         const rows = await db
           .update(schema.posts)
           .set({
             views: sql`${schema.posts.views} + 1`,
             updatedAt: new Date(),
           })
-          .where(eq(schema.posts.id, numericId))
+          .where(eq(schema.posts.id, id))
           .returning({ views: schema.posts.views });
 
         if (rows && rows.length > 0) {
@@ -36,7 +35,7 @@ export async function POST(
 
     // 2. Fallback memory update
     const fallbackPost = defaultPosts.find(
-      (p) => String(p.id) === id || (!isNaN(numericId) && p.id === numericId)
+      (p) => String(p.id) === id
     );
     if (fallbackPost) {
       fallbackPost.views = (fallbackPost.views || 0) + 1;
@@ -46,8 +45,8 @@ export async function POST(
     }
 
     // 3. Clear cache
-    if (!isNaN(numericId)) {
-      await cache.del(`public:post:${numericId}`);
+    if (id) {
+      await cache.del(`public:post:${id}`);
     }
     await cache.delByPrefix("public:posts");
 

@@ -116,7 +116,7 @@ export async function createPortfolioCategory(input: PortfolioCategoryInput) {
   }
 }
 
-export async function updatePortfolioCategory(id: number, input: PortfolioCategoryInput) {
+export async function updatePortfolioCategory(id: string, input: PortfolioCategoryInput) {
   try {
     const validated = portfolioCategorySchema.parse(input);
     const finalSlug = validated.slug && validated.slug.trim().length > 0
@@ -181,7 +181,7 @@ export async function updatePortfolioCategory(id: number, input: PortfolioCatego
   }
 }
 
-export async function deletePortfolioCategory(id: number) {
+export async function deletePortfolioCategory(id: string) {
   try {
     try {
       await db

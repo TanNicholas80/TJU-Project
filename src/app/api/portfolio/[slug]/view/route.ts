@@ -11,19 +11,18 @@ export async function POST(
 ) {
   try {
     const { slug } = await params;
-    const numericId = parseInt(slug, 10);
     let updatedViews = 0;
 
     // 1. Database Atomic Update
     try {
-      if (!isNaN(numericId)) {
+      if (slug) {
         const rows = await db
           .update(schema.portfolios)
           .set({
             views: sql`${schema.portfolios.views} + 1`,
             updatedAt: new Date(),
           })
-          .where(eq(schema.portfolios.id, numericId))
+          .where(eq(schema.portfolios.id, slug))
           .returning({ views: schema.portfolios.views });
 
         if (rows && rows.length > 0) {
@@ -36,7 +35,7 @@ export async function POST(
 
     // 2. In-memory fallback update for local development demo
     const fallbackPortfolio = defaultPortfolios.find(
-      (p) => String(p.id) === slug || (!isNaN(numericId) && p.id === numericId)
+      (p) => String(p.id) === slug
     );
     if (fallbackPortfolio) {
       fallbackPortfolio.views = (fallbackPortfolio.views || 0) + 1;
@@ -46,8 +45,8 @@ export async function POST(
     }
 
     // 3. Clear cache
-    if (!isNaN(numericId)) {
-      await cache.del(`public:portfolio:${numericId}`);
+    if (slug) {
+      await cache.del(`public:portfolio:${slug}`);
     }
     await cache.delByPrefix("public:portfolios");
 
