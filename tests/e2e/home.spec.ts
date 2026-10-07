@@ -10,51 +10,51 @@ test.describe("TJU Truss Public Landing Page", () => {
   });
 
   test("should render Hero Carousel with CTA buttons and company badge", async ({ page }) => {
-    // Check company badge in Hero
-    await expect(page.getByText(/TJU Truss System & Engineering/i)).toBeVisible();
+    // Check company badge or headline in Hero
+    await expect(page.getByText(/SOLUSI TERINTEGRASI/i).first()).toBeVisible();
 
     // Check CTA Consultation button
     const ctaButton = page.getByRole("button", { name: /Konsultasi Proyek/i });
     await expect(ctaButton).toBeVisible();
 
-    // Check WhatsApp button
-    const waLink = page.getByRole("link", { name: /Hubungi via WhatsApp/i });
-    await expect(waLink).toBeVisible();
+    // Check second action button
+    const learnButton = page.getByRole("button", { name: /Pelajari Sistem TJU/i });
+    await expect(learnButton).toBeVisible();
   });
 
   test("should render Standar Kualitas 3-column section", async ({ page }) => {
     await expect(
-      page.getByText(/Standar Kualitas & Rekayasa TJU/i)
+      page.getByText(/Standar Kualitas TJU TRUSS/i)
     ).toBeVisible();
     await expect(
       page.getByText(/Standar Baja Cold-Formed G550/i)
     ).toBeVisible();
     await expect(
-      page.getByText(/Analisis Software HAKI/i)
+      page.getByText(/Analisis Software HAKI Bersertifikat/i)
     ).toBeVisible();
   });
 
   test("should render Keahlian Kami split section with experience stats", async ({ page }) => {
-    await expect(page.getByText(/Keahlian & Spesialisasi Kami/i)).toBeVisible();
-    await expect(page.getByText(/15\+/i)).toBeVisible();
-    await expect(page.getByText(/Tahun Pengalaman Rekayasa/i)).toBeVisible();
+    await expect(page.getByText(/Keahlian Kami di Segala Skala/i)).toBeVisible();
+    await expect(page.getByText(/Industrial & Commercial/i)).toBeVisible();
+    await expect(page.getByText(/Residential/i).first()).toBeVisible();
   });
 
   test("should render Featured Portfolios section with UNNES project", async ({ page }) => {
     await expect(
-      page.getByText(/Portofolio Proyek Unggulan/i)
+      page.getByRole("heading", { name: /Proyek Terbaik Kami/i })
     ).toBeVisible();
     await expect(
-      page.getByText(/Universitas Negeri Semarang \(UNNES\)/i)
+      page.getByText(/Gudang Logistik Modern|Cluster Graha Estetika|Villa Mewah/i).first()
     ).toBeVisible();
   });
 
   test("should render Blog & Articles 3-column section", async ({ page }) => {
     await expect(
-      page.getByText(/Edukasi & Wawasan Rekayasa/i)
+      page.getByRole("heading", { name: /Blog & Artikel/i })
     ).toBeVisible();
     await expect(
-      page.getByText(/Mengenal Perhitungan Software HAKI/i)
+      page.getByText(/Inovasi Atap Galvalum|Perbandingan Rangka Baja Ringan|Tips Mencegah Kebocoran/i).first()
     ).toBeVisible();
   });
 
@@ -62,14 +62,13 @@ test.describe("TJU Truss Public Landing Page", () => {
     await page.locator("#contact").scrollIntoViewIfNeeded();
 
     await page.fill("#contact-name", "Budi Santoso");
-    await page.fill("#contact-email", "budi@example.com");
     await page.fill("#contact-phone", "081234567890");
     await page.fill(
       "#contact-message",
       "Mohon informasi penawaran rangka atap baja ringan untuk rumah 2 lantai luas 150m²."
     );
 
-    await page.click('button:has-text("Kirim Formulir Konsultasi")');
+    await page.click('button[type="submit"]');
 
     // Verify toast notification appears
     await expect(

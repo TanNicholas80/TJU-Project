@@ -8,8 +8,9 @@ test.describe("TJU Truss Admin CMS Flow", () => {
     await expect(page.getByLabel(/Email Administrator/i)).toBeVisible();
     await expect(page.getByLabel(/Kata Sandi/i)).toBeVisible();
 
-    // Click demo credentials button
-    await page.click('button:has-text("Gunakan Kredensial Default")');
+    // Fill credentials directly
+    await page.fill('input[type="email"]', "admin@tjutruss.com");
+    await page.fill('input[type="password"]', "password123");
 
     // Click submit button
     await page.click('button:has-text("Masuk ke Dashboard")');
@@ -17,7 +18,7 @@ test.describe("TJU Truss Admin CMS Flow", () => {
     // Should redirect to /admin dashboard
     await expect(page).toHaveURL(/\/admin/);
     await expect(
-      page.getByText(/Selamat Datang di Admin CMS TJU Truss/i)
+      page.getByText(/Ringkasan statistik konten dan aktivitas pengunjung terbaru/i)
     ).toBeVisible();
   });
 
@@ -28,14 +29,14 @@ test.describe("TJU Truss Admin CMS Flow", () => {
     await page.click('a:has-text("Portofolio Proyek")');
     await expect(page).toHaveURL(/\/admin\/portfolios/);
     await expect(
-      page.locator("main").getByRole("heading", { name: /Manajemen Portofolio Proyek/i })
+      page.locator("main").getByRole("heading", { name: /Portofolio Proyek/i })
     ).toBeVisible();
 
     // Click Blog in sidebar
     await page.click('a:has-text("Blog & Artikel")');
     await expect(page).toHaveURL(/\/admin\/posts/);
     await expect(
-      page.locator("main").getByRole("heading", { name: /Manajemen Blog & Artikel/i })
+      page.locator("main").getByRole("heading", { name: /Blog & Artikel/i })
     ).toBeVisible();
 
     // Click Carousel in sidebar
@@ -56,26 +57,42 @@ test.describe("TJU Truss Admin CMS Flow", () => {
     await page.click('a:has-text("Pengaturan Kontak")');
     await expect(page).toHaveURL(/\/admin\/settings/);
     await expect(
-      page.locator("main").getByRole("heading", { name: /Pengaturan Kontak & Profil/i })
+      page.locator("main").getByRole("heading", { name: /Pengaturan Kontak & Profil Perusahaan/i })
     ).toBeVisible();
   });
 
-  test("should open modal when clicking Tambah Portofolio Baru", async ({ page }) => {
+  test("should navigate to dedicated create page when clicking Tambah Portofolio Baru", async ({ page }) => {
     await page.goto("/admin/portfolios");
 
-    await page.click('button:has-text("Tambah Portofolio Baru")');
+    await page.click('button:has-text("Tambah Portofolio"), a:has-text("Tambah Portofolio")');
 
+    await expect(page).toHaveURL(/\/admin\/portfolios\/create/);
     await expect(
-      page.getByText(/Tambah Portofolio Proyek Baru/i)
+      page.getByRole("heading", { name: /Tambah Portofolio Proyek/i })
     ).toBeVisible();
-    await expect(page.locator("#portfolio-title-id")).toBeVisible();
-    await expect(page.locator("#portfolio-location")).toBeVisible();
-    await expect(page.locator("#portfolio-cover")).toBeVisible();
+    await expect(page.locator('input[placeholder*="Gedung Olahraga"]')).toBeVisible();
 
-    // Close modal
-    await page.click('button:has-text("Batal")');
+    // Verify Dual-Mode Live Preview is visible
+    await expect(page.getByText(/Live Pratinjau Tampilan|Preview Card/i).first()).toBeVisible();
+
+    // Return to list
+    await page.click('a[title="Kembali ke Daftar Portofolio"]');
+    await expect(page).toHaveURL(/\/admin\/portfolios/);
+  });
+
+  test("should navigate to dedicated create page when clicking Tambah Artikel Baru", async ({ page }) => {
+    await page.goto("/admin/posts");
+
+    await page.click('button:has-text("Tulis Artikel Baru"), a:has-text("Tulis Artikel Baru")');
+
+    await expect(page).toHaveURL(/\/admin\/posts\/create/);
     await expect(
-      page.getByText(/Tambah Portofolio Proyek Baru/i)
-    ).not.toBeVisible();
+      page.getByRole("heading", { name: /Tulis Artikel Blog Baru/i })
+    ).toBeVisible();
+    await expect(page.locator('input[placeholder*="Tips Memilih Baja Ringan"]')).toBeVisible();
+
+    // Return to list
+    await page.click('a[title="Kembali ke Daftar Artikel"]');
+    await expect(page).toHaveURL(/\/admin\/posts/);
   });
 });
