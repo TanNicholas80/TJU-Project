@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "@/lib/i18n";
+import { submitContactForm } from "@/actions/contact";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -29,7 +30,9 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
   const [formData, setFormData] = React.useState({
     name: "",
     phone: "",
+    email: "",
     projectDetails: "",
+    honeypot: "",
   });
 
   const containerRef = React.useRef<HTMLElement>(null);
@@ -136,13 +139,31 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
 
     setIsSubmitting(true);
     try {
-      // Simulate network request or API integration
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      toast.success("Pesan Berhasil Terkirim!", {
-        description: "Tim teknis TJU Truss akan segera menghubungi Anda.",
-        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+      const res = await submitContactForm({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email || undefined,
+        message: formData.projectDetails,
+        honeypot: formData.honeypot || undefined,
       });
-      setFormData({ name: "", phone: "", projectDetails: "" });
+
+      if (res.success) {
+        toast.success("Pesan Anda berhasil dikirim!", {
+          description: "Tim teknis TJU Truss akan segera menghubungi Anda.",
+          icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+        });
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          projectDetails: "",
+          honeypot: "",
+        });
+      } else {
+        toast.error("Gagal mengirim pesan", {
+          description: res.message || "Silakan coba kembali nanti.",
+        });
+      }
     } catch {
       toast.error("Gagal mengirim pesan", {
         description: "Terjadi gangguan koneksi. Silakan coba kembali.",
@@ -251,6 +272,18 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
 
               {/* Form Input Fields */}
               <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 space-y-5">
+                {/* Honeypot Anti-Spam (hidden from legitimate users) */}
+                <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                  <input
+                    type="text"
+                    name="honeypot"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.honeypot}
+                    onChange={handleChange}
+                  />
+                </div>
+
                 {/* Field Name */}
                 <div>
                   <label
@@ -286,6 +319,26 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+62 xxx xxxx xxx"
+                    disabled={isSubmitting}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-[#1E1F24] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#20449A]/20 focus:border-[#20449A] transition-all"
+                  />
+                </div>
+
+                {/* Field Email (Optional) */}
+                <div>
+                  <label
+                    htmlFor="contact-email"
+                    className="block text-sm font-semibold text-[#1E1F24] mb-2"
+                  >
+                    Email <span className="text-xs text-slate-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="email@example.com"
                     disabled={isSubmitting}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-[#1E1F24] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#20449A]/20 focus:border-[#20449A] transition-all"
                   />

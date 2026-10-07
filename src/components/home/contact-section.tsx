@@ -9,6 +9,7 @@ import { Phone, Mail, MapPin, Send, Loader2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "@/lib/i18n";
+import { submitContactForm } from "@/actions/contact";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -17,7 +18,9 @@ if (typeof window !== "undefined") {
 const contactSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phone: z.string().min(8, "Nomor telepon minimal 8 digit"),
+  email: z.string().email("Format email tidak valid").optional().or(z.literal("")),
   message: z.string().min(5, "Detail proyek minimal 5 karakter"),
+  honeypot: z.string().optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -164,12 +167,18 @@ export function ContactSection({ profile }: ContactSectionProps) {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      console.log("Contact form submitted:", data);
-      toast.success("Pesan Anda berhasil dikirim!", {
-        description: "Tim teknis TJU Truss akan segera menghubungi Anda.",
-      });
-      reset();
+      const res = await submitContactForm(data);
+      if (res.success) {
+        toast.success("Pesan Anda berhasil dikirim!", {
+          description: "Tim teknis TJU Truss akan segera menghubungi Anda.",
+        });
+        reset();
+      } else {
+        toast.error("Gagal mengirim pesan", {
+          description:
+            res.message || "Silakan periksa input atau coba kembali nanti.",
+        });
+      }
     } catch {
       toast.error("Gagal mengirim pesan", {
         description: "Terjadi kesalahan koneksi. Silakan coba lagi.",
@@ -252,6 +261,16 @@ export function ContactSection({ profile }: ContactSectionProps) {
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              {/* Honeypot Anti-Spam (tersembunyi dari pengunjung biasa) */}
+              <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                <input
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  {...register("honeypot")}
+                />
+              </div>
+
               {/* Name Field */}
               <div className="space-y-1.5">
                 <label

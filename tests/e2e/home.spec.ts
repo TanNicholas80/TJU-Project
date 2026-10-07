@@ -27,10 +27,10 @@ test.describe("TJU Truss Public Landing Page", () => {
       page.getByText(/Standar Kualitas TJU TRUSS/i)
     ).toBeVisible();
     await expect(
-      page.getByText(/Standar Baja Cold-Formed G550/i)
+      page.getByText(/Standar Baja Cold-Formed G550/i).first()
     ).toBeVisible();
     await expect(
-      page.getByText(/Analisis Software HAKI Bersertifikat/i)
+      page.getByText(/Analisis Software HAKI Bersertifikat/i).first()
     ).toBeVisible();
   });
 
@@ -41,11 +41,12 @@ test.describe("TJU Truss Public Landing Page", () => {
   });
 
   test("should render Featured Portfolios section with UNNES project", async ({ page }) => {
+    await page.locator("#portfolio").scrollIntoViewIfNeeded();
     await expect(
       page.getByRole("heading", { name: /Proyek Terbaik Kami/i })
     ).toBeVisible();
     await expect(
-      page.getByText(/Gudang Logistik Modern|Cluster Graha Estetika|Villa Mewah/i).first()
+      page.locator("#portfolio").getByText(/Proyek Kanopi Bentang Lebar|Bandara NYIA|Universitas Negeri Semarang/i).first()
     ).toBeVisible();
   });
 
