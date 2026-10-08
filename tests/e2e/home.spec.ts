@@ -11,7 +11,9 @@ test.describe("TJU Truss Public Landing Page", () => {
 
   test("should render Hero Carousel with CTA buttons and company badge", async ({ page }) => {
     // Check company badge or headline in Hero
-    await expect(page.getByText(/SOLUSI TERINTEGRASI/i).first()).toBeVisible();
+    await expect(
+      page.getByText(/REKAYASA STRUKTURAL|PRESISI TINGGI|SOLUSI TERINTEGRASI/i).first()
+    ).toBeVisible();
 
     // Check CTA Consultation button
     const ctaButton = page.getByRole("button", { name: /Konsultasi Proyek/i });
@@ -51,11 +53,15 @@ test.describe("TJU Truss Public Landing Page", () => {
   });
 
   test("should render Blog & Articles 3-column section", async ({ page }) => {
+    await page.locator("#blog").scrollIntoViewIfNeeded();
     await expect(
       page.getByRole("heading", { name: /Blog & Artikel/i })
     ).toBeVisible();
     await expect(
-      page.getByText(/Inovasi Atap Galvalum|Perbandingan Rangka Baja Ringan|Tips Mencegah Kebocoran/i).first()
+      page.locator("#blog article").first()
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Inovasi Atap Galvalum|Mengenal Perhitungan Software HAKI|Panduan Memilih Ketebalan|Inovasi Fabrikasi/i).first()
     ).toBeVisible();
   });
 
