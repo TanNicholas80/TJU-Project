@@ -5,14 +5,20 @@ const memoryCache = new Map<string, { value: any; expiresAt: number }>();
 
 let redisClient: Redis | null = null;
 
+// During Next.js static build phase (SSG), Upstash Redis fetch (no-store) triggers DYNAMIC_SERVER_USAGE warnings.
+// Use memory cache during build phase, and Redis in runtime.
+const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+
 try {
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-    redisClient = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    });
-  } else if (process.env.REDIS_URL && process.env.REDIS_URL.startsWith("http")) {
-    redisClient = Redis.fromEnv();
+  if (!isBuildPhase) {
+    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+      redisClient = new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      });
+    } else if (process.env.REDIS_URL && process.env.REDIS_URL.startsWith("http")) {
+      redisClient = Redis.fromEnv();
+    }
   }
 } catch (error) {
   console.warn("Upstash Redis initialization skipped or failed, falling back to memory cache:", error);
