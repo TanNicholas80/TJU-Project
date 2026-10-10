@@ -38,9 +38,13 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/images/logo_tju.png",
+    icon: [
+      { url: "/images/logogram_tju.png" },
+      { url: "/images/logogram_tju.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/logogram_tju.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/images/logogram_tju.png",
+    apple: "/images/logogram_tju.png",
   },
   openGraph: {
     type: "website",
