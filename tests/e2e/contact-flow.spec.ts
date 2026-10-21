@@ -25,7 +25,7 @@ test.describe("Contact Us End-to-End Flow & Email Submission", () => {
 
     // Verify toast success
     await expect(
-      page.getByText(/Pesan Anda berhasil dikirim!/i)
+      page.getByText(/Pesan Anda berhasil dikirim!/i).first()
     ).toBeVisible({ timeout: 6000 });
 
     // Verify fields are cleared
@@ -45,21 +45,21 @@ test.describe("Contact Us End-to-End Flow & Email Submission", () => {
     // Try submit empty form
     await form.locator('button[type="submit"]').click();
     await expect(
-      page.getByText(/Mohon masukkan nama Anda/i)
+      page.getByText(/Mohon masukkan nama Anda/i).first()
     ).toBeVisible({ timeout: 4000 });
 
     // Fill name only and submit
     await page.fill("#contact-name", "Ratna Sari");
     await form.locator('button[type="submit"]').click();
     await expect(
-      page.getByText(/Mohon masukkan nomor telepon yang valid/i)
+      page.getByText(/Mohon masukkan nomor telepon yang valid/i).first()
     ).toBeVisible({ timeout: 4000 });
 
     // Fill invalid short phone
     await page.fill("#contact-phone", "123");
     await form.locator('button[type="submit"]').click();
     await expect(
-      page.getByText(/Mohon masukkan nomor telepon yang valid/i)
+      page.getByText(/Mohon masukkan nomor telepon yang valid/i).first()
     ).toBeVisible({ timeout: 4000 });
   });
 
@@ -87,7 +87,7 @@ test.describe("Contact Us End-to-End Flow & Email Submission", () => {
 
     // Verify toast notification appears
     await expect(
-      page.getByText(/Pesan Anda berhasil dikirim!/i)
+      page.getByText(/Pesan Anda berhasil dikirim!/i).first()
     ).toBeVisible({ timeout: 6000 });
 
     // Verify form resets

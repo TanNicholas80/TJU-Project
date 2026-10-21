@@ -125,15 +125,19 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      toast.error("Mohon masukkan nama Anda.");
+      toast.error("Mohon masukkan nama Anda.", { id: "contact-validation-error" });
       return;
     }
     if (!formData.phone.trim() || formData.phone.length < 8) {
-      toast.error("Mohon masukkan nomor telepon yang valid (min. 8 digit).");
+      toast.error("Mohon masukkan nomor telepon yang valid (min. 8 digit).", {
+        id: "contact-validation-error",
+      });
       return;
     }
     if (!formData.projectDetails.trim()) {
-      toast.error("Mohon tuliskan detail kebutuhan proyek Anda.");
+      toast.error("Mohon tuliskan detail kebutuhan proyek Anda.", {
+        id: "contact-validation-error",
+      });
       return;
     }
 

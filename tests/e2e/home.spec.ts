@@ -79,7 +79,7 @@ test.describe("TJU Truss Public Landing Page", () => {
 
     // Verify toast notification appears
     await expect(
-      page.getByText(/Pesan Anda berhasil dikirim!/i)
+      page.getByText(/Pesan Anda berhasil dikirim!/i).first()
     ).toBeVisible({ timeout: 5000 });
   });
 
