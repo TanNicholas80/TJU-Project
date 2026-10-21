@@ -12,6 +12,10 @@
     "en": "English",
     "zh": "中文 (Mandarin)"
   },
+  "hero": {
+    "consultation": "项目咨询",
+    "learnMore": "了解 TJU 系统"
+  },
   "errors": {
     "backHome": "返回首页",
     "retry": "重试",
@@ -37,14 +41,14 @@
   "expertise": {
     "sectionTitle": "覆盖各种规模的专业工程实力",
     "industrial": {
-      "title": "Industrial & Commercial",
+      "title": "工业与商业",
       "description": "我们深刻理解严苛的工业标准。针对厂房、仓库和商业建筑，TJU提供符合重型工程标准的轻钢屋架系统，具备无可比拟的专业软件计算精度。",
       "point1": "大规模项目的高效安装周期",
       "point2": "经AS100验证的材料结构强度",
       "point3": "全套完备的技术与工程文档支持"
     },
     "residential": {
-      "title": "Residential",
+      "title": "住宅建筑",
       "description": "家宅屋顶是守护全家安宁的坚实保障。我们确保施工规范整洁、结构严谨并附带官方保修。TJU Truss 为注重卓越品质而非盲目追求低价的业主提供长久安心。",
       "point1": "终身防白蚁与高等级防锈抗腐",
       "point2": "认证专家团队精准标准化施工",

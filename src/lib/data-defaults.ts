@@ -25,7 +25,7 @@ export const defaultHeroCarousels = [
       zh: "拥有国家认证施工团队，采用高品质防锈G550镀铝锌钢材。",
     },
     loadingTitleI18n: {
-      id: "Strength",
+      id: "Kekuatan",
       en: "Strength",
       zh: "强度",
     },
@@ -62,7 +62,7 @@ export const defaultHeroCarousels = [
       zh: "专业从事符合SNI标准并采用HAKI认证工程软件的轻钢屋架制造与施工，保障建筑安全。",
     },
     loadingTitleI18n: {
-      id: "Structure",
+      id: "Struktur",
       en: "Structure",
       zh: "结构",
     },
@@ -99,7 +99,7 @@ export const defaultHeroCarousels = [
       zh: "兼顾成本效益、安装速度与建筑美学，是您住宅及工业建筑安全的信赖之选。",
     },
     loadingTitleI18n: {
-      id: "Balance",
+      id: "Keseimbangan",
       en: "Balance",
       zh: "平衡",
     },

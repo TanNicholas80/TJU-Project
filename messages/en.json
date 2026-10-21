@@ -12,6 +12,10 @@
     "en": "English",
     "zh": "中文 (Mandarin)"
   },
+  "hero": {
+    "consultation": "Project Consultation",
+    "learnMore": "Learn About TJU System"
+  },
   "errors": {
     "backHome": "Back to Home",
     "retry": "Try Again",

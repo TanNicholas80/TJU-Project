@@ -30,7 +30,7 @@ interface HeroCarouselProps {
 const SLIDE_DURATION = 6000; // 6 detik per slide
 
 export function HeroCarousel({ slides }: HeroCarouselProps) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const [currentIdx, setCurrentIdx] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
 
@@ -173,7 +173,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 className="inline-flex items-center gap-2.5 rounded-md bg-[#20449A] hover:bg-[#1a3880] text-white px-6 py-3 font-semibold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
               >
                 <MessageSquare className="h-4 w-4 fill-white/20" />
-                <span>Konsultasi Proyek</span>
+                <span>{t("hero.consultation")}</span>
               </button>
             </Link>
 
@@ -183,7 +183,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 type="button"
                 className="inline-flex items-center justify-center rounded-md border border-white/80 bg-black/20 hover:bg-white/15 text-white px-6 py-3 font-semibold text-sm transition-all active:scale-95 cursor-pointer"
               >
-                <span>Pelajari Sistem TJU</span>
+                <span>{t("hero.learnMore")}</span>
               </button>
             </Link>
           </div>
@@ -196,7 +196,23 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
               const isActive = idx === currentIdx;
               const loadingTitle =
                 getLocalized(s.loadingTitleI18n) ||
-                (idx === 0 ? "Strength" : idx === 1 ? "Structure" : "Balance");
+                (idx === 0
+                  ? locale === "id"
+                    ? "Kekuatan"
+                    : locale === "zh"
+                    ? "强度"
+                    : "Strength"
+                  : idx === 1
+                  ? locale === "id"
+                    ? "Struktur"
+                    : locale === "zh"
+                    ? "结构"
+                    : "Structure"
+                  : locale === "id"
+                  ? "Keseimbangan"
+                  : locale === "zh"
+                  ? "平衡"
+                  : "Balance");
 
               return (
                 <button

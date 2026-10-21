@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { db } from "./index";
 import * as schema from "./schema";
 import {
@@ -24,14 +25,30 @@ async function main() {
         .insert(schema.heroCarousels)
         .values({
           imageUrl: item.imageUrl,
+          subheaderI18n: item.subheaderI18n,
           titleI18n: item.titleI18n,
+          descriptionI18n: item.descriptionI18n,
           subtitleI18n: item.subtitleI18n,
+          loadingTitleI18n: item.loadingTitleI18n,
           ctaTextI18n: item.ctaTextI18n,
           ctaLink: item.ctaLink,
           sortOrder: item.sortOrder,
           isActive: item.isActive,
         })
         .onConflictDoNothing();
+
+      // Pastikan loadingTitleI18n dan field i18n terupdate meskipun row sudah ada di database
+      await db
+        .update(schema.heroCarousels)
+        .set({
+          loadingTitleI18n: item.loadingTitleI18n,
+          subheaderI18n: item.subheaderI18n,
+          descriptionI18n: item.descriptionI18n,
+          subtitleI18n: item.subtitleI18n,
+          titleI18n: item.titleI18n,
+          ctaTextI18n: item.ctaTextI18n,
+        })
+        .where(eq(schema.heroCarousels.sortOrder, item.sortOrder));
     }
 
     // 2. Quality Standards

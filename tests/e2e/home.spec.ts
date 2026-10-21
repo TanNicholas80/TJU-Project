@@ -38,8 +38,8 @@ test.describe("TJU Truss Public Landing Page", () => {
 
   test("should render Keahlian Kami split section with experience stats", async ({ page }) => {
     await expect(page.getByText(/Keahlian Kami di Segala Skala/i)).toBeVisible();
-    await expect(page.getByText(/Industrial & Commercial/i)).toBeVisible();
-    await expect(page.getByText(/Residential/i).first()).toBeVisible();
+    await expect(page.getByText(/Industrial & Commercial|Industri & Komersial/i)).toBeVisible();
+    await expect(page.getByText(/Residential|Residensial/i).first()).toBeVisible();
   });
 
   test("should render Featured Portfolios section with UNNES project", async ({ page }) => {

@@ -12,6 +12,10 @@
     "en": "English",
     "zh": "中文 (Mandarin)"
   },
+  "hero": {
+    "consultation": "Konsultasi Proyek",
+    "learnMore": "Pelajari Sistem TJU"
+  },
   "errors": {
     "backHome": "Kembali ke Beranda",
     "retry": "Coba Lagi",
@@ -37,14 +41,14 @@
   "expertise": {
     "sectionTitle": "Keahlian Kami di Segala Skala",
     "industrial": {
-      "title": "Industrial & Commercial",
+      "title": "Industri & Komersial",
       "description": "Kami memahami standarisasi industri yang ketat. Untuk pabrik, gudang, dan fasilitas komersial, TJU menyediakan sistem rangka atap yang memenuhi standar engineering berat dengan presisi perhitungan software yang tak tertandingi.",
       "point1": "Efisiensi Waktu Pemasangan Skala Besar",
       "point2": "Kekuatan Material Terverifikasi AS100",
       "point3": "Dukungan Dokumen Teknis Lengkap"
     },
     "residential": {
-      "title": "Residential",
+      "title": "Residensial",
       "description": "Atap rumah adalah pelindung keluarga. Kami memastikan instalasi rapi, terstruktur, dan bergaransi resmi. TJU Truss memberikan ketenangan pikiran bagi pemilik rumah yang mengutamakan kualitas di atas sekadar harga murah.",
       "point1": "Anti Rayap & Tahan Karat Seumur Hidup",
       "point2": "Instalasi Presisi oleh Tenaga Ahli",
