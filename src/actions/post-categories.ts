@@ -91,7 +91,9 @@ export async function createPostCategory(input: PostCategoryInput) {
 
     // Invalidate Redis cache
     await cache.del("public:categories_post");
+    await cache.delByPrefix("public:post");
 
+    safeRevalidate("/");
     safeRevalidate("/blog");
     safeRevalidate("/admin/post-categories");
     safeRevalidate("/admin/posts");
@@ -146,7 +148,9 @@ export async function updatePostCategory(id: string, input: PostCategoryInput) {
 
     // Invalidate Redis cache
     await cache.del("public:categories_post");
+    await cache.delByPrefix("public:post");
 
+    safeRevalidate("/");
     safeRevalidate("/blog");
     safeRevalidate("/admin/post-categories");
     safeRevalidate("/admin/posts");
@@ -170,7 +174,9 @@ export async function deletePostCategory(id: string) {
 
     // Invalidate Redis cache
     await cache.del("public:categories_post");
+    await cache.delByPrefix("public:post");
 
+    safeRevalidate("/");
     safeRevalidate("/blog");
     safeRevalidate("/admin/post-categories");
     safeRevalidate("/admin/posts");

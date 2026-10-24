@@ -48,7 +48,7 @@ export async function POST(
     if (id) {
       await cache.del(`public:portfolio:${id}`);
     }
-    await cache.delByPrefix("public:portfolios");
+    await cache.delByPrefix("public:portfolio");
 
     return NextResponse.json({
       success: true,

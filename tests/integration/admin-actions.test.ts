@@ -22,7 +22,7 @@ describe("All Admin CMS Actions Integration & Validation", () => {
 
     it("should accept valid carousel slide payload", async () => {
       const result = await createCarousel({
-        imageUrl: "https://example.com/hero.jpg",
+        imageUrl: "/images/hero_1.png",
         titleId: "Konstruksi Rangka Atap Presisi",
         titleEn: "Precision Roof Truss Construction",
         subheaderId: "SOLUSI TERINTEGRASI",

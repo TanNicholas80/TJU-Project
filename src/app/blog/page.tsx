@@ -4,6 +4,8 @@ import { PageHeroBanner } from "@/components/common/page-hero-banner";
 import { BlogContentSection } from "@/components/blog/blog-content-section";
 import { getPageBanner, getPosts, getCategoriesPost } from "@/lib/data-service";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const banner = await getPageBanner("blog");
 

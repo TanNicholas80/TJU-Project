@@ -114,8 +114,8 @@ export async function updateStandard(id: string, input: StandardInput) {
     }
 
     await cache.del("public:quality_standards");
-    revalidatePath("/");
-    revalidatePath("/admin/standards");
+    safeRevalidate("/");
+    safeRevalidate("/admin/standards");
 
     return { success: true, message: "Berhasil memperbarui standar kualitas" };
   } catch (err: any) {
@@ -135,8 +135,8 @@ export async function deleteStandard(id: string) {
     }
 
     await cache.del("public:quality_standards");
-    revalidatePath("/");
-    revalidatePath("/admin/standards");
+    safeRevalidate("/");
+    safeRevalidate("/admin/standards");
 
     return { success: true, message: "Berhasil menghapus standar kualitas" };
   } catch (err: any) {

@@ -104,9 +104,12 @@ export async function createPortfolioCategory(input: PortfolioCategoryInput) {
 
     // Invalidate Redis cache
     await cache.del("public:categories_portfolio");
+    await cache.delByPrefix("public:portfolio");
 
+    safeRevalidate("/");
     safeRevalidate("/about");
     safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
     safeRevalidate("/admin/portfolio-categories");
 
     return { success: true, message: "Kategori portofolio berhasil dibuat" };
@@ -169,9 +172,12 @@ export async function updatePortfolioCategory(id: string, input: PortfolioCatego
 
     // Invalidate Redis cache
     await cache.del("public:categories_portfolio");
+    await cache.delByPrefix("public:portfolio");
 
+    safeRevalidate("/");
     safeRevalidate("/about");
     safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
     safeRevalidate("/admin/portfolio-categories");
 
     return { success: true, message: "Kategori portofolio berhasil diperbarui" };
@@ -193,9 +199,12 @@ export async function deletePortfolioCategory(id: string) {
 
     // Invalidate Redis cache
     await cache.del("public:categories_portfolio");
+    await cache.delByPrefix("public:portfolio");
 
+    safeRevalidate("/");
     safeRevalidate("/about");
     safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
     safeRevalidate("/admin/portfolio-categories");
 
     return { success: true, message: "Kategori portofolio berhasil dihapus" };

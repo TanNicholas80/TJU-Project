@@ -178,9 +178,11 @@ export async function createPortfolio(input: PortfolioInput) {
       console.warn("[Portfolios Action] DB insert fallback:", dbErr);
     }
 
-    await cache.delByPrefix("public:portfolios");
+    // Invalidate Redis/memory cache (both list and detail)
+    await cache.delByPrefix("public:portfolio");
     safeRevalidate("/");
     safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
     safeRevalidate("/admin/portfolios");
 
     return { success: true, message: "Berhasil menyimpan portofolio baru" };
@@ -256,9 +258,12 @@ export async function updatePortfolio(id: string, input: PortfolioInput) {
       console.warn("[Portfolios Action] DB update fallback:", dbErr);
     }
 
-    await cache.delByPrefix("public:portfolios");
+    await cache.delByPrefix("public:portfolio");
     safeRevalidate("/");
     safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
+    safeRevalidate(`/portofolio/${id}`);
+    safeRevalidate(`/portfolio/${id}`);
     safeRevalidate("/admin/portfolios");
 
     return { success: true, message: "Berhasil memperbarui data portofolio" };
@@ -278,9 +283,12 @@ export async function deletePortfolio(id: string) {
       console.warn("[Portfolios Action] DB delete fallback:", dbErr);
     }
 
-    await cache.delByPrefix("public:portfolios");
+    await cache.delByPrefix("public:portfolio");
     safeRevalidate("/");
     safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
+    safeRevalidate(`/portofolio/${id}`);
+    safeRevalidate(`/portfolio/${id}`);
     safeRevalidate("/admin/portfolios");
 
     return { success: true, message: "Berhasil menghapus data portofolio" };

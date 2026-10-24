@@ -9,6 +9,8 @@ interface BlogPostPageProps {
   params: Promise<{ id: string }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {

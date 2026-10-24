@@ -4,6 +4,8 @@ import { PageHeroBanner } from "@/components/common/page-hero-banner";
 import { ContactContentSection } from "@/components/contact/contact-content-section";
 import { getPageBanner, getCompanyProfile } from "@/lib/data-service";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const [banner, profile] = await Promise.all([
     getPageBanner("contact"),

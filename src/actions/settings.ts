@@ -78,6 +78,8 @@ export async function updateCompanyProfile(input: SettingsInput) {
 
     await cache.del("public:company_profile");
     safeRevalidate("/");
+    safeRevalidate("/about");
+    safeRevalidate("/contact");
     safeRevalidate("/admin/settings");
 
     return { success: true, message: "Berhasil menyimpan pengaturan kontak perusahaan" };

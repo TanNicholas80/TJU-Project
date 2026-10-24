@@ -14,6 +14,8 @@ interface PortfolioDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: PortfolioDetailPageProps): Promise<Metadata> {

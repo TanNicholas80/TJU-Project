@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import * as schema from "@/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { cache } from "./cache";
 import {
   defaultHeroCarousels,
@@ -132,7 +132,12 @@ export async function getPostById(id: string) {
           schema.categoriesPost,
           eq(schema.posts.categoryPostId, schema.categoriesPost.id)
         )
-        .where(eq(schema.posts.id, id))
+        .where(
+          and(
+            eq(schema.posts.id, id),
+            eq(schema.posts.status, "published")
+          )
+        )
         .limit(1);
 
       if (row) {
@@ -141,7 +146,7 @@ export async function getPostById(id: string) {
           categoryName: row.category?.nameI18n?.id || "Umum",
         };
       }
-      return defaultPosts.find((p) => String(p.id) === String(id)) || null;
+      return null;
     } catch (err) {
       console.warn(`[DataService] Database query for post ${id} failed, using default:`, err);
       return defaultPosts.find((p) => String(p.id) === String(id)) || null;
@@ -162,7 +167,12 @@ export async function getPortfolioById(id: string) {
           schema.categoriesPortfolio,
           eq(schema.portfolios.categoryPortfolioId, schema.categoriesPortfolio.id)
         )
-        .where(eq(schema.portfolios.id, id))
+        .where(
+          and(
+            eq(schema.portfolios.id, id),
+            eq(schema.portfolios.status, "published")
+          )
+        )
         .limit(1);
 
       if (row) {
@@ -171,7 +181,7 @@ export async function getPortfolioById(id: string) {
           categoryName: row.category?.nameI18n?.id || "Komersial",
         };
       }
-      return defaultPortfolios.find((p) => String(p.id) === String(id)) || null;
+      return null;
     } catch (err) {
       console.warn(`[DataService] Database query for portfolio ${id} failed, using default:`, err);
       return defaultPortfolios.find((p) => String(p.id) === String(id)) || null;

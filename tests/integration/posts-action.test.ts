@@ -6,7 +6,7 @@ describe("Posts Server Action Validation", () => {
     const result = await createPost({
       titleId: "ab", // Too short (min 3)
       contentHtmlId: "<p>Konten artikel</p>",
-      coverImageUrl: "https://example.com/cover.jpg",
+      coverImageUrl: "/images/core_background.png",
       status: "published",
     });
 
@@ -32,7 +32,7 @@ describe("Posts Server Action Validation", () => {
       titleEn: "Galvalume G550 Roof Innovation",
       excerptId: "Ringkasan pengujian mutu baja ringan",
       contentHtmlId: "<p>Konten lengkap artikel rekayasa</p>",
-      coverImageUrl: "https://example.com/cover.jpg",
+      coverImageUrl: "/images/core_background.png",
       status: "published",
     });
 

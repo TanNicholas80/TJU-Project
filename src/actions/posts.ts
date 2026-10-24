@@ -185,8 +185,8 @@ export async function createPost(input: PostInput) {
       console.warn("[Posts Action] DB insert fallback:", dbErr);
     }
 
-    // Invalidate Redis/memory cache
-    await cache.delByPrefix("public:posts");
+    // Invalidate Redis/memory cache (both list and detail)
+    await cache.delByPrefix("public:post");
 
     // Revalidate routes
     safeRevalidate("/");
@@ -275,9 +275,10 @@ export async function updatePost(id: string, input: PostInput) {
       console.warn("[Posts Action] DB update fallback:", dbErr);
     }
 
-    await cache.delByPrefix("public:posts");
+    await cache.delByPrefix("public:post");
     safeRevalidate("/");
     safeRevalidate("/blog");
+    safeRevalidate(`/blog/${id}`);
     safeRevalidate("/admin/posts");
 
     return { success: true, message: "Berhasil memperbarui artikel" };
@@ -297,9 +298,10 @@ export async function deletePost(id: string) {
       console.warn("[Posts Action] DB delete fallback:", dbErr);
     }
 
-    await cache.delByPrefix("public:posts");
+    await cache.delByPrefix("public:post");
     safeRevalidate("/");
     safeRevalidate("/blog");
+    safeRevalidate(`/blog/${id}`);
     safeRevalidate("/admin/posts");
 
     return { success: true, message: "Berhasil menghapus artikel" };

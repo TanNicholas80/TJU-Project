@@ -19,11 +19,11 @@ describe("Portfolios Server Action Validation", () => {
       titleId: "Proyek Kanopi Bentang Lebar",
       titleEn: "Wide Span Canopy Project",
       location: "Semarang Barat, Jawa Tengah",
-      coverImageUrl: "https://example.com/canopy.jpg",
+      coverImageUrl: "/images/core_background.png",
       status: "published",
       galleryUrls: [
-        "https://example.com/gallery1.jpg",
-        "https://example.com/gallery2.jpg",
+        "/images/core_background.png",
+        "/images/hero_1.png",
       ],
     });
 

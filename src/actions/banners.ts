@@ -273,6 +273,12 @@ export async function deleteBanner(id: string) {
     }
 
     await cache.del("public:banners");
+    safeRevalidate("/");
+    safeRevalidate("/about");
+    safeRevalidate("/blog");
+    safeRevalidate("/portofolio");
+    safeRevalidate("/portfolio");
+    safeRevalidate("/contact");
     safeRevalidate("/admin/banners");
 
     return { success: true, message: "Banner halaman berhasil dihapus" };

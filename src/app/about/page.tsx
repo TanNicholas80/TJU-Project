@@ -12,6 +12,8 @@ import {
   getCompanyProfile,
 } from "@/lib/data-service";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const [banner, profile] = await Promise.all([
     getPageBanner("about-us"),

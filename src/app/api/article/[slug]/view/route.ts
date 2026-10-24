@@ -48,7 +48,7 @@ export async function POST(
     if (slug) {
       await cache.del(`public:post:${slug}`);
     }
-    await cache.delByPrefix("public:posts");
+    await cache.delByPrefix("public:post");
 
     try {
       const { revalidatePath } = await import("next/cache");

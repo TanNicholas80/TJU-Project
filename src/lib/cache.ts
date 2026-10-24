@@ -27,6 +27,14 @@ try {
 
 const DEFAULT_TTL = parseInt(process.env.CACHE_TTL || "300", 10);
 
+function isDynamicServerError(err: any): boolean {
+  if (!err) return false;
+  return (
+    err.digest === "DYNAMIC_SERVER_USAGE" ||
+    (typeof err.message === "string" && err.message.includes("Dynamic server usage"))
+  );
+}
+
 export const cache = {
   async get<T>(key: string): Promise<T | null> {
     if (redisClient) {
@@ -35,7 +43,10 @@ export const cache = {
         if (data !== null && data !== undefined) {
           return data;
         }
-      } catch (err) {
+      } catch (err: any) {
+        if (isDynamicServerError(err)) {
+          throw err;
+        }
         console.warn(`[Cache] Redis GET failed for key "${key}", falling back to memory:`, err);
       }
     }
@@ -53,7 +64,10 @@ export const cache = {
     if (redisClient) {
       try {
         await redisClient.set(key, value, { ex: ttlSeconds });
-      } catch (err) {
+      } catch (err: any) {
+        if (isDynamicServerError(err)) {
+          throw err;
+        }
         console.warn(`[Cache] Redis SET failed for key "${key}", falling back to memory:`, err);
       }
     }
@@ -68,7 +82,10 @@ export const cache = {
     if (redisClient) {
       try {
         await redisClient.del(key);
-      } catch (err) {
+      } catch (err: any) {
+        if (isDynamicServerError(err)) {
+          throw err;
+        }
         console.warn(`[Cache] Redis DEL failed for key "${key}":`, err);
       }
     }
@@ -82,7 +99,10 @@ export const cache = {
         if (keys && keys.length > 0) {
           await redisClient.del(...keys);
         }
-      } catch (err) {
+      } catch (err: any) {
+        if (isDynamicServerError(err)) {
+          throw err;
+        }
         console.warn(`[Cache] Redis keys prefix DEL failed for "${prefix}":`, err);
       }
     }

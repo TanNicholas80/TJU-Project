@@ -10,6 +10,8 @@ const montserrat = Montserrat({
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://tjutruss.com"),
   title: {
