@@ -43,7 +43,7 @@ export async function generateMetadata({
       "Konstruksi Rangka Atap Baja Ringan",
       "Software HAKI",
       "Galvalum G550",
-      "CV. Tri Jaya Utama",
+      "CV. TRI JAYA UTAMA",
       "Portofolio TJU Truss",
     ],
     alternates: {
@@ -99,7 +99,9 @@ export default async function PortfolioDetailPage({
   const otherProjects: RelatedPortfolioProject[] = otherList.slice(0, 4).map((p: any) => ({
     id: p.id,
     title: p.titleI18n?.id || "Proyek TJU Truss",
+    titleI18n: p.titleI18n,
     categoryName: p.categoryName || "KOMERSIAL",
+    categoryNameI18n: p.categoryNameI18n,
     coverImageUrl: p.coverImageUrl || "/images/core_background.png",
     location: p.location || "Jawa Tengah",
   }));
@@ -126,7 +128,7 @@ export default async function PortfolioDetailPage({
     },
     creator: {
       "@type": "Organization",
-      name: "CV. Tri Jaya Utama",
+      name: "CV. TRI JAYA UTAMA",
       url: "https://tjutruss.com",
     },
     publisher: {
@@ -153,9 +155,12 @@ export default async function PortfolioDetailPage({
       <PortfolioDetailContent
         id={id}
         title={title}
+        titleI18n={portfolio.titleI18n}
         location={location}
         categoryBadge={categoryBadge}
+        categoryBadgeI18n={portfolio.categoryNameI18n}
         coverImageUrl={coverImageUrl}
+        videoUrl={portfolio.videoUrl || null}
         galleryImages={galleryImages}
         otherProjects={otherProjects}
       />

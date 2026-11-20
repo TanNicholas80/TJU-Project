@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = "Tentang Kami | TJU TRUSS SYSTEM - Membangun Pondasi Kepercayaan";
   const description =
-    "Mengenal CV. Tri Jaya Utama (TJU Truss) sejak tahun 2000. Spesialis fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun.";
+    "Mengenal CV. TRI JAYA UTAMA (TJU Truss) sejak tahun 2000. Spesialis fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun.";
 
   const bannerImg =
     banner?.backgroundImageUrl ||
@@ -33,15 +33,15 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     keywords: [
       "Tentang TJU Truss",
-      "Profil CV Tri Jaya Utama",
+      "Profil CV. TRI JAYA UTAMA",
       "Pabrik Rangka Atap Baja Ringan",
       "Aplikator Baja Ringan Semarang",
       "Sertifikasi HAKI Baja Ringan",
       "SNI Baja Ringan",
       "Sejarah TJU Truss",
     ],
-    authors: [{ name: "CV. Tri Jaya Utama", url: "https://tjutruss.com" }],
-    creator: "CV. Tri Jaya Utama",
+    authors: [{ name: "CV. TRI JAYA UTAMA", url: "https://tjutruss.com" }],
+    creator: "CV. TRI JAYA UTAMA",
     openGraph: {
       type: "website",
       locale: "id_ID",
@@ -87,10 +87,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const [banner, certifications, categories] = await Promise.all([
+  const [banner, certifications, categories, profile] = await Promise.all([
     getPageBanner("about-us"),
     getCertifications(),
     getCategoriesPortfolio(),
+    getCompanyProfile(),
   ]);
 
   // Schema.org Structured Data for About Us & Breadcrumbs
@@ -103,7 +104,7 @@ export default async function AboutPage() {
         url: "https://tjutruss.com/about",
         name: "Tentang Kami | TJU TRUSS SYSTEM - Membangun Pondasi Kepercayaan",
         description:
-          "Mengenal CV. Tri Jaya Utama (TJU Truss) sejak tahun 2000. Spesialis fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun.",
+          "Mengenal CV. TRI JAYA UTAMA (TJU Truss) sejak tahun 2000. Spesialis fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun.",
         inLanguage: "id-ID",
         isPartOf: {
           "@type": "WebSite",
@@ -133,7 +134,7 @@ export default async function AboutPage() {
   };
 
   return (
-    <PublicLayout>
+    <PublicLayout profile={profile}>
       {/* JSON-LD Rich Snippet for SEO */}
       <script
         type="application/ld+json"

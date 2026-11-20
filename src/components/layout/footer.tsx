@@ -4,16 +4,33 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Phone, Mail } from "lucide-react";
-import { FaTiktok, FaInstagram, FaFacebookF } from "react-icons/fa6";
+import { FaTiktok, FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa6";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface FooterProps {
   className?: string;
+  profile?: {
+    phone?: string | null;
+    whatsapp?: string | null;
+    email?: string | null;
+    address?: string | null;
+  };
 }
 
-export function Footer({ className }: FooterProps) {
+export function Footer({ className, profile }: FooterProps) {
   const { t } = useI18n();
+
+  const phoneDisplay = profile?.phone || "(024) 3519 776";
+  const whatsappDisplay = profile?.whatsapp || "+6282135375588";
+  const cleanWhatsapp = whatsappDisplay.replace(/[^0-9]/g, "");
+  const waUrl = `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
+    "Halo TJU TRUSS SYSTEM, saya ingin konsultasi mengenai proyek rangka atap baja ringan."
+  )}`;
+  const emailDisplay = profile?.email || "admin@tjutruss.com";
+  const addressDisplay =
+    profile?.address ||
+    "Jl. Patimura No.6C, Rejomulyo, Kec. Semarang Tim., Kota Semarang, Jawa Tengah, 50126";
 
   return (
     <footer
@@ -44,6 +61,16 @@ export function Footer({ className }: FooterProps) {
 
             {/* Social Media Links */}
             <div className="flex items-center gap-3 pt-2">
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TJU Truss WhatsApp"
+                className="flex h-9 w-9 items-center justify-center rounded-md bg-[#163378] text-white transition-all hover:bg-white hover:text-[#20449A] hover:scale-105"
+                title="WhatsApp Resmi"
+              >
+                <FaWhatsapp className="h-4 w-4" />
+              </a>
               <a
                 href="https://tiktok.com"
                 target="_blank"
@@ -121,29 +148,47 @@ export function Footer({ className }: FooterProps) {
               {t("footer.citySemarang")}
             </h3>
             <ul className="space-y-3 text-sm text-blue-100/90">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 shrink-0 text-blue-200 mt-0.5" />
-                <span className="leading-snug">
-                  Jl. Patimura No.6C, Rejomulyo, Kec. Semarang Tim., Kota
-                  Semarang, Jawa Tengah, 50126
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-4 w-4 shrink-0 text-blue-200" />
+              <li>
                 <a
-                  href="tel:0243519776"
-                  className="hover:text-white transition-colors"
+                  href={`https://maps.google.com/?q=${encodeURIComponent(addressDisplay)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 group hover:text-white transition-colors"
+                  title="Buka Lokasi di Google Maps"
                 >
-                  (024) 3519 776
+                  <MapPin className="h-5 w-5 shrink-0 text-blue-200 mt-0.5 group-hover:text-white transition-colors" />
+                  <span className="leading-snug">
+                    {addressDisplay}
+                  </span>
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-4 w-4 shrink-0 text-blue-200" />
+              <li>
                 <a
-                  href="mailto:admin@tjutruss.com"
-                  className="hover:text-white transition-colors"
+                  href={`tel:${phoneDisplay.replace(/[^0-9]/g, "")}`}
+                  className="flex items-center gap-3 group hover:text-white transition-colors"
                 >
-                  admin@tjutruss.com
+                  <Phone className="h-4 w-4 shrink-0 text-blue-200 group-hover:text-white transition-colors" />
+                  <span>{phoneDisplay}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 group hover:text-white transition-colors"
+                >
+                  <FaWhatsapp className="h-4 w-4 shrink-0 text-blue-200 group-hover:text-white transition-colors" />
+                  <span>{whatsappDisplay}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${emailDisplay}`}
+                  className="flex items-center gap-3 group hover:text-white transition-colors"
+                >
+                  <Mail className="h-4 w-4 shrink-0 text-blue-200 group-hover:text-white transition-colors" />
+                  <span>{emailDisplay}</span>
                 </a>
               </li>
             </ul>

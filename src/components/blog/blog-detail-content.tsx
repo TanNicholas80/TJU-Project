@@ -7,6 +7,8 @@ import { ArrowLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { markViewIntent } from "@/lib/view-tracker";
+import { useI18n, Locale } from "@/lib/i18n";
+import { I18nString } from "@/db/schema";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -14,29 +16,49 @@ if (typeof window !== "undefined") {
 
 export interface RelatedPost {
   id: string | number;
-  title: string;
+  title: string | I18nString;
+  titleI18n?: I18nString | null;
   coverImageUrl: string;
-  categoryName?: string;
+  categoryName?: string | I18nString;
+  categoryNameI18n?: I18nString | null;
   createdAt?: string | Date;
 }
 
 interface BlogDetailContentProps {
   id: number | string;
-  title: string;
-  categoryName: string;
+  title: string | I18nString;
+  titleI18n?: I18nString | null;
+  categoryName: string | I18nString;
+  categoryNameI18n?: I18nString | null;
   coverImageUrl: string;
-  contentHtml: string;
+  contentHtml: string | I18nString;
+  contentHtmlI18n?: I18nString | null;
   relatedPosts: RelatedPost[];
 }
 
 export function BlogDetailContent({
   id,
   title,
+  titleI18n,
   categoryName,
+  categoryNameI18n,
   coverImageUrl,
   contentHtml,
+  contentHtmlI18n,
   relatedPosts,
 }: BlogDetailContentProps) {
+  const { t, locale } = useI18n();
+
+  const getLocalized = (field?: string | I18nString | null): string => {
+    if (!field) return "";
+    if (typeof field === "string") return field;
+    return field[locale as Locale] || field.id || field.en || "";
+  };
+
+  const displayTitle = getLocalized(titleI18n || title);
+  const displayCategory = getLocalized(categoryNameI18n || categoryName);
+  const displayContent = getLocalized(contentHtmlI18n || contentHtml);
+
   const containerRef = React.useRef<HTMLDivElement>(null);
   const headerRef = React.useRef<HTMLDivElement>(null);
   const heroImageRef = React.useRef<HTMLDivElement>(null);
@@ -113,20 +135,20 @@ export function BlogDetailContent({
               className="sm:absolute left-0 inline-flex items-center gap-2 rounded-lg border border-[#E2E4EB] bg-white px-4 py-1.5 text-xs font-semibold text-[#62636C] shadow-xs hover:border-[#20449A] hover:text-[#20449A] transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Kembali</span>
+              <span>{t("blogDetail.back") || "Kembali"}</span>
             </Link>
 
             {/* Category Badge Centered */}
             <div className="mx-auto">
               <span className="inline-block rounded-md bg-[#20449A] px-5 py-1.5 text-xs font-semibold text-white shadow-xs tracking-wide">
-                {categoryName || "Engineering"}
+                {displayCategory || "Engineering"}
               </span>
             </div>
           </div>
 
           {/* Title Centered Italic Bold */}
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold italic text-[#1E1F24] tracking-tight text-center max-w-4xl mx-auto leading-tight md:leading-[1.2]">
-            {title}
+            {displayTitle}
           </h1>
         </div>
 
@@ -137,7 +159,7 @@ export function BlogDetailContent({
         >
           <Image
             src={coverImageUrl || "/images/gambar_1.JPG"}
-            alt={title}
+            alt={displayTitle}
             fill
             priority
             sizes="(max-width: 1280px) 100vw, 1200px"
@@ -151,7 +173,7 @@ export function BlogDetailContent({
           <div className="lg:col-span-8">
             <div
               className="prose prose-slate max-w-none text-[#333742] text-sm sm:text-base leading-relaxed space-y-4"
-              dangerouslySetInnerHTML={{ __html: contentHtml }}
+              dangerouslySetInnerHTML={{ __html: displayContent }}
             />
           </div>
 
@@ -161,17 +183,17 @@ export function BlogDetailContent({
             <div className="rounded-2xl bg-[#20449A] p-6 sm:p-7 text-white shadow-xl relative overflow-hidden">
               <div className="relative z-10 space-y-3">
                 <h3 className="text-xl font-extrabold text-white tracking-tight">
-                  Butuh Konsultasi?
+                  {t("blogDetail.needConsultation") || "Butuh Konsultasi?"}
                 </h3>
                 <p className="text-xs sm:text-sm text-blue-100 leading-relaxed">
-                  Tim kami siap membantu kebutuhan konstruksi rangka atap untuk proyek Anda.
+                  {t("blogDetail.consultationDesc") || "Tim kami siap membantu kebutuhan konstruksi rangka atap untuk proyek Anda."}
                 </p>
                 <div className="pt-2">
                   <Link
                     href="/contact"
                     className="inline-flex items-center justify-center w-full rounded-lg bg-[#F48902] hover:bg-[#d97706] text-white font-bold py-3 px-4 text-sm shadow-md transition-all duration-200 hover:shadow-lg active:scale-98"
                   >
-                    Konsultasi Proyek
+                    {t("blogDetail.consultationBtn") || t("hero.consultation") || "Konsultasi Proyek"}
                   </Link>
                 </div>
               </div>
@@ -181,7 +203,7 @@ export function BlogDetailContent({
             {relatedPosts && relatedPosts.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-base font-bold text-[#1E1F24] tracking-tight">
-                  Artikel Lainnya
+                  {t("blogDetail.otherArticles") || "Artikel Lainnya"}
                 </h3>
 
                 <div className="space-y-3">
@@ -196,7 +218,7 @@ export function BlogDetailContent({
                       <div className="relative h-16 w-20 sm:h-18 sm:w-24 shrink-0 rounded-lg overflow-hidden bg-slate-100 border border-[#E2E4EB]">
                         <Image
                           src={item.coverImageUrl || "/images/gambar_1.JPG"}
-                          alt={item.title}
+                          alt={getLocalized(item.titleI18n || item.title)}
                           fill
                           sizes="96px"
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -206,10 +228,10 @@ export function BlogDetailContent({
                       {/* Info Right */}
                       <div className="flex-1 min-w-0">
                         <h4 className="text-xs sm:text-sm font-bold text-[#1E1F24] line-clamp-2 leading-snug group-hover:text-[#20449A] transition-colors">
-                          {item.title}
+                          {getLocalized(item.titleI18n || item.title)}
                         </h4>
                         <div className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#20449A] mt-1 group-hover:text-[#F48902] transition-colors">
-                          <span>Baca Selengkapnya</span>
+                          <span>{t("blogDetail.readMore") || t("homeBlog.readMore") || "Baca Selengkapnya"}</span>
                           <ChevronRight className="h-3 w-3" />
                         </div>
                       </div>

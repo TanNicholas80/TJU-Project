@@ -3,10 +3,13 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, ChevronRight } from "lucide-react";
+import { MapPin, ChevronRight, Play, Film, Image as ImageIcon } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { markViewIntent } from "@/lib/view-tracker";
+import { useI18n, Locale } from "@/lib/i18n";
+import { I18nString } from "@/db/schema";
+import { getVideoEmbedInfo } from "@/lib/video-helper";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -20,7 +23,9 @@ export interface PortfolioDetailGalleryImage {
 export interface RelatedPortfolioProject {
   id: string | number;
   title: string;
+  titleI18n?: I18nString | null;
   categoryName: string;
+  categoryNameI18n?: I18nString | null;
   coverImageUrl: string;
   location?: string;
 }
@@ -28,9 +33,12 @@ export interface RelatedPortfolioProject {
 interface PortfolioDetailContentProps {
   id: number | string;
   title: string;
+  titleI18n?: I18nString | null;
   location: string;
   categoryBadge: string;
+  categoryBadgeI18n?: I18nString | null;
   coverImageUrl: string;
+  videoUrl?: string | null;
   galleryImages: PortfolioDetailGalleryImage[];
   otherProjects: RelatedPortfolioProject[];
 }
@@ -38,12 +46,31 @@ interface PortfolioDetailContentProps {
 export function PortfolioDetailContent({
   id,
   title,
+  titleI18n,
   location,
   categoryBadge,
+  categoryBadgeI18n,
   coverImageUrl,
+  videoUrl,
   galleryImages,
   otherProjects,
 }: PortfolioDetailContentProps) {
+  const { locale, t } = useI18n();
+
+  const getLocalized = (field?: I18nString | string | null): string => {
+    if (!field) return "";
+    if (typeof field === "string") return field;
+    return (
+      field[locale as Locale] ||
+      field.id ||
+      field.en ||
+      field.zh ||
+      ""
+    );
+  };
+
+  const displayTitle = getLocalized(titleI18n) || title;
+  const displayCategory = getLocalized(categoryBadgeI18n) || categoryBadge;
   // Ensure we have at least 4 thumbnails for the gallery row (fallback with cover + high quality roof shots if fewer)
   const defaultFallbacks = [
     coverImageUrl,
@@ -72,6 +99,8 @@ export function PortfolioDetailContent({
   }, [coverImageUrl, galleryImages]);
 
   const [activeImage, setActiveImage] = React.useState<string>(allGalleryImages[0] || coverImageUrl);
+  const [isVideoActive, setIsVideoActive] = React.useState<boolean>(false);
+  const videoInfo = React.useMemo(() => getVideoEmbedInfo(videoUrl), [videoUrl]);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -157,7 +186,8 @@ export function PortfolioDetailContent({
   }, []);
 
   const handleSelectImage = (imgUrl: string) => {
-    if (imgUrl === activeImage) return;
+    setIsVideoActive(false);
+    if (imgUrl === activeImage && !isVideoActive) return;
     if (mainImageRef.current) {
       gsap.to(mainImageRef.current, {
         opacity: 0.4,
@@ -178,6 +208,28 @@ export function PortfolioDetailContent({
     }
   };
 
+  const handleSelectVideo = () => {
+    if (isVideoActive) return;
+    if (mainImageRef.current) {
+      gsap.to(mainImageRef.current, {
+        opacity: 0.4,
+        scale: 0.98,
+        duration: 0.15,
+        onComplete: () => {
+          setIsVideoActive(true);
+          gsap.to(mainImageRef.current, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.35,
+            ease: "power2.out",
+          });
+        },
+      });
+    } else {
+      setIsVideoActive(true);
+    }
+  };
+
   return (
     <div ref={containerRef} className="w-full bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -186,21 +238,21 @@ export function PortfolioDetailContent({
           {/* Breadcrumb Navigation Centered: Home > Portofolio > Title */}
           <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold">
             <Link href="/" className="text-[#F48902] hover:underline">
-              Home
+              {t("navigation.home") || "Home"}
             </Link>
             <span className="text-slate-300 font-normal">&gt;</span>
             <Link href="/portofolio" className="text-[#F48902] hover:underline">
-              Portofolio
+              {t("navigation.portfolio") || "Portofolio"}
             </Link>
             <span className="text-slate-300 font-normal">&gt;</span>
             <span className="text-slate-500 font-normal truncate max-w-[200px] sm:max-w-md">
-              {title}
+              {displayTitle}
             </span>
           </div>
 
           {/* Project Title Centered Italic Bold */}
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold italic text-[#1E1F24] tracking-tight text-center max-w-4xl mx-auto leading-tight md:leading-[1.2]">
-            {title}
+            {displayTitle}
           </h1>
 
           {/* Location Centered */}
@@ -210,28 +262,98 @@ export function PortfolioDetailContent({
           </div>
         </div>
 
-        {/* Featured Large Image Box */}
+        {/* Featured Large Media Box (Image or Video) */}
         <div
           ref={mainImageRef}
           className="relative w-full h-[340px] sm:h-[460px] md:h-[540px] lg:h-[600px] rounded-2xl md:rounded-3xl overflow-hidden shadow-xl bg-slate-900 mb-6"
         >
-          <Image
-            src={activeImage}
-            alt={title}
-            fill
-            priority
-            sizes="(max-width: 1280px) 100vw, 1200px"
-            className="object-cover object-center"
-          />
+          {isVideoActive && videoUrl ? (
+            videoInfo.type === "youtube" || videoInfo.type === "vimeo" ? (
+              <iframe
+                src={videoInfo.embedUrl}
+                title={`Video Dokumentasi Proyek ${displayTitle}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full border-0"
+              />
+            ) : (
+              <video
+                src={videoInfo.embedUrl}
+                controls
+                autoPlay
+                className="w-full h-full object-contain"
+              />
+            )
+          ) : (
+            <Image
+              src={activeImage}
+              alt={displayTitle}
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              className="object-cover object-center"
+            />
+          )}
+
+          {/* Media Mode Quick Toggle Pill di pojok kanan atas jika portofolio memiliki video */}
+          {videoUrl && (
+            <div className="absolute top-4 right-4 z-20 flex rounded-xl bg-black/75 backdrop-blur-md p-1 border border-white/20 shadow-lg">
+              <button
+                type="button"
+                onClick={() => setIsVideoActive(false)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  !isVideoActive
+                    ? "bg-[#20449A] text-white shadow-xs"
+                    : "text-slate-300 hover:text-white"
+                }`}
+              >
+                <ImageIcon className="h-3.5 w-3.5" />
+                <span>Foto</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsVideoActive(true)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  isVideoActive
+                    ? "bg-[#F48902] text-white shadow-xs"
+                    : "text-slate-300 hover:text-white"
+                }`}
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>Video Proyek</span>
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Interactive Gallery Thumbnails Row */}
+        {/* Interactive Gallery & Video Thumbnails Row */}
         <div
           ref={thumbnailsRef}
-          className="flex items-center justify-center gap-3 sm:gap-4 mb-16 sm:mb-20"
+          className="flex items-center justify-center flex-wrap gap-3 sm:gap-4 mb-16 sm:mb-20"
         >
+          {/* Video Thumbnail Button if Video is Attached */}
+          {videoUrl && (
+            <button
+              type="button"
+              onClick={handleSelectVideo}
+              className={`relative h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 flex flex-col items-center justify-center bg-slate-950 text-white ${
+                isVideoActive
+                  ? "ring-3 ring-[#F48902] ring-offset-2 scale-105 shadow-lg"
+                  : "opacity-85 hover:opacity-100 hover:scale-102 border border-slate-700"
+              }`}
+              aria-label="Putar Video Dokumentasi Proyek"
+            >
+              <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-[#F48902] text-white shadow-md">
+                <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-white ml-0.5" />
+              </div>
+              <span className="text-[10px] sm:text-xs font-bold mt-1 text-slate-200 uppercase tracking-wider">
+                Video
+              </span>
+            </button>
+          )}
+
           {allGalleryImages.map((imgUrl, idx) => {
-            const isActive = imgUrl === activeImage;
+            const isActive = !isVideoActive && imgUrl === activeImage;
             return (
               <button
                 key={idx}
@@ -259,7 +381,7 @@ export function PortfolioDetailContent({
         {/* Section: Proyek Kami Lainnya */}
         <div ref={relatedSectionRef} className="space-y-8 sm:space-y-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-[#1E1F24] tracking-tight text-center">
-            Proyek Kami Lainnya
+            {t("portfolioDetail.otherProjects") || "Proyek Kami Lainnya"}
           </h2>
 
           {/* 2x2 Grid of 4 Cards */}
@@ -268,36 +390,41 @@ export function PortfolioDetailContent({
               ref={gridRef}
               className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8"
             >
-              {otherProjects.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/portofolio/${item.id}`}
-                  onClick={() => markViewIntent("portfolio", item.id)}
-                  className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-900 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-[260px] sm:h-[300px] md:h-[340px] block cursor-pointer"
-                >
-                  {/* Gambar Portofolio */}
-                  <Image
-                    src={item.coverImageUrl || "/images/core_background.png"}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-106"
-                  />
+              {otherProjects.map((item) => {
+                const itemTitle = getLocalized(item.titleI18n) || item.title;
+                const itemCategory = getLocalized(item.categoryNameI18n) || item.categoryName || "KOMERSIAL";
 
-                  {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
+                return (
+                  <Link
+                    key={item.id}
+                    href={`/portofolio/${item.id}`}
+                    onClick={() => markViewIntent("portfolio", item.id)}
+                    className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-900 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-[260px] sm:h-[300px] md:h-[340px] block cursor-pointer"
+                  >
+                    {/* Gambar Portofolio */}
+                    <Image
+                      src={item.coverImageUrl || "/images/core_background.png"}
+                      alt={itemTitle}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-106"
+                    />
 
-                  {/* Content Overlay di pojok kiri bawah (Badge Orange + Judul Putih Tebal) */}
-                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex flex-col items-start gap-2 z-10">
-                    <span className="inline-block rounded-md bg-[#F48902] px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-                      {item.categoryName || "KOMERSIAL"}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-extrabold italic text-white tracking-tight line-clamp-2 drop-shadow-sm group-hover:text-blue-100 transition-colors">
-                      {item.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
+                    {/* Dark Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 transition-opacity duration-300 group-hover:from-black/90 group-hover:via-black/45" />
+
+                    {/* Content Overlay di pojok kiri bawah (Badge Orange + Judul Putih Tebal) */}
+                    <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex flex-col items-start gap-2 z-10">
+                      <span className="inline-block rounded-md bg-[#F48902] px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white shadow-sm">
+                        {itemCategory}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-extrabold italic text-white tracking-tight line-clamp-2 drop-shadow-sm group-hover:text-blue-100 transition-colors">
+                        {itemTitle}
+                      </h3>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
 
@@ -307,7 +434,7 @@ export function PortfolioDetailContent({
               href="/portofolio"
               className="inline-flex items-center gap-2 rounded-xl border border-[#E2E4EB] bg-white px-7 py-3 text-sm font-bold text-[#1E1F24] hover:bg-slate-50 hover:border-[#20449A] hover:text-[#20449A] transition-all shadow-xs group"
             >
-              <span>Lihat Lebih Banyak</span>
+              <span>{t("portfolioDetail.viewMore") || "Lihat Lebih Banyak"}</span>
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>

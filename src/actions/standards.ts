@@ -143,3 +143,52 @@ export async function deleteStandard(id: string) {
     return { success: false, message: "Gagal menghapus standar kualitas." };
   }
 }
+
+export async function getStandardsLayoutAdmin() {
+  try {
+    const [profile] = await db.select().from(schema.companyProfile).limit(1);
+    const columns = profile?.standardsColumns || 3;
+    return { success: true, columns };
+  } catch (error) {
+    return { success: true, columns: 3 };
+  }
+}
+
+export async function updateStandardsLayout(columns: number) {
+  try {
+    const validColumns = [2, 3, 4].includes(columns) ? columns : 3;
+
+    try {
+      const [existing] = await db.select().from(schema.companyProfile).limit(1);
+      if (existing) {
+        await db
+          .update(schema.companyProfile)
+          .set({
+            standardsColumns: validColumns,
+            updatedAt: new Date(),
+          });
+      } else {
+        await db.insert(schema.companyProfile).values({
+          standardsColumns: validColumns,
+        });
+      }
+    } catch (dbErr) {
+      console.warn("[Standards Action] update layout fallback:", dbErr);
+    }
+
+    await cache.del("public:company_profile");
+    safeRevalidate("/");
+    safeRevalidate("/admin/standards");
+    safeRevalidate("/admin/settings");
+
+    return {
+      success: true,
+      message: `Berhasil mengubah tata letak standar kualitas menjadi ${validColumns} card per baris.`,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.message || "Gagal mengubah tata letak standar kualitas.",
+    };
+  }
+}

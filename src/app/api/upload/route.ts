@@ -11,22 +11,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Tidak ada file yang diunggah" }, { status: 400 });
     }
 
-    // Whitelist MIME types sesuai PRD 8.2
+    // Whitelist MIME types (Gambar, Dokumen, dan Video Portofolio)
     const ALLOWED_MIME_TYPES = [
       "image/jpeg",
       "image/png",
       "image/webp",
       "image/gif",
       "application/pdf",
+      "video/mp4",
+      "video/webm",
+      "video/quicktime",
+      "video/ogg",
     ];
 
-    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    const isVideo = (file.type || "").startsWith("video/");
+    const MAX_FILE_SIZE = isVideo ? 50 * 1024 * 1024 : 10 * 1024 * 1024; // 50MB untuk video, 10MB untuk gambar
 
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {
       return NextResponse.json(
         {
           success: false,
-          message: `Format berkas (${file.type || "unknown"}) tidak diizinkan. Hanya format JPEG, PNG, WebP, GIF, atau PDF yang didukung.`,
+          message: `Format berkas (${file.type || "unknown"}) tidak diizinkan. Hanya format JPEG, PNG, WebP, GIF, PDF, atau Video (MP4, WebM, MOV) yang didukung.`,
         },
         { status: 400 }
       );
@@ -36,7 +41,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "Ukuran berkas melebihi batas maksimum 5MB.",
+          message: isVideo
+            ? "Ukuran video melebihi batas maksimum 50MB."
+            : "Ukuran berkas melebihi batas maksimum 10MB.",
         },
         { status: 400 }
       );

@@ -31,6 +31,7 @@ const settingsSchema = z.object({
   facebook: z.string().optional(),
   tiktok: z.string().optional(),
   linkedin: z.string().optional(),
+  standardsColumns: z.coerce.number().min(2).max(4).optional().default(3),
 });
 
 type SettingsFormData = z.infer<typeof settingsSchema>;
@@ -65,6 +66,7 @@ export default function AdminSettingsPage() {
             facebook: profile.socialLinks?.facebook || "",
             tiktok: profile.socialLinks?.tiktok || "",
             linkedin: profile.socialLinks?.linkedin || "",
+            standardsColumns: profile.standardsColumns || 3,
           });
         }
       } catch {
@@ -247,6 +249,33 @@ export default function AdminSettingsPage() {
                 className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2 text-sm text-[#1E1F24]"
               />
             </div>
+          </div>
+        </div>
+
+        {/* Card 3: Pengaturan Tata Letak & Grid */}
+        <div className="rounded-2xl border border-[#E2E4EB] bg-white p-6 sm:p-8 shadow-xs">
+          <div className="flex items-center gap-2 mb-6">
+            <Globe className="h-5 w-5 text-[#20449A]" />
+            <h3 className="text-base font-bold text-[#1E1F24]">
+              Tata Letak Beranda (Grid Standar Kualitas)
+            </h3>
+          </div>
+
+          <div className="max-w-md space-y-2">
+            <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
+              Jumlah Card Standar Kualitas per Baris
+            </label>
+            <select
+              {...register("standardsColumns")}
+              className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm font-medium text-[#1E1F24]"
+            >
+              <option value={2}>2 Card / Baris (Grid 2 Kolom - Cocok untuk 2 atau 4 card bertingkat)</option>
+              <option value={3}>3 Card / Baris (Grid 3 Kolom - Klasik TJU Truss)</option>
+              <option value={4}>4 Card / Baris (Grid 4 Kolom - Rata 1 Baris jika ada 4 card)</option>
+            </select>
+            <p className="text-xs text-[#62636C]">
+              Mengatur jumlah kolom tampilan pilar kualitas mutu pada halaman utama agar rapi dan tidak menyisakan card gantung.
+            </p>
           </div>
         </div>
 

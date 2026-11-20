@@ -17,7 +17,7 @@ interface AboutHeroBannerProps {
 }
 
 export function AboutHeroBanner({ banner }: AboutHeroBannerProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const bannerRef = React.useRef<HTMLDivElement>(null);
   const bgRef = React.useRef<HTMLDivElement>(null);
   const textRef = React.useRef<HTMLDivElement>(null);
@@ -80,10 +80,10 @@ export function AboutHeroBanner({ banner }: AboutHeroBannerProps) {
             href="/"
             className="text-[#E76F1D] hover:underline transition-colors"
           >
-            Home
+            {t("navigation.home")}
           </Link>
           <ChevronRight className="h-3.5 w-3.5 text-zinc-300" />
-          <span className="text-white">About US</span>
+          <span className="text-white">{t("navigation.about")}</span>
         </div>
       </div>
     </section>

@@ -33,7 +33,7 @@
     }
   },
   "footer": {
-    "companyDescription": "CV. Tri Jaya Utama is dedicated to providing superior light steel truss solutions with high engineering standards for a safer Indonesia.",
+    "companyDescription": "CV. TRI JAYA UTAMA is dedicated to providing superior light steel truss solutions with high engineering standards for a safer Indonesia.",
     "quickLinks": "Quick Links",
     "citySemarang": "Semarang",
     "copyright": "© 2026 TJU TRUSS®. All Rights Reserved."
@@ -58,7 +58,7 @@
   "history": {
     "badge": "STRONG HISTORICAL ROOTS",
     "title": "From Initiative to Industrial Solution",
-    "description": "CV. Tri Jaya Utama was established in 2000 to answer the challenge of wood scarcity. We transformed from an applicator into an independent manufacturer to ensure absolute quality control.",
+    "description": "CV. TRI JAYA UTAMA was established in 2000 to answer the challenge of wood scarcity. We transformed from an applicator into an independent manufacturer to ensure absolute quality control.",
     "cta": "Learn About Us",
     "milestones": {
       "m2000": {
@@ -67,7 +67,7 @@
       },
       "m2001": {
         "year": "2001",
-        "description": "Establishment of CV Tri Jaya Utama. The birth of TJU TRUSS as an authorized applicator and distributor."
+        "description": "Establishment of CV. TRI JAYA UTAMA. The birth of TJU TRUSS as an authorized applicator and distributor."
       },
       "m2010": {
         "year": "2010",
@@ -81,7 +81,7 @@
   },
   "coreValues": {
     "title": "Core Values",
-    "description": "CV. Tri Jaya Utama utilizes software that has been verified by HAKI and certified fit for use."
+    "description": "CV. TRI JAYA UTAMA utilizes software that has been verified by HAKI and certified fit for use."
   },
   "cta": {
     "title": "True Strength Begins with Precise Calculation.",
@@ -101,12 +101,16 @@
   "homeBlog": {
     "title": "Blog & Articles",
     "readMore": "Read More",
-    "viewMore": "View More"
+    "viewMore": "View More",
+    "searchPlaceholder": "Search Articles",
+    "allCategory": "All",
+    "emptyMessage": "No articles match your search."
   },
   "homeContact": {
     "title": "Contact Us",
     "emailLabel": "Email",
     "phoneLabel": "Phone",
+    "whatsappLabel": "WhatsApp",
     "addressLabel": "Address",
     "formTitle": "Send Message",
     "formSubtitle": "Fill out the form below and we will contact you shortly.",
@@ -117,5 +121,51 @@
     "projectDetailsLabel": "Project Details",
     "projectDetailsPlaceholder": "Describe your project needs ...",
     "sendButton": "Send Messages"
+  },
+  "aboutPage": {
+    "story": {
+      "badge": "ABOUT US",
+      "title": "Building the Foundation of Trust.",
+      "p1": "CV. TRI JAYA UTAMA was established in 2000 to meet the surging market demand for light steel roof trusses amidst the growing scarcity of quality timber.",
+      "p2": "Starting as an applicator in 2001 under the TJU TRUSS brand, we transformed in 2010 by manufacturing our own profiles independently. This step guarantees absolute quality control, competitive pricing, and tangible structural warranties for you.",
+      "qcBadge": {
+        "line1": "ABSOLUTE",
+        "line2": "QUALITY",
+        "line3": "CONTROL"
+      },
+      "videoTitle": "Company Profile"
+    },
+    "certifications": {
+      "badge": "CERTIFICATIONS & STANDARDS",
+      "title": "Uncompromising Quality Standards",
+      "description": "All our materials and engineering calculation systems strictly comply with national quality standards, ensuring structural safety and reliability across every project."
+    },
+    "visionMission": {
+      "visionBadge": "COMPANY VISION",
+      "visionText": "To become the largest, most competitive, and trusted light steel roof truss application company in Indonesia.",
+      "missionBadge": "COMPANY MISSION",
+      "m1": "Prioritizing mutual benefits for the success of all stakeholders.",
+      "m2": "Delivering the highest quality service excellence.",
+      "m3": "Prioritizing utmost safety and comfort for all clients.",
+      "m4": "Demonstrating genuine care for the environment and local communities.",
+      "m5": "Empowering and maximizing human resource excellence."
+    },
+    "categories": {
+      "title": "Handling Projects of All Scales",
+      "viewPortfolio": "View Our Portfolio"
+    }
+  },
+  "blogDetail": {
+    "back": "Back",
+    "needConsultation": "Need Consultation?",
+    "consultationDesc": "Our team is ready to assist your roof truss construction needs.",
+    "consultationBtn": "Project Consultation",
+    "otherArticles": "Other Articles",
+    "readMore": "Read More"
+  },
+  "portfolioDetail": {
+    "breadcrumb": "Project Detail",
+    "otherProjects": "Our Other Projects",
+    "viewMore": "View More"
   }
 }

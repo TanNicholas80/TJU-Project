@@ -26,6 +26,9 @@ describe("Translation Systems: Static Next-INTL & Dynamic Gemini AI", () => {
         "homeBlog",
         "homeContact",
         "errors",
+        "aboutPage",
+        "blogDetail",
+        "portfolioDetail",
       ];
 
       for (const section of requiredSections) {
@@ -39,13 +42,20 @@ describe("Translation Systems: Static Next-INTL & Dynamic Gemini AI", () => {
       const navKeys = Object.keys(idMessages.navigation);
       expect(Object.keys(enMessages.navigation)).toEqual(navKeys);
       expect(Object.keys(zhMessages.navigation)).toEqual(navKeys);
-      expect(idMessages.navigation.home).toBe("Home");
+      expect(["Home", "Beranda"]).toContain(idMessages.navigation.home);
+      expect(idMessages.navigation.about).toBe("Tentang Kami");
     });
 
     it("should have complete contact form labels across all 3 languages", () => {
       const contactKeys = Object.keys(idMessages.homeContact);
       expect(Object.keys(enMessages.homeContact)).toEqual(contactKeys);
       expect(Object.keys(zhMessages.homeContact)).toEqual(contactKeys);
+    });
+
+    it("should have complete about page labels across all 3 languages", () => {
+      const aboutSections = Object.keys(idMessages.aboutPage);
+      expect(Object.keys(enMessages.aboutPage)).toEqual(aboutSections);
+      expect(Object.keys(zhMessages.aboutPage)).toEqual(aboutSections);
     });
   });
 

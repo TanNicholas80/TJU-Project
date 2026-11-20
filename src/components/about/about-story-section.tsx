@@ -5,12 +5,14 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Play, X, ChevronDown } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 export function AboutStorySection() {
+  const { t } = useI18n();
   const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
   const sectionRef = React.useRef<HTMLElement>(null);
   const textColRef = React.useRef<HTMLDivElement>(null);
@@ -108,25 +110,20 @@ export function AboutStorySection() {
           <div ref={textColRef} className="lg:col-span-7 space-y-5">
             <div className="inline-block">
               <span className="text-xs sm:text-sm font-black tracking-wider uppercase text-[#E76F1D]">
-                TENTANG KAMI
+                {t("aboutPage.story.badge")}
               </span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-[#1E1F24] leading-tight sm:leading-snug">
-              Membangun Pondasi Kepercayaan.
+              {t("aboutPage.story.title")}
             </h2>
 
             <div className="space-y-4 text-sm sm:text-base text-[#62636C] leading-relaxed">
               <p>
-                CV. Tri Jaya Utama didirikan pada tahun 2000 untuk menjawab
-                besarnya permintaan pasar terhadap rangka atap baja ringan akibat
-                semakin langkanya kayu berkualitas.
+                {t("aboutPage.story.p1")}
               </p>
               <p>
-                Berawal dari aplikator pada tahun 2001 dengan merek TJU TRUSS,
-                kami bertransformasi pada 2010 dengan memproduksi profil secara
-                mandiri. Langkah ini memastikan kontrol kualitas mutlak, harga
-                kompetitif, dan jaminan garansi nyata bagi Anda.
+                {t("aboutPage.story.p2")}
               </p>
             </div>
           </div>
@@ -296,13 +293,13 @@ export function AboutStorySection() {
               {/* Orange Circular Badge: QUALITY CONTROL MUTLAK (Tanpa border putih) */}
               <div className="absolute -bottom-5 -right-3 sm:-bottom-6 sm:-right-4 z-20 flex h-24 w-24 sm:h-28 sm:w-28 flex-col items-center justify-center rounded-full bg-[#E76F1D] text-white p-2 text-center shadow-xl transition-transform hover:scale-105 duration-300">
                 <span className="text-[11px] sm:text-xs font-black tracking-wider uppercase leading-tight">
-                  QUALITY
+                  {t("aboutPage.story.qcBadge.line1")}
                 </span>
                 <span className="text-[11px] sm:text-xs font-black tracking-wider uppercase leading-tight">
-                  CONTROL
+                  {t("aboutPage.story.qcBadge.line2")}
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-black tracking-wider uppercase leading-tight text-white">
-                  MUTLAK
+                  {t("aboutPage.story.qcBadge.line3")}
                 </span>
               </div>
             </div>
@@ -322,7 +319,7 @@ export function AboutStorySection() {
             <div className="flex items-center justify-between px-5 py-3.5 bg-zinc-900 border-b border-zinc-800 text-white">
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#E76F1D]" />
-                <h4 className="text-sm font-bold">Company Profile - CV. Tri Jaya Utama (TJU Truss)</h4>
+                <h4 className="text-sm font-bold">Company Profile - CV. TRI JAYA UTAMA (TJU Truss)</h4>
               </div>
               <button
                 type="button"

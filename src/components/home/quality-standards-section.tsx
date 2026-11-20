@@ -42,9 +42,13 @@ const iconMap: Record<string, LucideIcon> = {
 
 interface QualityStandardsSectionProps {
   standards: QualityStandardItem[];
+  columns?: number | null;
 }
 
-export function QualityStandardsSection({ standards }: QualityStandardsSectionProps) {
+export function QualityStandardsSection({
+  standards,
+  columns = 3,
+}: QualityStandardsSectionProps) {
   const { t, locale } = useI18n();
   const sectionRef = React.useRef<HTMLElement>(null);
   const headerRef = React.useRef<HTMLHeadingElement>(null);
@@ -52,6 +56,19 @@ export function QualityStandardsSection({ standards }: QualityStandardsSectionPr
   const cardsRef = React.useRef<HTMLDivElement>(null);
 
   const activeStandards = standards.filter((s) => s.isActive);
+
+  // Dynamic grid configuration (2, 3, or 4 columns per row)
+  const gridClass = React.useMemo(() => {
+    const cols = Number(columns) || 3;
+    if (cols === 2) {
+      return "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto";
+    }
+    if (cols === 4) {
+      return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8";
+    }
+    // Default 3 columns
+    return "grid grid-cols-1 md:grid-cols-3 gap-8";
+  }, [columns]);
 
   React.useEffect(() => {
     if (!sectionRef.current) return;
@@ -143,10 +160,10 @@ export function QualityStandardsSection({ standards }: QualityStandardsSectionPr
           />
         </div>
 
-        {/* 3-Column Grid */}
+        {/* Dynamic Column Grid (2, 3, or 4 columns) */}
         <div
           ref={cardsRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className={gridClass}
         >
           {activeStandards.map((item) => {
             const Icon = iconMap[item.iconName] || ShieldCheck;

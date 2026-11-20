@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title =
     "Hubungi Kami | TJU TRUSS SYSTEM - Konsultasi Konstruksi Rangka Atap Presisi";
   const description =
-    "Hubungi CV. Tri Jaya Utama untuk konsultasi proyek, penawaran harga, dan instalasi rangka atap baja ringan SNI & software HAKI. Alamat: Jl. Patimura No.6C Semarang. Telp: (024) 3519 776.";
+    "Hubungi CV. TRI JAYA UTAMA untuk konsultasi proyek, penawaran harga, dan instalasi rangka atap baja ringan SNI & software HAKI. Alamat: Jl. Patimura No.6C Semarang. Telp: (024) 3519 776.";
 
   const bannerImg = banner?.backgroundImageUrl || "/images/core_background.png";
 
@@ -24,16 +24,16 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     keywords: [
       "Kontak TJU Truss",
-      "Hubungi CV Tri Jaya Utama",
+      "Hubungi CV. TRI JAYA UTAMA",
       "Alamat Pabrik Baja Ringan Semarang",
       "Konsultasi Rangka Atap Baja Ringan",
       "Harga Kuda Kuda Baja Ringan",
       "Aplikator Baja Ringan Semarang",
       "Customer Service TJU Truss",
     ],
-    authors: [{ name: "CV. Tri Jaya Utama", url: "https://tjutruss.com" }],
-    creator: "CV. Tri Jaya Utama",
-    publisher: "CV. Tri Jaya Utama",
+    authors: [{ name: "CV. TRI JAYA UTAMA", url: "https://tjutruss.com" }],
+    creator: "CV. TRI JAYA UTAMA",
+    publisher: "CV. TRI JAYA UTAMA",
     openGraph: {
       type: "website",
       locale: "id_ID",
@@ -95,7 +95,7 @@ export default async function ContactPage() {
         url: "https://tjutruss.com/contact",
         name: "Hubungi Kami | TJU TRUSS SYSTEM - Konsultasi Konstruksi Rangka Atap",
         description:
-          "Hubungi CV. Tri Jaya Utama untuk konsultasi proyek, penawaran harga, dan instalasi rangka atap baja ringan SNI & software HAKI.",
+          "Hubungi CV. TRI JAYA UTAMA untuk konsultasi proyek, penawaran harga, dan instalasi rangka atap baja ringan SNI & software HAKI.",
         inLanguage: "id-ID",
         isPartOf: {
           "@type": "WebSite",
@@ -124,7 +124,7 @@ export default async function ContactPage() {
       {
         "@type": "HomeAndConstructionBusiness",
         "@id": "https://tjutruss.com/#organization",
-        name: "CV. Tri Jaya Utama (TJU TRUSS SYSTEM)",
+        name: "CV. TRI JAYA UTAMA (TJU TRUSS SYSTEM)",
         url: "https://tjutruss.com",
         logo: "https://tjutruss.com/images/logo_tju.png",
         telephone: profile.phone || "(024) 3519 776",
@@ -162,7 +162,7 @@ export default async function ContactPage() {
   };
 
   return (
-    <PublicLayout>
+    <PublicLayout profile={profile}>
       {/* JSON-LD Rich Snippet for SEO */}
       <script
         type="application/ld+json"
@@ -172,8 +172,14 @@ export default async function ContactPage() {
       <div className="flex flex-col w-full">
         {/* Hero Banner: Hubungi Kami (Home > Kontak) */}
         <PageHeroBanner
-          title={banner?.titleI18n || "Hubungi Kami"}
-          breadcrumbCurrent="Kontak"
+          title={
+            banner?.titleI18n || {
+              id: "Hubungi Kami",
+              en: "Contact Us",
+              zh: "联系我们",
+            }
+          }
+          breadcrumbCurrent={banner?.breadcrumbI18n || "navigation.contact"}
           backgroundImageUrl={
             banner?.backgroundImageUrl || "/images/core_background.png"
           }

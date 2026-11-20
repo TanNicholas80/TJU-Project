@@ -33,7 +33,7 @@
     }
   },
   "footer": {
-    "companyDescription": "CV. Tri Jaya Utama 致力于以卓越的工程标准提供优质轻钢屋架解决方案，建设更安全稳固的建筑。",
+    "companyDescription": "CV. TRI JAYA UTAMA 致力于以卓越的工程标准提供优质轻钢屋架解决方案，建设更安全稳固的建筑。",
     "quickLinks": "快速链接",
     "citySemarang": "三宝垄",
     "copyright": "© 2026 TJU TRUSS®. 版权所有。"
@@ -58,7 +58,7 @@
   "history": {
     "badge": "深厚坚实的品牌历史",
     "title": "从创业初心到工业解决方案",
-    "description": "CV. Tri Jaya Utama 始创于2000年，旨在应对木材资源短缺挑战。我们从最初的施工单位逐步转型为自主生产商，确保对产品品质拥有绝对把控。",
+    "description": "CV. TRI JAYA UTAMA 始创于2000年，旨在应对木材资源短缺挑战。我们从最初的施工单位逐步转型为自主生产商，确保对产品品质拥有绝对把控。",
     "cta": "了解我们",
     "milestones": {
       "m2000": {
@@ -67,7 +67,7 @@
       },
       "m2001": {
         "year": "2001",
-        "description": "成立 CV Tri Jaya Utama。TJU TRUSS 作为正规施工与分销商品牌正式创立。"
+        "description": "成立 CV. TRI JAYA UTAMA。TJU TRUSS 作为正规施工与分销商品牌正式创立。"
       },
       "m2010": {
         "year": "2010",
@@ -81,7 +81,7 @@
   },
   "coreValues": {
     "title": "核心价值观",
-    "description": "CV. Tri Jaya Utama 采用经 HAKI 权威验证的专业软件，并已荣获合格使用证书。"
+    "description": "CV. TRI JAYA UTAMA 采用经 HAKI 权威验证的专业软件，并已荣获合格使用证书。"
   },
   "cta": {
     "title": "真正的坚固，始于精准无误的严谨测算。",
@@ -101,12 +101,16 @@
   "homeBlog": {
     "title": "博客与资讯",
     "readMore": "阅读全文",
-    "viewMore": "查看更多"
+    "viewMore": "查看更多",
+    "searchPlaceholder": "搜索文章",
+    "allCategory": "全部",
+    "emptyMessage": "未找到符合您搜索条件的文章。"
   },
   "homeContact": {
     "title": "联系我们",
     "emailLabel": "电子邮箱",
     "phoneLabel": "联系电话",
+    "whatsappLabel": "WhatsApp 官方咨询",
     "addressLabel": "公司地址",
     "formTitle": "发送消息",
     "formSubtitle": "请填写下方表单，我们的团队将尽快与您取得联系。",
@@ -117,5 +121,51 @@
     "projectDetailsLabel": "项目详情",
     "projectDetailsPlaceholder": "描述您的项目需求 ...",
     "sendButton": "发送消息"
+  },
+  "aboutPage": {
+    "story": {
+      "badge": "关于我们",
+      "title": "筑牢信任之基石。",
+      "p1": "CV. TRI JAYA UTAMA 成立于 2000 年，旨在应对因优质木材日益匮乏而导致的轻钢屋面桁架巨大市场需求。",
+      "p2": "公司于 2001 年以 TJU TRUSS 品牌作为施工服务商起步，并在 2010 年实现独立自主生产型材的重大转型。此举确保了从源头严把绝对质量关、具有竞争力的价格以及为您提供坚实可靠的结构保修承诺。",
+      "qcBadge": {
+        "line1": "严苛质检",
+        "line2": "品质保障",
+        "line3": "卓越标准"
+      },
+      "videoTitle": "企业宣传片"
+    },
+    "certifications": {
+      "badge": "认证与标准",
+      "title": "不容妥协的品质标准",
+      "description": "我们的所有材料和工程计算系统均严格符合国家质量标准，为您每一个建筑项目的结构安全与坚固可靠提供坚实保障。"
+    },
+    "visionMission": {
+      "visionBadge": "企业愿景",
+      "visionText": "成为印度尼西亚规模最大、最具竞争力且最值得信赖的轻钢屋面桁架应用工程企业。",
+      "missionBadge": "企业使命",
+      "m1": "坚持互利共赢，优先维护所有利益相关方的共同利益。",
+      "m2": "提供全方位卓越一流的专业服务。",
+      "m3": "将客户的结构安全与舒心体验置于首位。",
+      "m4": "积极践行生态环保责任，真诚关怀社会与社区发展。",
+      "m5": "全面优化与赋能专业人才资源。"
+    },
+    "categories": {
+      "title": "承接各类规模工程项目",
+      "viewPortfolio": "查看我们的工程案例"
+    }
+  },
+  "blogDetail": {
+    "back": "返回",
+    "needConsultation": "需要专业咨询？",
+    "consultationDesc": "我们的技术团队随时为您提供轻钢屋面桁架工程建设方案与支持。",
+    "consultationBtn": "项目咨询",
+    "otherArticles": "推荐文章",
+    "readMore": "阅读全文"
+  },
+  "portfolioDetail": {
+    "breadcrumb": "项目详情",
+    "otherProjects": "更多工程项目",
+    "viewMore": "查看更多"
   }
 }

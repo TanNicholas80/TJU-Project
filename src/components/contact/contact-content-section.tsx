@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 import { toast } from "sonner";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -41,8 +42,13 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
   const formRef = React.useRef<HTMLDivElement>(null);
 
   const phoneDisplay = profile?.phone || "(024) 3519 776";
+  const whatsappDisplay = profile?.whatsapp || "+6282135375588";
+  const cleanWhatsapp = whatsappDisplay.replace(/[^0-9]/g, "");
+  const waUrl = `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
+    "Halo TJU TRUSS SYSTEM, saya ingin konsultasi mengenai proyek rangka atap baja ringan."
+  )}`;
   const emailDisplay = profile?.email || "admin@tjutruss.com";
-  const addressDisplay = "Jl. Patimura 6C Semarang";
+  const addressDisplay = profile?.address || "Jl. Patimura 6C Semarang";
 
   // Google Maps embed URL specifically centered on Jl. Patimura 6C Semarang
   const mapEmbedUrl =
@@ -183,61 +189,86 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
       className="relative w-full py-12 sm:py-16 bg-[#F9F9FB]"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
-        {/* 1. Baris 3 Kartu Info Kontak (Identik dengan Gambar Referensi) */}
+        {/* 1. Baris 4 Kartu Info Kontak (Email, Telepon, WhatsApp Resmi, Alamat) */}
         <div
           ref={cardsRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
         >
           {/* Card 1: Email */}
           <a
             href={`mailto:${emailDisplay}`}
-            className="group flex items-center gap-4 rounded-2xl bg-white p-6 sm:p-7 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+            className="group flex items-center gap-3.5 rounded-2xl bg-white p-5 sm:p-6 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300"
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
-              <Mail className="h-6 w-6" />
+            <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
+              <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <div className="min-w-0">
-              <span className="block text-xs sm:text-sm font-medium text-slate-500">
-                Email
+            <div className="min-w-0 flex-1">
+              <span className="block text-xs font-medium text-slate-500">
+                {t("homeContact.emailLabel")}
               </span>
-              <p className="truncate text-base sm:text-lg font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors">
+              <p className="truncate text-sm sm:text-base font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors mt-0.5">
                 {emailDisplay}
               </p>
             </div>
           </a>
 
-          {/* Card 2: Telepon */}
+          {/* Card 2: Telepon Kantor */}
           <a
             href={`tel:${phoneDisplay.replace(/[^0-9]/g, "")}`}
-            className="group flex items-center gap-4 rounded-2xl bg-white p-6 sm:p-7 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+            className="group flex items-center gap-3.5 rounded-2xl bg-white p-5 sm:p-6 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300"
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
-              <Phone className="h-6 w-6" />
+            <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
+              <Phone className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <div className="min-w-0">
-              <span className="block text-xs sm:text-sm font-medium text-slate-500">
-                Telepon
+            <div className="min-w-0 flex-1">
+              <span className="block text-xs font-medium text-slate-500">
+                {t("homeContact.phoneLabel")}
               </span>
-              <p className="truncate text-base sm:text-lg font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors">
+              <p className="truncate text-sm sm:text-base font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors mt-0.5">
                 {phoneDisplay}
               </p>
             </div>
           </a>
 
-          {/* Card 3: Alamat */}
-          <div className="group flex items-center gap-4 rounded-2xl bg-white p-6 sm:p-7 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
-              <MapPin className="h-6 w-6" />
+          {/* Card 3: WhatsApp Resmi */}
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3.5 rounded-2xl bg-white p-5 sm:p-6 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
+              <FaWhatsapp className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <div className="min-w-0">
-              <span className="block text-xs sm:text-sm font-medium text-slate-500">
-                Alamat
+            <div className="min-w-0 flex-1">
+              <span className="block text-xs font-medium text-slate-500">
+                {t("homeContact.whatsappLabel") || "WhatsApp"}
               </span>
-              <p className="truncate text-base sm:text-lg font-bold text-[#1E1F24]">
+              <p className="truncate text-sm sm:text-base font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors mt-0.5">
+                {whatsappDisplay}
+              </p>
+            </div>
+          </a>
+
+          {/* Card 4: Alamat */}
+          <a
+            href="https://maps.google.com/?q=Jl.+Patimura+No.6C%2C+Rejomulyo%2C+Semarang"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3.5 rounded-2xl bg-white p-5 sm:p-6 border border-slate-100 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-xs group-hover:scale-105 transition-transform">
+              <MapPin className="h-5 w-5 sm:h-6 sm:w-6" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="block text-xs font-medium text-slate-500">
+                {t("homeContact.addressLabel")}
+              </span>
+              <p className="truncate text-sm sm:text-base font-bold text-[#1E1F24] group-hover:text-[#20449A] transition-colors mt-0.5" title={addressDisplay}>
                 {addressDisplay}
               </p>
             </div>
-          </div>
+          </a>
         </div>
 
         {/* 2. Interactive 2-Column Section: Google Maps (Left) & Send Message Form (Right) */}
@@ -249,7 +280,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
           >
             <iframe
               src={mapEmbedUrl}
-              title="Lokasi CV. Tri Jaya Utama TJU TRUSS"
+              title="Lokasi CV. TRI JAYA UTAMA TJU TRUSS"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -268,10 +299,10 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
             <div>
               {/* Header Form */}
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1E1F24]">
-                Send Message
+                {t("homeContact.formTitle")}
               </h2>
               <p className="mt-1 text-sm text-slate-500">
-                Fill out the form below and we will contact you shortly.
+                {t("homeContact.formSubtitle")}
               </p>
 
               {/* Form Input Fields */}
@@ -294,7 +325,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     htmlFor="contact-name"
                     className="block text-sm font-semibold text-[#1E1F24] mb-2"
                   >
-                    Name
+                    {t("homeContact.nameLabel")}
                   </label>
                   <input
                     id="contact-name"
@@ -302,7 +333,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Enter your name"
+                    placeholder={t("homeContact.namePlaceholder")}
                     disabled={isSubmitting}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-[#1E1F24] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#20449A]/20 focus:border-[#20449A] transition-all"
                   />
@@ -314,7 +345,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     htmlFor="contact-phone"
                     className="block text-sm font-semibold text-[#1E1F24] mb-2"
                   >
-                    Phone Number
+                    {t("homeContact.phoneFieldLabel")}
                   </label>
                   <input
                     id="contact-phone"
@@ -322,7 +353,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     type="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+62 xxx xxxx xxx"
+                    placeholder={t("homeContact.phonePlaceholder")}
                     disabled={isSubmitting}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-[#1E1F24] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#20449A]/20 focus:border-[#20449A] transition-all"
                   />
@@ -334,7 +365,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     htmlFor="contact-email"
                     className="block text-sm font-semibold text-[#1E1F24] mb-2"
                   >
-                    Email <span className="text-xs text-slate-400 font-normal">(Optional)</span>
+                    {t("homeContact.emailLabel")}
                   </label>
                   <input
                     id="contact-email"
@@ -354,7 +385,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     htmlFor="contact-details"
                     className="block text-sm font-semibold text-[#1E1F24] mb-2"
                   >
-                    Project Details
+                    {t("homeContact.projectDetailsLabel")}
                   </label>
                   <textarea
                     id="contact-details"
@@ -362,7 +393,7 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     rows={4}
                     value={formData.projectDetails}
                     onChange={handleChange}
-                    placeholder="Describe your project needs ..."
+                    placeholder={t("homeContact.projectDetailsPlaceholder")}
                     disabled={isSubmitting}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-[#1E1F24] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#20449A]/20 focus:border-[#20449A] transition-all resize-none"
                   />
@@ -378,12 +409,12 @@ export function ContactContentSection({ profile }: ContactContentSectionProps) {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin text-white" />
-                        <span>Sending...</span>
+                        <span>Mengirim...</span>
                       </>
                     ) : (
                       <>
                         <Mail className="h-4 w-4 text-white" />
-                        <span>Send Messages</span>
+                        <span>{t("homeContact.sendButton")}</span>
                       </>
                     )}
                   </button>

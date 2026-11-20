@@ -9,15 +9,16 @@ import { cn } from "@/lib/utils";
 interface PublicLayoutProps {
   children: React.ReactNode;
   className?: string;
+  profile?: any;
 }
 
-export function PublicLayout({ children, className }: PublicLayoutProps) {
+export function PublicLayout({ children, className, profile }: PublicLayoutProps) {
   return (
     <I18nProvider>
       <div className={cn("min-h-screen flex flex-col bg-[#F9F9FB] text-[#1E1F24]", className)}>
         <Navbar />
         <div className="flex-1 flex flex-col">{children}</div>
-        <Footer />
+        <Footer profile={profile} />
       </div>
     </I18nProvider>
   );

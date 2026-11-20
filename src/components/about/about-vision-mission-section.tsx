@@ -11,7 +11,7 @@ if (typeof window !== "undefined") {
 }
 
 export function AboutVisionMissionSection() {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const sectionRef = React.useRef<HTMLElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const missionGridRef = React.useRef<HTMLDivElement>(null);
@@ -19,23 +19,23 @@ export function AboutVisionMissionSection() {
   const missions = [
     {
       num: "01.",
-      text: "Mengutamakan kepentingan bersama bagi kepentingan semua pihak terkait.",
+      text: t("aboutPage.visionMission.m1"),
     },
     {
       num: "02.",
-      text: "Memberikan pelayanan terbaik.",
+      text: t("aboutPage.visionMission.m2"),
     },
     {
       num: "03.",
-      text: "Mengutamakan keamanan dan kenyamanan bagi pelanggan.",
+      text: t("aboutPage.visionMission.m3"),
     },
     {
       num: "04.",
-      text: "Kepedulian terhadap lingkungan hidup dan masyarakat.",
+      text: t("aboutPage.visionMission.m4"),
     },
     {
       num: "05.",
-      text: "Mengoptimalkan sumber daya manusia.",
+      text: t("aboutPage.visionMission.m5"),
     },
   ];
 
@@ -121,18 +121,17 @@ export function AboutVisionMissionSection() {
             {/* Visi Perusahaan */}
             <div className="text-center space-y-4 max-w-3xl mx-auto">
               <span className="text-base sm:text-lg md:text-xl font-bold tracking-[0.2em] uppercase text-[#DDDDDD]">
-                VISI PERUSAHAAN
+                {t("aboutPage.visionMission.visionBadge")}
               </span>
               <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-snug sm:leading-tight">
-                Menjadi perusahaan aplikasi rangka atap baja ringan terbesar,
-                kompetitif, dan terpercaya di Indonesia.
+                {t("aboutPage.visionMission.visionText")}
               </h3>
             </div>
 
             {/* Misi Perusahaan Header */}
             <div className="text-center pt-2">
               <span className="text-base sm:text-lg md:text-xl font-bold tracking-[0.2em] uppercase text-[#DDDDDD]">
-                MISI PERUSAHAAN
+                {t("aboutPage.visionMission.missionBadge")}
               </span>
             </div>
 

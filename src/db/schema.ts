@@ -120,6 +120,7 @@ export const portfolios = pgTable("portfolios", {
   titleI18n: jsonb("title_i18n").$type<I18nString>().notNull(),
   location: varchar("location", { length: 255 }).notNull(),
   coverImageUrl: varchar("cover_image_url", { length: 500 }).notNull(),
+  videoUrl: varchar("video_url", { length: 500 }),
   views: integer("views").default(0).notNull(),
   status: varchar("status", { length: 20 }).default("draft").notNull(), // 'published' | 'draft'
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -149,6 +150,7 @@ export const companyProfile = pgTable("company_profile", {
   address: text("address"),
   googleMapsIframe: text("google_maps_iframe"),
   socialLinks: jsonb("social_links").$type<SocialLinks>(),
+  standardsColumns: integer("standards_columns").default(3).notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 

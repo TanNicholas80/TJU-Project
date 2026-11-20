@@ -23,6 +23,7 @@ const settingsSchema = z.object({
   facebook: z.string().optional(),
   tiktok: z.string().optional(),
   linkedin: z.string().optional(),
+  standardsColumns: z.coerce.number().min(2).max(4).optional(),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;
@@ -60,6 +61,7 @@ export async function updateCompanyProfile(input: SettingsInput) {
           address: validated.address || null,
           googleMapsIframe: validated.googleMapsIframe || null,
           socialLinks,
+          standardsColumns: validated.standardsColumns || 3,
           updatedAt: new Date(),
         });
       } else {
@@ -70,6 +72,7 @@ export async function updateCompanyProfile(input: SettingsInput) {
           address: validated.address || null,
           googleMapsIframe: validated.googleMapsIframe || null,
           socialLinks,
+          standardsColumns: validated.standardsColumns || 3,
         });
       }
     } catch (dbErr) {

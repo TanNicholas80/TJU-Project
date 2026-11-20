@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = "TJU TRUSS SYSTEM | Fabrikasi & Konstruksi Rangka Atap Baja Ringan Presisi";
   const description =
-    "CV. Tri Jaya Utama - Solusi terpercaya pemasangan rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun di Indonesia.";
+    "CV. TRI JAYA UTAMA - Solusi terpercaya pemasangan rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun di Indonesia.";
 
   return {
     title,
@@ -39,8 +39,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "galvalum G550",
       "aplikator baja ringan Jawa Tengah",
     ],
-    authors: [{ name: "CV. Tri Jaya Utama", url: "https://tjutruss.com" }],
-    creator: "CV. Tri Jaya Utama",
+    authors: [{ name: "CV. TRI JAYA UTAMA", url: "https://tjutruss.com" }],
+    creator: "CV. TRI JAYA UTAMA",
     openGraph: {
       type: "website",
       locale: "id_ID",
@@ -104,7 +104,7 @@ export default async function HomePage() {
       {
         "@type": "HomeAndConstructionBusiness",
         "@id": "https://tjutruss.com/#organization",
-        name: "CV. Tri Jaya Utama (TJU Truss)",
+        name: "CV. TRI JAYA UTAMA (TJU Truss)",
         url: "https://tjutruss.com",
         logo: "https://tjutruss.com/images/logo_tju.png",
         image: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
@@ -130,7 +130,7 @@ export default async function HomePage() {
   };
 
   return (
-    <PublicLayout>
+    <PublicLayout profile={profile}>
       {/* Schema.org Structured Data injection for SEO */}
       <script
         type="application/ld+json"
@@ -141,8 +141,11 @@ export default async function HomePage() {
         {/* 1. Hero Carousel (Dinamis dari CMS) */}
         <HeroCarousel slides={slides as any} />
 
-        {/* 2. Standar Kualitas TJU (Dinamis dari CMS) */}
-        <QualityStandardsSection standards={standards as any} />
+        {/* 2. Standar Kualitas TJU (Dinamis dari CMS & Layout Grid Fleksibel) */}
+        <QualityStandardsSection
+          standards={standards as any}
+          columns={profile?.standardsColumns || 3}
+        />
 
         {/* 3. Keahlian Kami (Statis Split Layout) */}
         <ExpertiseSection />

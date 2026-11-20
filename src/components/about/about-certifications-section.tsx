@@ -35,7 +35,7 @@ const certImageMap: Record<string, string> = {
 export function AboutCertificationsSection({
   certifications,
 }: AboutCertificationsSectionProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const sectionRef = React.useRef<HTMLElement>(null);
   const headerRef = React.useRef<HTMLDivElement>(null);
   const logosRef = React.useRef<HTMLDivElement>(null);
@@ -128,15 +128,13 @@ export function AboutCertificationsSection({
         {/* Section Header */}
         <div ref={headerRef} className="mx-auto max-w-3xl text-center space-y-3.5">
           <span className="text-base sm:text-lg md:text-xl font-bold tracking-[0.2em] uppercase text-white/90">
-            SERTIFIKASI & STANDAR
+            {t("aboutPage.certifications.badge")}
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-white tracking-tight leading-tight">
-            Standar Mutu Tanpa Kompromi
+            {t("aboutPage.certifications.title")}
           </h2>
           <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal max-w-2xl sm:max-w-3xl mx-auto">
-            Seluruh material dan sistem perhitungan kami telah memenuhi standar
-            kualitas nasional secara ketat, menjamin keamanan dan keandalan
-            struktural di setiap proyek Anda.
+            {t("aboutPage.certifications.description")}
           </p>
         </div>
 

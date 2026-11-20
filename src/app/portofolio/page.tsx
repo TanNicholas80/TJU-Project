@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title =
     "Rekam Jejak TJU TRUSS | Portofolio Konstruksi Rangka Atap Baja Ringan Presisi";
   const description =
-    "Eksplorasi rekam jejak dan portofolio proyek konstruksi rangka atap baja ringan CV. Tri Jaya Utama (TJU Truss) untuk sektor komersial, industrial, dan residensial.";
+    "Eksplorasi rekam jejak dan portofolio proyek konstruksi rangka atap baja ringan CV. TRI JAYA UTAMA (TJU Truss) untuk sektor komersial, industrial, dan residensial.";
 
   const bannerImg = banner?.backgroundImageUrl || "/images/core_background.png";
 
@@ -32,9 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
       "Bandara NYIA Truss",
       "UNNES Baja Ringan",
     ],
-    authors: [{ name: "CV. Tri Jaya Utama", url: "https://tjutruss.com" }],
-    creator: "CV. Tri Jaya Utama",
-    publisher: "CV. Tri Jaya Utama",
+    authors: [{ name: "CV. TRI JAYA UTAMA", url: "https://tjutruss.com" }],
+    creator: "CV. TRI JAYA UTAMA",
+    publisher: "CV. TRI JAYA UTAMA",
     openGraph: {
       type: "website",
       locale: "id_ID",
@@ -97,11 +97,11 @@ export default async function PortfolioPage() {
         url: "https://tjutruss.com/portofolio",
         name: "Rekam Jejak TJU TRUSS | Portofolio Konstruksi Rangka Atap Baja Ringan Presisi",
         description:
-          "Eksplorasi rekam jejak dan portofolio proyek konstruksi rangka atap baja ringan CV. Tri Jaya Utama (TJU Truss) untuk sektor komersial, industrial, dan residensial.",
+          "Eksplorasi rekam jejak dan portofolio proyek konstruksi rangka atap baja ringan CV. TRI JAYA UTAMA (TJU Truss) untuk sektor komersial, industrial, dan residensial.",
         inLanguage: "id-ID",
         publisher: {
           "@type": "Organization",
-          name: "CV. Tri Jaya Utama",
+          name: "CV. TRI JAYA UTAMA",
           logo: "https://tjutruss.com/images/logo_tju.png",
         },
         breadcrumb: {
@@ -147,8 +147,14 @@ export default async function PortfolioPage() {
       <div className="flex flex-col w-full">
         {/* Hero Banner: Rekam Jejak TJU TRUSS (Home > Portofolio) */}
         <PageHeroBanner
-          title={banner?.titleI18n || "Rekam Jejak TJU TRUSS"}
-          breadcrumbCurrent="Portofolio"
+          title={
+            banner?.titleI18n || {
+              id: "Rekam Jejak TJU TRUSS",
+              en: "TJU TRUSS Track Record",
+              zh: "TJU TRUSS 经典业绩",
+            }
+          }
+          breadcrumbCurrent={banner?.breadcrumbI18n || "navigation.portfolio"}
           backgroundImageUrl={
             banner?.backgroundImageUrl || "/images/core_background.png"
           }

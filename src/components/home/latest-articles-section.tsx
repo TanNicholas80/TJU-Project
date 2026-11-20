@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n, Locale } from "@/lib/i18n";
 import { I18nString } from "@/db/schema";
+import { markViewIntent } from "@/lib/view-tracker";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -149,9 +150,11 @@ export function LatestArticlesSection({ posts }: LatestArticlesSectionProps) {
               "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80";
 
             return (
-              <article
+              <Link
                 key={item.id}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-200"
+                href={`/blog/${item.id}`}
+                onClick={() => markViewIntent("article", item.id)}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-200 block cursor-pointer"
               >
                 {/* Thumbnail Image Container */}
                 <div className="relative h-56 sm:h-60 w-full overflow-hidden bg-slate-100">
@@ -184,18 +187,15 @@ export function LatestArticlesSection({ posts }: LatestArticlesSectionProps) {
                     </p>
                   </div>
 
-                  {/* Baca Selengkapnya Link */}
+                  {/* Baca Selengkapnya */}
                   <div className="pt-2">
-                    <Link
-                      href={`/blog/${item.id}`}
-                      className="inline-flex items-center text-sm font-bold text-[#1E1F24] transition-colors group/link hover:text-[#F48902]"
-                    >
+                    <span className="inline-flex items-center text-sm font-bold text-[#1E1F24] transition-colors group-hover:text-[#F48902]">
                       <span>{t("homeBlog.readMore")}</span>
-                      <ArrowRight className="h-4 w-4 ml-1.5 transition-transform duration-200 group-hover/link:translate-x-1" />
-                    </Link>
+                      <ArrowRight className="h-4 w-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
                   </div>
                 </div>
-              </article>
+              </Link>
             );
           })}
         </div>

@@ -29,7 +29,7 @@ interface AboutCategoriesSectionProps {
 export function AboutCategoriesSection({
   categories,
 }: AboutCategoriesSectionProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const sectionRef = React.useRef<HTMLElement>(null);
   const titleRef = React.useRef<HTMLDivElement>(null);
   const lineRef = React.useRef<HTMLDivElement>(null);
@@ -125,7 +125,7 @@ export function AboutCategoriesSection({
         {/* Title with Orange Underline */}
         <div ref={titleRef} className="text-center space-y-4">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold italic text-[#1E1F24] tracking-tight">
-            Menangani Berbagai Skala Proyek
+            {t("aboutPage.categories.title")}
           </h2>
           <div ref={lineRef} className="mx-auto h-1.5 w-52 sm:w-64 md:w-72 bg-[#E76F1D] rounded-full" />
         </div>
@@ -187,7 +187,7 @@ export function AboutCategoriesSection({
               size="lg"
               className="group border border-[#E2E4EB] bg-[#F8F9FA] px-7 py-3 text-xs sm:text-sm font-semibold text-[#1E1F24] hover:bg-[#EEF2FA] hover:text-[#20449A] hover:border-[#20449A]/30 transition-all duration-200 shadow-sm rounded-lg"
             >
-              <span>Lihat Portfolio Kami</span>
+              <span>{t("aboutPage.categories.viewPortfolio")}</span>
               <ArrowRight className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
             </Button>
           </Link>

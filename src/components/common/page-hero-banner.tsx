@@ -22,20 +22,45 @@ export function PageHeroBanner({
   backgroundImageUrl = "/images/core_background.png",
   className,
 }: PageHeroBannerProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const bannerRef = React.useRef<HTMLDivElement>(null);
   const bgRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
   const displayTitle =
     typeof title === "string"
-      ? title
+      ? (title.startsWith("navigation.") || title.startsWith("aboutPage.") ? t(title) : title)
       : title[locale as Locale] || title.id || "";
 
-  const displayBreadcrumb =
-    typeof breadcrumbCurrent === "string"
-      ? breadcrumbCurrent
-      : breadcrumbCurrent[locale as Locale] || breadcrumbCurrent.id || "";
+  // Helper to extract clean breadcrumb label if it contains "Home > " or "首页 > "
+  const cleanBreadcrumbText = (text: string) => {
+    return text.replace(/^(Home|Beranda|首页)\s*>\s*/i, "").trim();
+  };
+
+  const resolveBreadcrumb = (): string => {
+    if (!breadcrumbCurrent) return "";
+    if (typeof breadcrumbCurrent === "object") {
+      const raw =
+        breadcrumbCurrent[locale as Locale] ||
+        breadcrumbCurrent.id ||
+        breadcrumbCurrent.en ||
+        "";
+      return cleanBreadcrumbText(raw);
+    }
+    // If it's a known i18n key or common page name
+    if (breadcrumbCurrent.startsWith("navigation.")) {
+      return t(breadcrumbCurrent);
+    }
+    const lower = breadcrumbCurrent.toLowerCase();
+    if (lower === "blog") return t("navigation.blog");
+    if (lower === "portofolio" || lower === "portfolio") return t("navigation.portfolio");
+    if (lower === "kontak" || lower === "contact" || lower === "contact us") return t("navigation.contact");
+    if (lower === "about" || lower === "about us" || lower === "tentang kami") return t("navigation.about");
+
+    return cleanBreadcrumbText(breadcrumbCurrent);
+  };
+
+  const displayBreadcrumb = resolveBreadcrumb();
 
   React.useEffect(() => {
     if (!bannerRef.current) return;
@@ -95,7 +120,7 @@ export function PageHeroBanner({
             href="/"
             className="text-[#F48902] hover:text-[#FFA633] transition-colors"
           >
-            Home
+            {t("navigation.home")}
           </Link>
           <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
           <span className="text-white">{displayBreadcrumb}</span>

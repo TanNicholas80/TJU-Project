@@ -15,14 +15,14 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   metadataBase: new URL("https://tjutruss.com"),
   title: {
-    default: "TJU TRUSS SYSTEM | CV. Tri Jaya Utama - Konstruksi Rangka Atap Baja Ringan Presisi",
+    default: "TJU TRUSS SYSTEM | CV. TRI JAYA UTAMA - Konstruksi Rangka Atap Baja Ringan Presisi",
     template: "%s | TJU TRUSS SYSTEM",
   },
   description:
-    "CV. Tri Jaya Utama (TJU Truss) - Fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering bersertifikat HAKI dengan garansi struktur 10 tahun.",
+    "CV. TRI JAYA UTAMA (TJU Truss) - Fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering bersertifikat HAKI dengan garansi struktur 10 tahun.",
   keywords: [
     "TJU Truss",
-    "CV Tri Jaya Utama",
+    "CV. TRI JAYA UTAMA",
     "Baja Ringan Semarang",
     "Rangka Atap Baja Ringan",
     "Kuda-kuda Baja Ringan",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     "Aplikator Baja Ringan Jawa Tengah",
     "Garansi Struktur Atap 10 Tahun",
   ],
-  authors: [{ name: "CV. Tri Jaya Utama", url: "https://tjutruss.com" }],
-  creator: "CV. Tri Jaya Utama",
-  publisher: "CV. Tri Jaya Utama",
+  authors: [{ name: "CV. TRI JAYA UTAMA", url: "https://tjutruss.com" }],
+  creator: "CV. TRI JAYA UTAMA",
+  publisher: "CV. TRI JAYA UTAMA",
   formatDetection: {
     email: false,
     address: false,
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US", "zh_CN"],
     url: "https://tjutruss.com",
     siteName: "TJU TRUSS SYSTEM",
-    title: "TJU TRUSS SYSTEM | CV. Tri Jaya Utama - Konstruksi Rangka Atap Baja Ringan Presisi",
+    title: "TJU TRUSS SYSTEM | CV. TRI JAYA UTAMA - Konstruksi Rangka Atap Baja Ringan Presisi",
     description:
       "Fabrikasi dan konstruksi rangka atap baja ringan berstandar SNI dan software engineering HAKI dengan garansi struktur 10 tahun.",
     images: [

@@ -85,7 +85,7 @@ test.describe("TJU Truss Public Landing Page", () => {
 
   test("should render Footer with company info and address", async ({ page }) => {
     await expect(
-      page.getByText(/CV. Tri Jaya Utama berkomitmen memberikan solusi rangka atap/i)
+      page.getByText(/CV\. TRI JAYA UTAMA berkomitmen memberikan solusi rangka atap/i)
     ).toBeVisible();
     await expect(page.locator("footer").getByText(/Jl. Patimura No.6C, Rejomulyo/i)).toBeVisible();
   });

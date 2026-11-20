@@ -109,6 +109,7 @@ export async function getPosts(limit: number = 3) {
         return rows.map((r: any) => ({
           ...r.post,
           categoryName: r.category?.nameI18n?.id || "Umum",
+          categoryNameI18n: r.category?.nameI18n,
         }));
       }
       return defaultPosts.slice(0, limit);
@@ -144,6 +145,7 @@ export async function getPostById(id: string) {
         return {
           ...row.post,
           categoryName: row.category?.nameI18n?.id || "Umum",
+          categoryNameI18n: row.category?.nameI18n,
         };
       }
       return null;
@@ -179,6 +181,7 @@ export async function getPortfolioById(id: string) {
         return {
           ...row.portfolio,
           categoryName: row.category?.nameI18n?.id || "Komersial",
+          categoryNameI18n: row.category?.nameI18n,
         };
       }
       return null;

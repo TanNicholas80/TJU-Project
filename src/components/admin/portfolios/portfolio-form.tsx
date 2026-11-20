@@ -19,18 +19,25 @@ import {
   Sparkles,
   Building2,
   CheckCircle2,
+  Video,
+  Play,
+  Upload,
+  Trash2,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { GalleryUpload } from "@/components/admin/gallery-upload";
 import { createPortfolio, updatePortfolio, PortfolioInput } from "@/actions/portfolios";
 import { getPortfolioCategoriesAdmin } from "@/actions/portfolio-categories";
+import { getVideoEmbedInfo } from "@/lib/video-helper";
 
 const portfolioFormSchema = z.object({
   titleId: z.string().min(3, "Judul proyek wajib diisi minimal 3 karakter"),
   categoryPortfolioId: z.string().optional().nullable(),
   location: z.string().min(2, "Lokasi proyek wajib diisi (misal: Semarang, Jawa Tengah)"),
   coverImageUrl: z.string().min(1, "Cover gambar proyek wajib diunggah"),
+  videoUrl: z.string().optional().nullable(),
   status: z.enum(["published", "draft"]).default("published"),
   galleryUrls: z.array(z.string()).default([]),
 });
@@ -50,6 +57,9 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
   const [previewMode, setPreviewMode] = React.useState<"card" | "detail">("card");
   const [activePreviewImage, setActivePreviewImage] = React.useState<string>("");
 
+  const [isVideoUploading, setIsVideoUploading] = React.useState(false);
+  const videoInputRef = React.useRef<HTMLInputElement>(null);
+
   const defaultValues: PortfolioFormData = {
     titleId: initialData?.titleI18n?.id || "",
     categoryPortfolioId: initialData?.categoryPortfolioId ? String(initialData.categoryPortfolioId) : "",
@@ -57,6 +67,7 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
     coverImageUrl:
       initialData?.coverImageUrl ||
       "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
+    videoUrl: initialData?.videoUrl || "",
     status: initialData?.status || "published",
     galleryUrls: initialData?.galleryUrls || [],
   };
@@ -66,11 +77,51 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<PortfolioFormData>({
     resolver: zodResolver(portfolioFormSchema) as any,
     defaultValues,
   });
+
+  const handleUploadVideoFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("video/")) {
+      toast.error("Berkas yang dipilih bukan format video yang didukung.");
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      toast.error("Ukuran file video melebihi batas 50MB.");
+      return;
+    }
+
+    setIsVideoUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "portfolio-videos");
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setValue("videoUrl", data.url, { shouldValidate: true, shouldDirty: true });
+        toast.success("Video berhasil diunggah");
+      } else {
+        toast.error(data.message || "Gagal mengunggah video");
+      }
+    } catch (err: any) {
+      toast.error("Terjadi kesalahan saat mengunggah video: " + err.message);
+    } finally {
+      setIsVideoUploading(false);
+      if (videoInputRef.current) videoInputRef.current.value = "";
+    }
+  };
 
   // Load portfolio categories for select dropdown
   React.useEffect(() => {
@@ -92,6 +143,7 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
   const watchedCategoryId = watch("categoryPortfolioId");
   const watchedLocation = watch("location");
   const watchedCoverImageUrl = watch("coverImageUrl");
+  const watchedVideoUrl = watch("videoUrl");
   const watchedStatus = watch("status");
   const watchedGalleryUrls = watch("galleryUrls") || [];
 
@@ -360,7 +412,96 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
               />
             </div>
 
-            {/* Card 3: Foto Galeri Tambahan */}
+            {/* Card 3: Sematan Video Proyek (Opsional) */}
+            <div className="rounded-2xl border border-[#E2E4EB] bg-white p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-sm font-bold text-[#1E1F24]">
+                    Sematkan Video Dokumentasi Proyek (Opsional)
+                  </label>
+                  <p className="text-xs text-[#62636C] mt-0.5">
+                    Mendukung tautan video YouTube, Vimeo, direct MP4 URL, atau unggah langsung file video (Maks. 50MB).
+                  </p>
+                </div>
+                {watchedVideoUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setValue("videoUrl", "", { shouldDirty: true })}
+                    className="inline-flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 font-semibold cursor-pointer"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                    <span>Hapus Video</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Video URL Input & Upload Action */}
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="relative flex-1">
+                    <Video className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Tempel link YouTube/Vimeo (e.g. https://www.youtube.com/watch?v=...) atau URL MP4"
+                      {...register("videoUrl")}
+                      className="w-full rounded-xl border border-[#E2E4EB] bg-white pl-10 pr-3.5 py-2.5 text-sm text-[#1E1F24] focus:outline-none focus:ring-2 focus:ring-[#20449A]"
+                    />
+                  </div>
+                  <input
+                    ref={videoInputRef}
+                    type="file"
+                    accept="video/mp4,video/webm,video/quicktime,video/ogg"
+                    onChange={handleUploadVideoFile}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => videoInputRef.current?.click()}
+                    disabled={isVideoUploading}
+                    className="rounded-xl border-[#E2E4EB] text-slate-700 hover:bg-[#F9F9FB] shrink-0"
+                  >
+                    {isVideoUploading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin text-[#20449A]" />
+                        <span>Mengunggah...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-4 w-4 mr-2 text-[#20449A]" />
+                        <span>Unggah File Video</span>
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                {/* Live Embedded Video Preview in Form */}
+                {watchedVideoUrl && (() => {
+                  const info = getVideoEmbedInfo(watchedVideoUrl);
+                  return (
+                    <div className="relative rounded-xl overflow-hidden bg-slate-900 border border-slate-200 aspect-video w-full max-w-xl mx-auto shadow-sm">
+                      {info.type === "youtube" || info.type === "vimeo" ? (
+                        <iframe
+                          src={info.embedUrl}
+                          title="Pratinjau Video Proyek"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full border-0"
+                        />
+                      ) : (
+                        <video
+                          src={info.embedUrl}
+                          controls
+                          className="w-full h-full object-contain"
+                        />
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+
+            {/* Card 4: Foto Galeri Tambahan */}
             <div className="rounded-2xl border border-[#E2E4EB] bg-white p-6 shadow-xs space-y-4">
               <Controller
                 control={control}
@@ -492,25 +633,63 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
                     </div>
                   </div>
 
-                  {/* Main Active Photo Box */}
+                  {/* Main Active Media Box (Image or Video) */}
                   <div className="relative w-full h-[220px] sm:h-[260px] rounded-xl overflow-hidden bg-slate-900 shadow-md">
-                    <Image
-                      src={activePreviewImage || previewCover}
-                      alt={previewTitle}
-                      fill
-                      sizes="500px"
-                      className="object-cover object-center"
-                    />
+                    {activePreviewImage === "video" && watchedVideoUrl ? (
+                      (() => {
+                        const info = getVideoEmbedInfo(watchedVideoUrl);
+                        return info.type === "youtube" || info.type === "vimeo" ? (
+                          <iframe
+                            src={info.embedUrl}
+                            title="Preview Video"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full border-0"
+                          />
+                        ) : (
+                          <video
+                            src={info.embedUrl}
+                            controls
+                            className="w-full h-full object-contain"
+                          />
+                        );
+                      })()
+                    ) : (
+                      <Image
+                        src={activePreviewImage || previewCover}
+                        alt={previewTitle}
+                        fill
+                        sizes="500px"
+                        className="object-cover object-center"
+                      />
+                    )}
                   </div>
 
                   {/* Interactive Thumbnails Row */}
                   <div className="space-y-1.5">
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 text-center">
-                      Foto Dokumentasi ({allPreviewImages.length})
+                      Media Dokumentasi ({allPreviewImages.length + (watchedVideoUrl ? 1 : 0)})
                     </p>
                     <div className="flex items-center justify-center gap-2 overflow-x-auto py-1">
+                      {/* Video Thumbnail Button if Video Exists */}
+                      {watchedVideoUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setActivePreviewImage("video")}
+                          className={`relative h-12 w-12 sm:h-14 sm:w-14 rounded-lg overflow-hidden shrink-0 border flex flex-col items-center justify-center bg-slate-900 text-white transition-all cursor-pointer ${
+                            activePreviewImage === "video"
+                              ? "ring-2 ring-[#F48902] border-transparent scale-105"
+                              : "opacity-80 hover:opacity-100 border-slate-700"
+                          }`}
+                          title="Putar Video Dokumentasi"
+                        >
+                          <Play className="h-4 w-4 text-[#F48902] fill-[#F48902]" />
+                          <span className="text-[9px] font-bold mt-0.5">Video</span>
+                        </button>
+                      )}
+
                       {allPreviewImages.slice(0, 5).map((imgUrl, idx) => {
-                        const isActive = (activePreviewImage || previewCover) === imgUrl;
+                        const isActive = activePreviewImage !== "video" && (activePreviewImage || previewCover) === imgUrl;
                         return (
                           <button
                             key={idx}

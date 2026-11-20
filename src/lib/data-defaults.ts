@@ -347,6 +347,7 @@ export const defaultPortfolios = [
     },
     location: "Kulon Progo, D.I. Yogyakarta",
     coverImageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=1200&q=80",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     views: 42,
     status: "published",
     createdAt: new Date("2026-09-08"),
@@ -758,7 +759,7 @@ export const defaultProducts = [
 export const defaultCompanyProfile = {
   id: 1,
   phone: "(024) 3519 776",
-  whatsapp: "+62 812-3456-7890",
+  whatsapp: "+6282135375588",
   email: "admin@tjutruss.com",
   address: "Jl. Patimura No.6C, Rejomulyo, Kec. Semarang Tim., Kota Semarang, Jawa Tengah, 50126",
   googleMapsIframe:
@@ -769,4 +770,5 @@ export const defaultCompanyProfile = {
     tiktok: "https://tiktok.com",
     linkedin: "https://linkedin.com",
   },
+  standardsColumns: 3,
 };

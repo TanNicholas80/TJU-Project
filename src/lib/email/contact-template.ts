@@ -23,7 +23,7 @@ export function generateContactEmailHtml(data: ContactEmailPayload): string {
   }
 
   const waReplyUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-    `Halo Bapak/Ibu ${name}, terima kasih telah menghubungi CV. Tri Jaya Utama (TJU Truss). Menindaklanjuti pesan Anda terkait:`
+    `Halo Bapak/Ibu ${name}, terima kasih telah menghubungi CV. TRI JAYA UTAMA (TJU Truss). Menindaklanjuti pesan Anda terkait:`
   )}`;
 
   const formattedDate = new Intl.DateTimeFormat("id-ID", {
@@ -214,7 +214,7 @@ ${message}
         ${
           email
             ? `<a href="mailto:${email}?subject=${encodeURIComponent(
-                "Tanggapan Konsultasi TJU Truss - CV. Tri Jaya Utama"
+                "Tanggapan Konsultasi TJU Truss - CV. TRI JAYA UTAMA"
               )}" class="button-secondary">Balas via Email</a>`
             : ""
         }
@@ -224,7 +224,7 @@ ${message}
     <!-- Footer -->
     <div class="footer">
       <div style="font-weight: 600; color: #64748B; margin-bottom: 4px;">
-        CV. Tri Jaya Utama (TJU TRUSS SYSTEM)
+        CV. TRI JAYA UTAMA (TJU TRUSS SYSTEM)
       </div>
       <div>
         Jl. Patimura No.6C, Rejomulyo, Kec. Semarang Timur, Kota Semarang, Jawa Tengah 50126

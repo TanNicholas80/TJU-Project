@@ -1,7 +1,7 @@
 {
   "navigation": {
-    "home": "Home",
-    "about": "About",
+    "home": "Beranda",
+    "about": "Tentang Kami",
     "blog": "Blog",
     "portfolio": "Portofolio",
     "contact": "Hubungi Kami"
@@ -33,7 +33,7 @@
     }
   },
   "footer": {
-    "companyDescription": "CV. Tri Jaya Utama berkomitmen memberikan solusi rangka atap baja ringan terbaik dengan standar engineering tinggi untuk Indonesia yang lebih aman.",
+    "companyDescription": "CV. TRI JAYA UTAMA berkomitmen memberikan solusi rangka atap baja ringan terbaik dengan standar engineering tinggi untuk Indonesia yang lebih aman.",
     "quickLinks": "Quick Links",
     "citySemarang": "Semarang",
     "copyright": "© 2026 TJU TRUSS®. All Rights Reserved."
@@ -58,7 +58,7 @@
   "history": {
     "badge": "AKAR SEJARAH YANG KUAT",
     "title": "Dari Inisiatif Menjadi Solusi Industri",
-    "description": "CV. Tri Jaya Utama hadir sejak tahun 2000 untuk menjawab tantangan kelangkaan kayu. Kami bertransformasi dari aplikator hingga produsen mandiri demi menjaga kontrol kualitas mutlak.",
+    "description": "CV. TRI JAYA UTAMA hadir sejak tahun 2000 untuk menjawab tantangan kelangkaan kayu. Kami bertransformasi dari aplikator hingga produsen mandiri demi menjaga kontrol kualitas mutlak.",
     "cta": "Pelajari Tentang Kami",
     "milestones": {
       "m2000": {
@@ -67,7 +67,7 @@
       },
       "m2001": {
         "year": "2001",
-        "description": "Pendirian CV Tri Jaya Utama. Lahirnya merek TJU TRUSS sebagai aplikator dan distributor resmi."
+        "description": "Pendirian CV. TRI JAYA UTAMA. Lahirnya merek TJU TRUSS sebagai aplikator dan distributor resmi."
       },
       "m2010": {
         "year": "2010",
@@ -80,8 +80,8 @@
     }
   },
   "coreValues": {
-    "title": "Core Values",
-    "description": "CV. Tri Jaya Utama menggunaan software yang sudah di verifikasi oleh HAKI dan sudah mendapatkan sertifikat layak pakai."
+    "title": "Nilai Utama",
+    "description": "CV. TRI JAYA UTAMA menggunakan software yang sudah diverifikasi oleh HAKI dan sudah mendapatkan sertifikat layak pakai."
   },
   "cta": {
     "title": "Kekuatan Sejati Dimulai dari Perhitungan yang Presisi.",
@@ -101,21 +101,71 @@
   "homeBlog": {
     "title": "Blog & Artikel",
     "readMore": "Baca Selengkapnya",
-    "viewMore": "Lihat lebih lengkap"
+    "viewMore": "Lihat lebih lengkap",
+    "searchPlaceholder": "Cari Artikel",
+    "allCategory": "Semua",
+    "emptyMessage": "Tidak ada artikel yang cocok dengan pencarian Anda."
   },
   "homeContact": {
     "title": "Hubungi Kami",
     "emailLabel": "Email",
     "phoneLabel": "Telepon",
+    "whatsappLabel": "WhatsApp",
     "addressLabel": "Alamat",
-    "formTitle": "Send Message",
-    "formSubtitle": "Fill out the form below and we will contact you shortly.",
-    "nameLabel": "Name",
-    "namePlaceholder": "Enter your name",
-    "phoneFieldLabel": "Phone Number",
+    "formTitle": "Kirim Pesan",
+    "formSubtitle": "Isi formulir di bawah ini dan kami akan segera menghubungi Anda.",
+    "nameLabel": "Nama",
+    "namePlaceholder": "Masukkan nama Anda",
+    "phoneFieldLabel": "Nomor Telepon",
     "phonePlaceholder": "+62 xxx xxxx xxx",
-    "projectDetailsLabel": "Project Details",
-    "projectDetailsPlaceholder": "Describe your project needs ...",
-    "sendButton": "Send Messages"
+    "projectDetailsLabel": "Detail Proyek",
+    "projectDetailsPlaceholder": "Deskripsikan kebutuhan proyek Anda ...",
+    "sendButton": "Kirim Pesan"
+  },
+  "aboutPage": {
+    "story": {
+      "badge": "TENTANG KAMI",
+      "title": "Membangun Pondasi Kepercayaan.",
+      "p1": "CV. TRI JAYA UTAMA didirikan pada tahun 2000 untuk menjawab besarnya permintaan pasar terhadap rangka atap baja ringan akibat semakin langkanya kayu berkualitas.",
+      "p2": "Berawal dari aplikator pada tahun 2001 dengan merek TJU TRUSS, kami bertransformasi pada 2010 dengan memproduksi profil secara mandiri. Langkah ini memastikan kontrol kualitas mutlak, harga kompetitif, dan jaminan garansi nyata bagi Anda.",
+      "qcBadge": {
+        "line1": "QUALITY",
+        "line2": "CONTROL",
+        "line3": "MUTLAK"
+      },
+      "videoTitle": "Company Profile"
+    },
+    "certifications": {
+      "badge": "SERTIFIKASI & STANDAR",
+      "title": "Standar Mutu Tanpa Kompromi",
+      "description": "Seluruh material dan sistem perhitungan kami telah memenuhi standar kualitas nasional secara ketat, menjamin keamanan dan keandalan struktural di setiap proyek Anda."
+    },
+    "visionMission": {
+      "visionBadge": "VISI PERUSAHAAN",
+      "visionText": "Menjadi perusahaan aplikasi rangka atap baja ringan terbesar, kompetitif, dan terpercaya di Indonesia.",
+      "missionBadge": "MISI PERUSAHAAN",
+      "m1": "Mengutamakan kepentingan bersama bagi kepentingan semua pihak terkait.",
+      "m2": "Memberikan pelayanan terbaik.",
+      "m3": "Mengutamakan keamanan dan kenyamanan bagi pelanggan.",
+      "m4": "Kepedulian terhadap lingkungan hidup dan masyarakat.",
+      "m5": "Mengoptimalkan sumber daya manusia."
+    },
+    "categories": {
+      "title": "Menangani Berbagai Skala Proyek",
+      "viewPortfolio": "Lihat Portofolio Kami"
+    }
+  },
+  "blogDetail": {
+    "back": "Kembali",
+    "needConsultation": "Butuh Konsultasi?",
+    "consultationDesc": "Tim kami siap membantu kebutuhan konstruksi rangka atap untuk proyek Anda.",
+    "consultationBtn": "Konsultasi Proyek",
+    "otherArticles": "Artikel Lainnya",
+    "readMore": "Baca Selengkapnya"
+  },
+  "portfolioDetail": {
+    "breadcrumb": "Detail Proyek",
+    "otherProjects": "Proyek Kami Lainnya",
+    "viewMore": "Lihat Lebih Banyak"
   }
 }

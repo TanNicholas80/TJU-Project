@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { Phone, Mail, MapPin, Send, Loader2 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "@/lib/i18n";
@@ -205,50 +206,85 @@ export function ContactSection({ profile }: ContactSectionProps) {
           {/* Left Column: 3 Contact Info Cards */}
           <div ref={leftCardsRef} className="lg:col-span-5 flex flex-col gap-4 sm:gap-5">
             {/* 1. Email Card */}
-            <div className="flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
-              <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm">
+            <a
+              href={`mailto:${profile.email || "admin@tjutruss.com"}`}
+              className="group flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm group-hover:scale-105 transition-transform">
                 <Mail className="h-6 w-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs sm:text-sm font-medium text-slate-500">
                   {t("homeContact.emailLabel")}
                 </p>
-                <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] truncate mt-0.5">
+                <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] truncate mt-0.5 group-hover:text-[#20449A] transition-colors">
                   {profile.email || "admin@tjutruss.com"}
                 </h4>
               </div>
-            </div>
+            </a>
 
             {/* 2. Telepon Card */}
-            <div className="flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
-              <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm">
+            <a
+              href={`tel:${(profile.phone || "(024) 3519 776").replace(/[^0-9]/g, "")}`}
+              className="group flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm group-hover:scale-105 transition-transform">
                 <Phone className="h-6 w-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs sm:text-sm font-medium text-slate-500">
                   {t("homeContact.phoneLabel")}
                 </p>
-                <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] truncate mt-0.5">
+                <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] truncate mt-0.5 group-hover:text-[#20449A] transition-colors">
                   {profile.phone || "(024) 3519 776"}
                 </h4>
               </div>
-            </div>
+            </a>
 
-            {/* 3. Alamat Card */}
-            <div className="flex items-start gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
-              <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm mt-0.5">
+            {/* 3. WhatsApp Card */}
+            {profile.whatsapp && (
+              <a
+                href={`https://wa.me/${profile.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                  "Halo TJU TRUSS SYSTEM, saya ingin konsultasi mengenai proyek rangka atap baja ringan."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm group-hover:scale-105 transition-transform">
+                  <FaWhatsapp className="h-6 w-6" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-slate-500">
+                    {t("homeContact.whatsappLabel") || "WhatsApp"}
+                  </p>
+                  <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] truncate mt-0.5 group-hover:text-[#20449A] transition-colors">
+                    {profile.whatsapp}
+                  </h4>
+                </div>
+              </a>
+            )}
+
+            {/* 4. Alamat Card */}
+            <a
+              href="https://maps.google.com/?q=Jl.+Patimura+No.6C%2C+Rejomulyo%2C+Semarang"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-start gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl bg-[#F9F9FB] border border-slate-100 shadow-xs transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-[#20449A] text-white shadow-sm mt-0.5 group-hover:scale-105 transition-transform">
                 <MapPin className="h-6 w-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs sm:text-sm font-medium text-slate-500">
                   {t("homeContact.addressLabel")}
                 </p>
-                <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] leading-snug mt-1">
+                <h4 className="text-sm sm:text-base font-bold text-[#1E1F24] leading-snug mt-1 group-hover:text-[#20449A] transition-colors">
                   {profile.address ||
                     "Jl. Patimura No.6C, Rejomulyo, Kec. Semarang Tim., Kota Semarang, Jawa Tengah, 50126"}
                 </h4>
               </div>
-            </div>
+            </a>
           </div>
 
           {/* Right Column: Send Message Card */}

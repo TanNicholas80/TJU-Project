@@ -32,6 +32,8 @@ import {
   createStandard,
   updateStandard,
   deleteStandard,
+  getStandardsLayoutAdmin,
+  updateStandardsLayout,
   StandardInput,
 } from "@/actions/standards";
 
@@ -137,6 +139,8 @@ export default function AdminStandardsPage() {
 
   const [deleteTarget, setDeleteTarget] = React.useState<any | null>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [columnsCount, setColumnsCount] = React.useState<number>(3);
+  const [isSavingLayout, setIsSavingLayout] = React.useState(false);
 
   const {
     register,
@@ -166,9 +170,15 @@ export default function AdminStandardsPage() {
   const loadData = React.useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await getStandardsAdmin();
+      const [res, layoutRes] = await Promise.all([
+        getStandardsAdmin(),
+        getStandardsLayoutAdmin(),
+      ]);
       if (res.success && res.data) {
         setItems(res.data);
+      }
+      if (layoutRes.success && layoutRes.columns) {
+        setColumnsCount(layoutRes.columns);
       }
     } catch {
       toast.error("Gagal memuat standar mutu");
@@ -176,6 +186,23 @@ export default function AdminStandardsPage() {
       setIsLoading(false);
     }
   }, []);
+
+  const handleUpdateLayout = async (cols: number) => {
+    setColumnsCount(cols);
+    setIsSavingLayout(true);
+    try {
+      const res = await updateStandardsLayout(cols);
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch {
+      toast.error("Gagal menyimpan tata letak grid");
+    } finally {
+      setIsSavingLayout(false);
+    }
+  };
 
   React.useEffect(() => {
     loadData();
@@ -351,6 +378,50 @@ export default function AdminStandardsPage() {
           <Plus className="h-4 w-4 mr-1.5" />
           Tambah Standar Mutu
         </Button>
+      </div>
+
+      {/* Pengaturan Fleksibilitas Tampilan Grid Card per Baris */}
+      <div className="rounded-2xl border border-[#E2E4EB] bg-white p-5 sm:p-6 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#20449A]/10 text-[#20449A]">
+                <Layers className="h-4 w-4" />
+              </span>
+              <h3 className="text-base font-bold text-[#1E1F24]">
+                Fleksibilitas Grid Card (Card per Baris)
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-[#62636C]">
+              Tentukan berapa banyak kartu standar kualitas yang ditampilkan dalam sebaris di halaman Beranda.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { val: 2, label: "2 Card / Baris", desc: "Grid 2 Kolom" },
+              { val: 3, label: "3 Card / Baris", desc: "Grid 3 Kolom (Klasik)" },
+              { val: 4, label: "4 Card / Baris", desc: "Grid 4 Kolom (Rata 1 Baris)" },
+            ].map((opt) => (
+              <button
+                key={opt.val}
+                type="button"
+                disabled={isSavingLayout}
+                onClick={() => handleUpdateLayout(opt.val)}
+                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer ${
+                  columnsCount === opt.val
+                    ? "bg-[#20449A] text-white border-[#20449A] shadow-xs scale-102"
+                    : "bg-[#F9F9FB] text-slate-700 border-slate-200 hover:border-[#20449A] hover:bg-white"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+            {isSavingLayout && (
+              <Loader2 className="h-4 w-4 animate-spin text-[#20449A] ml-1" />
+            )}
+          </div>
+        </div>
       </div>
 
       {isLoading ? (

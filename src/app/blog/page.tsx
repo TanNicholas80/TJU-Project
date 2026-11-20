@@ -26,9 +26,9 @@ export async function generateMetadata(): Promise<Metadata> {
       "TJU Truss Blog",
       "Edukasi Rangka Atap",
     ],
-    authors: [{ name: "CV. Tri Jaya Utama", url: "https://tjutruss.com" }],
-    creator: "CV. Tri Jaya Utama",
-    publisher: "CV. Tri Jaya Utama",
+    authors: [{ name: "CV. TRI JAYA UTAMA", url: "https://tjutruss.com" }],
+    creator: "CV. TRI JAYA UTAMA",
+    publisher: "CV. TRI JAYA UTAMA",
     openGraph: {
       type: "website",
       locale: "id_ID",
@@ -94,7 +94,7 @@ export default async function BlogPage() {
           "Kumpulan artikel edukatif, panduan teknis, dan wawasan engineering seputar desain rangka atap baja ringan berstandar SNI dan software HAKI.",
         publisher: {
           "@type": "Organization",
-          name: "CV. Tri Jaya Utama",
+          name: "CV. TRI JAYA UTAMA",
           logo: "https://tjutruss.com/images/logo_tju.png",
         },
         inLanguage: "id-ID",
@@ -140,8 +140,14 @@ export default async function BlogPage() {
       <div className="flex flex-col w-full">
         {/* Hero Banner: Blog & Artikel (Home > Blog) */}
         <PageHeroBanner
-          title={banner?.titleI18n || "Blog & Artikel"}
-          breadcrumbCurrent="Blog"
+          title={
+            banner?.titleI18n || {
+              id: "Blog & Artikel",
+              en: "Blog & Articles",
+              zh: "博客与文章",
+            }
+          }
+          breadcrumbCurrent={banner?.breadcrumbI18n || "navigation.blog"}
           backgroundImageUrl={
             banner?.backgroundImageUrl || "/images/core_background.png"
           }

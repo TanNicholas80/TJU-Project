@@ -34,6 +34,7 @@ const portfolioSchema = z.object({
   categoryPortfolioId: z.string().optional().nullable(),
   location: z.string().min(2, "Lokasi proyek wajib diisi (misal: Semarang, Jawa Tengah)"),
   coverImageUrl: z.string().min(1, "Cover gambar wajib diisi"),
+  videoUrl: z.string().optional().nullable(),
   status: z.enum(["published", "draft"]).default("published"),
   galleryUrls: z.array(z.string()).optional(),
 });
@@ -158,6 +159,7 @@ export async function createPortfolio(input: PortfolioInput) {
           titleI18n,
           location: validated.location,
           coverImageUrl: validated.coverImageUrl,
+          videoUrl: validated.videoUrl || null,
           status: validated.status,
         })
         .returning();
@@ -230,6 +232,7 @@ export async function updatePortfolio(id: string, input: PortfolioInput) {
           titleI18n,
           location: validated.location,
           coverImageUrl: validated.coverImageUrl,
+          videoUrl: validated.videoUrl || null,
           status: validated.status,
           updatedAt: new Date(),
         })

@@ -36,7 +36,7 @@ export async function generateMetadata({
       "Rangka Atap Baja Ringan",
       "Software HAKI Rangka Atap",
       "Konstruksi Atap Presisi",
-      "CV. Tri Jaya Utama",
+      "CV. TRI JAYA UTAMA",
       "Baja Ringan G550",
     ],
     alternates: {
@@ -82,8 +82,10 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
     .map((p: any) => ({
       id: p.id,
       title: p.titleI18n?.id || "Artikel Lainnya",
+      titleI18n: p.titleI18n,
       coverImageUrl: p.coverImageUrl || "/images/gambar_1.JPG",
       categoryName: p.categoryName || "Engineering",
+      categoryNameI18n: p.categoryNameI18n,
       createdAt: p.createdAt,
     }));
 
@@ -103,7 +105,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
     datePublished: post.createdAt ? new Date(post.createdAt).toISOString() : new Date().toISOString(),
     author: {
       "@type": "Organization",
-      name: "CV. Tri Jaya Utama",
+      name: "CV. TRI JAYA UTAMA",
       url: "https://tjutruss.com",
     },
     publisher: {
@@ -134,9 +136,12 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
       <BlogDetailContent
         id={id}
         title={title}
+        titleI18n={post.titleI18n}
         categoryName={categoryName}
+        categoryNameI18n={post.categoryNameI18n}
         coverImageUrl={coverImageUrl}
         contentHtml={contentHtml}
+        contentHtmlI18n={post.contentHtmlI18n}
         relatedPosts={relatedPosts}
       />
     </PublicLayout>

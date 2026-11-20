@@ -56,6 +56,23 @@ export function BlogContentSection({
     return field[locale as Locale] || field.id || "";
   };
 
+  const getCategoryName = (post: PostItem) => {
+    if (post.categoryPostId) {
+      const found = categories.find((c) => String(c.id) === String(post.categoryPostId));
+      if (found) return getLocalized(found.nameI18n);
+    }
+    if (post.categoryName) {
+      const found = categories.find(
+        (c) =>
+          c.slug?.toLowerCase() === post.categoryName?.toLowerCase() ||
+          c.nameI18n?.id?.toLowerCase() === post.categoryName?.toLowerCase()
+      );
+      if (found) return getLocalized(found.nameI18n);
+      return post.categoryName;
+    }
+    return "Engineering";
+  };
+
   // Filtered posts based on search query and category
   const filteredPosts = React.useMemo(() => {
     return posts.filter((post) => {
@@ -68,14 +85,20 @@ export function BlogContentSection({
 
       const matchesCategory =
         selectedCategory === "all" ||
+        (post.categoryPostId && String(post.categoryPostId) === selectedCategory) ||
         (post.categoryName &&
           post.categoryName.toLowerCase() === selectedCategory.toLowerCase()) ||
-        (post.categoryPostId &&
-          String(post.categoryPostId) === selectedCategory);
+        categories.some(
+          (c) =>
+            String(c.id) === selectedCategory &&
+            (String(post.categoryPostId) === String(c.id) ||
+              (post.categoryName &&
+                post.categoryName.toLowerCase() === (c.nameI18n?.id || "").toLowerCase()))
+        );
 
       return matchesSearch && matchesCategory;
     });
-  }, [posts, searchQuery, selectedCategory, locale]);
+  }, [posts, searchQuery, selectedCategory, locale, categories]);
 
   // Featured post is the first matching post, remaining are in grid
   const featuredPost = filteredPosts[0];
@@ -183,7 +206,7 @@ export function BlogContentSection({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari Artikel"
+                placeholder={t("homeBlog.searchPlaceholder") || "Cari Artikel"}
                 className="w-full bg-transparent text-sm text-[#1E1F24] placeholder:text-slate-400 focus:outline-none"
               />
               {searchQuery && (
@@ -206,11 +229,11 @@ export function BlogContentSection({
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="appearance-none cursor-pointer rounded-xl bg-[#F0F2F5] hover:bg-slate-200/70 border border-transparent py-3 pl-4 pr-10 text-sm font-medium text-[#1E1F24] shadow-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#20449A]/20 focus:border-slate-300 transition-all min-w-[130px]"
               >
-                <option value="all">Semua</option>
+                <option value="all">{t("homeBlog.allCategory") || "Semua"}</option>
                 {categories.map((cat) => {
                   const catName = getLocalized(cat.nameI18n);
                   return (
-                    <option key={cat.id} value={catName}>
+                    <option key={cat.id} value={String(cat.id)}>
                       {catName}
                     </option>
                   );
@@ -224,14 +247,14 @@ export function BlogContentSection({
         {/* 2. Artikel Unggulan / Featured Card (Identik 100% dengan Gambar Desain) */}
         {featuredPost ? (
           <div ref={featuredRef}>
-            <div className="group overflow-hidden rounded-2xl md:rounded-3xl bg-white border border-slate-100 shadow-xs hover:shadow-lg transition-all duration-300 p-6 sm:p-8 lg:p-10">
+            <Link
+              href={`/blog/${featuredPost.id}`}
+              onClick={() => markViewIntent("article", featuredPost.id)}
+              className="group overflow-hidden rounded-2xl md:rounded-3xl bg-white border border-slate-100 shadow-xs hover:shadow-lg transition-all duration-300 p-6 sm:p-8 lg:p-10 block cursor-pointer"
+            >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 items-center">
                 {/* Left Side: Featured Image (Presisi dengan sudut melengkung tanpa nested padding) */}
-                <Link
-                  href={`/blog/${featuredPost.id}`}
-                  onClick={() => markViewIntent("article", featuredPost.id)}
-                  className="lg:col-span-6 relative aspect-[16/10] sm:aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-xs bg-slate-100 block cursor-pointer"
-                >
+                <div className="lg:col-span-6 relative aspect-[16/10] sm:aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-xs bg-slate-100 block">
                   <Image
                     src={featuredPost.coverImageUrl || "/images/gambar_1.JPG"}
                     alt={getLocalized(featuredPost.titleI18n)}
@@ -240,25 +263,20 @@ export function BlogContentSection({
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                   />
-                </Link>
+                </div>
 
                 {/* Right Side: Featured Content (Presisi badge, tipografi judul, kutipan & tombol) */}
                 <div className="lg:col-span-6 flex flex-col justify-center items-start space-y-4 sm:space-y-5">
                   {/* Category Pill (Dark) */}
                   <div>
                     <span className="inline-block rounded-full bg-[#1E1F24] px-4 py-1.5 text-xs font-semibold text-white tracking-wide shadow-xs">
-                      {featuredPost.categoryName || "Engineering"}
+                      {getCategoryName(featuredPost)}
                     </span>
                   </div>
 
                   {/* Title */}
                   <h2 className="text-2xl sm:text-3xl md:text-[32px] lg:text-[34px] font-bold text-[#1E1F24] leading-snug sm:leading-tight tracking-tight group-hover:text-[#20449A] transition-colors">
-                    <Link
-                      href={`/blog/${featuredPost.id}`}
-                      onClick={() => markViewIntent("article", featuredPost.id)}
-                    >
-                      {getLocalized(featuredPost.titleI18n)}
-                    </Link>
+                    {getLocalized(featuredPost.titleI18n)}
                   </h2>
 
                   {/* Excerpt */}
@@ -268,25 +286,21 @@ export function BlogContentSection({
 
                   {/* Baca Selengkapnya Link */}
                   <div className="pt-2 sm:pt-4">
-                    <Link
-                      href={`/blog/${featuredPost.id}`}
-                      onClick={() => markViewIntent("article", featuredPost.id)}
-                      className="inline-flex items-center text-sm sm:text-base font-bold text-[#1E1F24] hover:text-[#F48902] transition-colors group/link"
-                    >
+                    <span className="inline-flex items-center text-sm sm:text-base font-bold text-[#1E1F24] group-hover:text-[#F48902] transition-colors">
                       <span>{t("homeBlog.readMore") || "Baca Selengkapnya"}</span>
-                      <span className="ml-2 font-normal transition-transform duration-200 group-hover/link:translate-x-1.5">
+                      <span className="ml-2 font-normal transition-transform duration-200 group-hover:translate-x-1.5">
                         &rarr;
                       </span>
-                    </Link>
+                    </span>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center text-slate-400">
             <p className="text-base font-medium">
-              Tidak ada artikel yang cocok dengan pencarian Anda.
+              {t("homeBlog.emptyMessage") || "Tidak ada artikel yang cocok dengan pencarian Anda."}
             </p>
           </div>
         )}
@@ -303,16 +317,14 @@ export function BlogContentSection({
               const categoryBadge = post.categoryName || "Engineering";
 
               return (
-                <article
+                <Link
                   key={post.id}
-                  className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-slate-200"
+                  href={`/blog/${post.id}`}
+                  onClick={() => markViewIntent("article", post.id)}
+                  className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-slate-200 block cursor-pointer"
                 >
                   {/* Thumbnail Image Container with Badge Overlaid */}
-                  <Link
-                    href={`/blog/${post.id}`}
-                    onClick={() => markViewIntent("article", post.id)}
-                    className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-100 block cursor-pointer"
-                  >
+                  <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-100 block">
                     <Image
                       src={
                         post.coverImageUrl ||
@@ -327,22 +339,17 @@ export function BlogContentSection({
                     {/* Category Pill Overlaid at Top-Left */}
                     <div className="absolute top-3.5 left-3.5 z-10">
                       <span className="inline-block rounded-full bg-[#1E1F24]/90 backdrop-blur-xs px-3.5 py-1 text-[11px] font-semibold text-white shadow-xs">
-                        {categoryBadge}
+                        {getCategoryName(post)}
                       </span>
                     </div>
-                  </Link>
+                  </div>
 
                   {/* Content Body */}
                   <div className="p-6 flex flex-1 flex-col justify-between space-y-4">
                     <div className="space-y-2.5">
                       {/* Title */}
                       <h3 className="text-base sm:text-lg font-bold text-[#1E1F24] leading-snug line-clamp-2 group-hover:text-[#20449A] transition-colors">
-                        <Link
-                          href={`/blog/${post.id}`}
-                          onClick={() => markViewIntent("article", post.id)}
-                        >
-                          {title}
-                        </Link>
+                        {title}
                       </h3>
 
                       {/* Excerpt */}
@@ -351,19 +358,15 @@ export function BlogContentSection({
                       </p>
                     </div>
 
-                    {/* Baca Selengkapnya Link */}
+                    {/* Baca Selengkapnya */}
                     <div className="pt-2">
-                      <Link
-                        href={`/blog/${post.id}`}
-                        onClick={() => markViewIntent("article", post.id)}
-                        className="inline-flex items-center text-xs sm:text-sm font-bold text-[#1E1F24] hover:text-[#F48902] transition-colors group/btn"
-                      >
+                      <span className="inline-flex items-center text-xs sm:text-sm font-bold text-[#1E1F24] group-hover:text-[#F48902] transition-colors">
                         <span>{t("homeBlog.readMore") || "Baca Selengkapnya"}</span>
-                        <ArrowRight className="h-3.5 w-3.5 ml-1.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                      </Link>
+                        <ArrowRight className="h-3.5 w-3.5 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+                      </span>
                     </div>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>
