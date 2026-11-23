@@ -24,6 +24,7 @@ const settingsSchema = z.object({
   tiktok: z.string().optional(),
   linkedin: z.string().optional(),
   standardsColumns: z.coerce.number().min(2).max(4).optional(),
+  carouselInterval: z.coerce.number().min(3).max(30).optional().default(6),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;
@@ -44,11 +45,15 @@ export async function updateCompanyProfile(input: SettingsInput) {
   try {
     const validated = settingsSchema.parse(input);
 
+    const [existing] = await db.select().from(schema.companyProfile).limit(1);
+
     const socialLinks = {
+      ...(existing?.socialLinks || {}),
       instagram: validated.instagram || "",
       facebook: validated.facebook || "",
       tiktok: validated.tiktok || "",
       linkedin: validated.linkedin || "",
+      carouselInterval: validated.carouselInterval || existing?.socialLinks?.carouselInterval || 6,
     };
 
     try {

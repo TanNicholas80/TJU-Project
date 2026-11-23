@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { MediaGuideCard } from "@/components/admin/media-guide-card";
 import { createCarousel, updateCarousel, CarouselInput } from "@/actions/carousel";
 
 const carouselFormSchema = z.object({
@@ -179,6 +180,9 @@ export function CarouselForm({ initialData, carouselId, isEdit = false }: Carous
         {/* LEFT COLUMN: Modern Input Form                           */}
         {/* ======================================================== */}
         <div className="lg:col-span-5 xl:col-span-5 space-y-6">
+          {/* Best Practice Media Guide Banner */}
+          <MediaGuideCard type="carousel" />
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* 1. SECTION UPLOAD GAMBAR */}
             <div className="rounded-2xl border border-[#E2E4EB] bg-white p-5 sm:p-6 shadow-xs space-y-4">

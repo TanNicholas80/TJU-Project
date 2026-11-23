@@ -50,7 +50,7 @@
     "residential": {
       "title": "住宅建筑",
       "description": "家宅屋顶是守护全家安宁的坚实保障。我们确保施工规范整洁、结构严谨并附带官方保修。TJU Truss 为注重卓越品质而非盲目追求低价的业主提供长久安心。",
-      "point1": "终身防白蚁与高等级防锈抗腐",
+      "point1": "防白蚁与高等级防锈抗腐",
       "point2": "认证专家团队精准标准化施工",
       "point3": "企业官方正式结构安全质保"
     }
@@ -80,8 +80,20 @@
     }
   },
   "coreValues": {
-    "title": "核心价值观",
-    "description": "CV. TRI JAYA UTAMA 采用经 HAKI 权威验证的专业软件，并已荣获合格使用证书。"
+    "badge": "为什么选择 TJU TRUSS？",
+    "title": "不止于坚固，更是经过精准测算的绝对安全",
+    "description": "屋顶坍塌隐患往往始于凭经验估算。我们采用 HAKI 官方认证软件进行科学力学计算，彻底消除隐患，全方位守护您的资产与家人安全。",
+    "point1Title": "HAKI 官方认证软件",
+    "point1Desc": "严谨的风荷载与抗震受力分析。",
+    "point2Title": "高强度 G550 优质钢",
+    "point2Desc": "符合 SNI 标准，持久防腐抗锈。",
+    "point3Title": "企业正式质保",
+    "point3Desc": "长久安心的结构安全保障。",
+    "cardBadge": "权威资质认证",
+    "cardTitle": "HAKI 官方认证软件",
+    "cardSubtitle": "印尼结构工程师学会",
+    "cardDesc": "屋顶结构计算拥有合格使用认证，保障建筑达到极高安全标准。",
+    "cardTag": "合格使用证书"
   },
   "cta": {
     "title": "真正的坚固，始于精准无误的严谨测算。",

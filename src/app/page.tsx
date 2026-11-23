@@ -139,31 +139,34 @@ export default async function HomePage() {
 
       <main className="flex-1 flex flex-col">
         {/* 1. Hero Carousel (Dinamis dari CMS) */}
-        <HeroCarousel slides={slides as any} />
+        <HeroCarousel
+          slides={slides as any}
+          intervalSeconds={profile?.socialLinks?.carouselInterval || 6}
+        />
 
-        {/* 2. Standar Kualitas TJU (Dinamis dari CMS & Layout Grid Fleksibel) */}
+        {/* 2. Core Values & Storytelling (Mengapa TJU Truss System) */}
+        <CoreValuesSection />
+
+        {/* 3. Standar Kualitas TJU (Dinamis dari CMS & Layout Grid Fleksibel) */}
         <QualityStandardsSection
           standards={standards as any}
           columns={profile?.standardsColumns || 3}
         />
 
-        {/* 3. Keahlian Kami (Statis Split Layout) */}
+        {/* 4. Keahlian Kami (Statis Split Layout) */}
         <ExpertiseSection />
 
-        {/* 4. Akar Sejarah Kami (Statis Timeline Sesuai Desain) */}
+        {/* 5. Akar Sejarah Kami (Statis Timeline Sesuai Desain) */}
         <HistorySection />
 
-        {/* 5. Proyek Terbaik / Portofolio (Dinamis dari CMS & Tab Kategori) */}
+        {/* 6. Proyek Terbaik / Portofolio (Dinamis dari CMS & Tab Kategori) */}
         <FeaturedPortfolioSection
           portfolios={portfolios as any}
           categories={categories as any}
         />
 
-        {/* 6. Blog & Artikel (Dinamis dari CMS 3-Column Grid) */}
+        {/* 7. Blog & Artikel (Dinamis dari CMS 3-Column Grid) */}
         <LatestArticlesSection posts={posts as any} />
-
-        {/* 7. Core Values (HAKI Verified Software) */}
-        <CoreValuesSection />
 
         {/* 8. Contact Us / Hubungi Kami (Dinamis dari CMS Profile) */}
         <ContactSection profile={profile as any} />

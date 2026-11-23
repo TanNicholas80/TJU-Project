@@ -50,7 +50,7 @@
     "residential": {
       "title": "Residensial",
       "description": "Atap rumah adalah pelindung keluarga. Kami memastikan instalasi rapi, terstruktur, dan bergaransi resmi. TJU Truss memberikan ketenangan pikiran bagi pemilik rumah yang mengutamakan kualitas di atas sekadar harga murah.",
-      "point1": "Anti Rayap & Tahan Karat Seumur Hidup",
+      "point1": "Anti Rayap & Tahan Karat",
       "point2": "Instalasi Presisi oleh Tenaga Ahli",
       "point3": "Garansi Struktural Resmi Perusahaan"
     }
@@ -80,8 +80,20 @@
     }
   },
   "coreValues": {
-    "title": "Nilai Utama",
-    "description": "CV. TRI JAYA UTAMA menggunakan software yang sudah diverifikasi oleh HAKI dan sudah mendapatkan sertifikat layak pakai."
+    "badge": "KENAPA TJU TRUSS?",
+    "title": "Bukan Sekadar Kuat, Tapi Pasti Aman & Terhitung Presisi",
+    "description": "Atap roboh sering berawal dari instalasi 'kira-kira'. Kami mengeliminasi risiko tersebut dengan software bersertifikasi HAKI demi keselamatan aset dan keluarga Anda.",
+    "point1Title": "Software Resmi HAKI",
+    "point1Desc": "Hitungan beban angin & gempa teruji.",
+    "point2Title": "Baja Mutu G550",
+    "point2Desc": "Standar SNI, kokoh & tahan karat.",
+    "point3Title": "Garansi Resmi",
+    "point3Desc": "Kepastian keamanan jangka panjang.",
+    "cardBadge": "LEGALITAS RESMI",
+    "cardTitle": "Software Terverifikasi HAKI",
+    "cardSubtitle": "Himpunan Ahli Konstruksi Indonesia",
+    "cardDesc": "Perhitungan struktur bersertifikat layak pakai untuk standar keamanan bangunan tertinggi.",
+    "cardTag": "Sertifikat Layak Pakai"
   },
   "cta": {
     "title": "Kekuatan Sejati Dimulai dari Perhitungan yang Presisi.",

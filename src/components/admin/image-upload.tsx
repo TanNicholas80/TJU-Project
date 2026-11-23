@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Upload, X, Loader2, Image as ImageIcon, Link as LinkIcon, CheckCircle2 } from "lucide-react";
+import { Upload, X, Loader2, Image as ImageIcon, Link as LinkIcon, CheckCircle2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -28,6 +28,7 @@ export function ImageUpload({
   const [isUploading, setIsUploading] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [showUrlInput, setShowUrlInput] = React.useState(false);
+  const [showGuide, setShowGuide] = React.useState(false);
   const [urlInput, setUrlInput] = React.useState("");
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -134,15 +135,46 @@ export function ImageUpload({
         <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1F24]">
           {label}
         </label>
-        <button
-          type="button"
-          onClick={() => setShowUrlInput(!showUrlInput)}
-          className="text-xs text-[#20449A] hover:underline flex items-center gap-1 font-medium cursor-pointer"
-        >
-          <LinkIcon className="h-3 w-3" />
-          {showUrlInput ? "Tutup Input URL" : "Input URL Manual"}
-        </button>
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setShowGuide(!showGuide)}
+            className="text-xs text-[#F48902] hover:text-[#d97706] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
+          >
+            <Sparkles className="h-3 w-3" />
+            {showGuide ? "Tutup Panduan" : "Panduan Ukuran"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowUrlInput(!showUrlInput)}
+            className="text-xs text-[#20449A] hover:underline flex items-center gap-1 font-medium cursor-pointer"
+          >
+            <LinkIcon className="h-3 w-3" />
+            {showUrlInput ? "Tutup URL" : "Input URL"}
+          </button>
+        </div>
       </div>
+
+      {showGuide && (
+        <div className="rounded-xl border border-blue-200/80 bg-blue-50/70 p-3 text-xs text-[#20449A] space-y-1.5 shadow-2xs animate-in fade-in duration-200">
+          <div className="font-bold flex items-center gap-1.5 text-[#20449A]">
+            <Sparkles className="h-3.5 w-3.5 text-[#F48902]" />
+            <span>Spesifikasi Rekomendasi Media:</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-700 pt-0.5">
+            <div>
+              • <strong>Rasio Aspek:</strong>{" "}
+              {aspectRatio === "wide" ? "16:9 / 21:9 (Landscape Lebar)" : aspectRatio === "square" ? "1:1 (Bujur Sangkar)" : "16:9 (Landscape)"}
+            </div>
+            <div>
+              • <strong>Resolusi Ideal:</strong>{" "}
+              {aspectRatio === "wide" ? "1920 × 1080 px" : aspectRatio === "square" ? "500 × 500 px" : "1200 × 800 px"}
+            </div>
+            <div>• <strong>Format Disarankan:</strong> WebP atau JPG terkompresi (PNG untuk logo transparan)</div>
+            <div>• <strong>Batas Ukuran:</strong> Di bawah 800 KB agar web super cepat (Maks. 5MB)</div>
+          </div>
+        </div>
+      )}
 
       {showUrlInput && (
         <div className="flex items-center gap-2 p-2 bg-[#F9F9FB] rounded-lg border border-[#E2E4EB]">

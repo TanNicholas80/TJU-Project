@@ -12,6 +12,7 @@ export type SocialLinks = {
   tiktok?: string;
   linkedin?: string;
   youtube?: string;
+  carouselInterval?: number; // Durasi jeda pergantian slide dalam detik (default: 6)
 };
 
 // ==========================================

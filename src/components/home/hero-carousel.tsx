@@ -25,11 +25,10 @@ export interface HeroSlide {
 
 interface HeroCarouselProps {
   slides: HeroSlide[];
+  intervalSeconds?: number;
 }
 
-const SLIDE_DURATION = 6000; // 6 detik per slide
-
-export function HeroCarousel({ slides }: HeroCarouselProps) {
+export function HeroCarousel({ slides, intervalSeconds = 6 }: HeroCarouselProps) {
   const { locale, t } = useI18n();
   const [currentIdx, setCurrentIdx] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
@@ -42,6 +41,9 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
   const activeSlides = slides.filter((s) => s.isActive);
   const currentSlide = activeSlides[currentIdx] || activeSlides[0];
+
+  // Durasi rotasi slide dalam milidetik (fallback: 6000ms)
+  const slideDurationMs = Math.max(3000, (intervalSeconds || 6) * 1000);
 
   // Helper i18n
   const getLocalized = (field?: I18nString | null) => {
@@ -94,17 +96,17 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
     const timer = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const currentProgress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+      const currentProgress = Math.min((elapsed / slideDurationMs) * 100, 100);
       setProgress(currentProgress);
 
-      if (elapsed >= SLIDE_DURATION) {
+      if (elapsed >= slideDurationMs) {
         clearInterval(timer);
         setCurrentIdx((prev) => (prev + 1) % activeSlides.length);
       }
     }, intervalTime);
 
     return () => clearInterval(timer);
-  }, [currentIdx, activeSlides.length]);
+  }, [currentIdx, activeSlides.length, slideDurationMs]);
 
   if (!currentSlide) return null;
 

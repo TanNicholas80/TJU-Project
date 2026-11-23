@@ -309,3 +309,52 @@ export async function deleteCarousel(id: string) {
     return { success: false, message: "Gagal menghapus slide carousel." };
   }
 }
+
+export async function getCarouselInterval(): Promise<{ success: boolean; interval: number }> {
+  try {
+    const [profile] = await db.select().from(schema.companyProfile).limit(1);
+    const interval = profile?.socialLinks?.carouselInterval || 6;
+    return { success: true, interval };
+  } catch {
+    return { success: true, interval: 6 };
+  }
+}
+
+export async function updateCarouselInterval(seconds: number): Promise<{ success: boolean; message: string }> {
+  try {
+    const validSeconds = Math.max(3, Math.min(30, Math.round(Number(seconds) || 6)));
+    const [existing] = await db.select().from(schema.companyProfile).limit(1);
+
+    const socialLinks = {
+      ...(existing?.socialLinks || {}),
+      carouselInterval: validSeconds,
+    };
+
+    if (existing) {
+      await db.update(schema.companyProfile).set({
+        socialLinks,
+        updatedAt: new Date(),
+      });
+    } else {
+      await db.insert(schema.companyProfile).values({
+        socialLinks,
+        standardsColumns: 3,
+      });
+    }
+
+    await cache.del("public:company_profile");
+    safeRevalidate("/");
+    safeRevalidate("/admin/carousel");
+    safeRevalidate("/admin/settings");
+
+    return {
+      success: true,
+      message: `Durasi jeda slider berhasil diperbarui menjadi ${validSeconds} detik.`,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.message || "Gagal memperbarui durasi jeda slider.",
+    };
+  }
+}

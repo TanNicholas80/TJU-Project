@@ -32,6 +32,7 @@ const settingsSchema = z.object({
   tiktok: z.string().optional(),
   linkedin: z.string().optional(),
   standardsColumns: z.coerce.number().min(2).max(4).optional().default(3),
+  carouselInterval: z.coerce.number().min(3).max(30).optional().default(6),
 });
 
 type SettingsFormData = z.infer<typeof settingsSchema>;
@@ -67,6 +68,7 @@ export default function AdminSettingsPage() {
             tiktok: profile.socialLinks?.tiktok || "",
             linkedin: profile.socialLinks?.linkedin || "",
             standardsColumns: profile.standardsColumns || 3,
+            carouselInterval: profile.socialLinks?.carouselInterval || 6,
           });
         }
       } catch {
@@ -275,6 +277,27 @@ export default function AdminSettingsPage() {
             </select>
             <p className="text-xs text-[#62636C]">
               Mengatur jumlah kolom tampilan pilar kualitas mutu pada halaman utama agar rapi dan tidak menyisakan card gantung.
+            </p>
+          </div>
+
+          <div className="max-w-md space-y-2 pt-5 border-t border-[#F0F2F6] mt-5">
+            <label className="block text-xs font-semibold uppercase text-[#1E1F24]">
+              Waktu Jeda Rotasi Slider Carousel (Detik)
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                min={3}
+                max={30}
+                {...register("carouselInterval")}
+                className="w-full rounded-lg border border-[#E2E4EB] bg-white px-3.5 py-2.5 text-sm font-medium text-[#1E1F24]"
+              />
+              <span className="absolute right-3.5 top-2.5 text-xs text-slate-400 font-semibold pointer-events-none">
+                detik
+              </span>
+            </div>
+            <p className="text-xs text-[#62636C]">
+              Jeda waktu otomatis sebelum slide berpindah ke banner berikutnya pada carousel beranda (Rekomendasi: 6–8 detik).
             </p>
           </div>
         </div>

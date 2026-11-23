@@ -437,6 +437,17 @@ export function PortfolioForm({ initialData, portfolioId, isEdit = false }: Port
 
               {/* Video URL Input & Upload Action */}
               <div className="space-y-3">
+                <div className="rounded-xl border border-blue-200/80 bg-blue-50/70 p-3 text-xs text-blue-900 space-y-1">
+                  <div className="flex items-center gap-1.5 font-bold text-[#20449A]">
+                    <Sparkles className="h-3.5 w-3.5 text-[#F48902]" />
+                    <span>Panduan Best Practice Video:</span>
+                  </div>
+                  <div className="text-[11px] text-slate-700 space-y-0.5">
+                    <p>• <strong>Rekomendasi Utama:</strong> Unggah video ke <strong>YouTube / Vimeo</strong> lalu tempel tautannya di bawah. Video berputar instan via CDN tanpa membebani hosting server.</p>
+                    <p>• <strong>Jika Mengunggah File Langsung:</strong> Format <strong>MP4</strong>, resolusi 1080p, durasi ringkas 30–90 detik (Maks. 50MB).</p>
+                  </div>
+                </div>
+
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <div className="relative flex-1">
                     <Video className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />

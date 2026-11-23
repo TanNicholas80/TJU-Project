@@ -50,7 +50,7 @@
     "residential": {
       "title": "Residential",
       "description": "The roof of a home protects the entire family. We guarantee neat, structured, and officially warrantied installation. TJU Truss provides absolute peace of mind for homeowners prioritizing quality over low-cost compromises.",
-      "point1": "Termite-Proof & Lifetime Rust-Resistant",
+      "point1": "Termite-Proof & Rust-Resistant",
       "point2": "Precision Installation by Certified Experts",
       "point3": "Official Corporate Structural Warranty"
     }
@@ -80,8 +80,20 @@
     }
   },
   "coreValues": {
-    "title": "Core Values",
-    "description": "CV. TRI JAYA UTAMA utilizes software that has been verified by HAKI and certified fit for use."
+    "badge": "WHY TJU TRUSS?",
+    "title": "Not Just Strong, but Engineered for Absolute Safety",
+    "description": "Roof collapses often stem from guesswork. We eliminate risks using HAKI-certified software to safeguard your property and family.",
+    "point1Title": "HAKI Certified Software",
+    "point1Desc": "Rigorous wind & seismic load analysis.",
+    "point2Title": "G550 High-Tensile Steel",
+    "point2Desc": "SNI compliant, sturdy & rust-resistant.",
+    "point3Title": "Official Warranty",
+    "point3Desc": "Guaranteed long-term structural peace of mind.",
+    "cardBadge": "OFFICIAL ACCREDITATION",
+    "cardTitle": "HAKI Verified Software",
+    "cardSubtitle": "Indonesian Association of Structural Engineers",
+    "cardDesc": "Certified fit-for-use structural engineering calculations for highest building safety.",
+    "cardTag": "Certified Fit-for-Use"
   },
   "cta": {
     "title": "True Strength Begins with Precise Calculation.",
