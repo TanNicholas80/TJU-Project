@@ -246,7 +246,7 @@ export function BlogContentSection({
 
         {/* 2. Artikel Unggulan / Featured Card (Identik 100% dengan Gambar Desain) */}
         {featuredPost ? (
-          <div ref={featuredRef}>
+          <article ref={featuredRef}>
             <Link
               href={`/blog/${featuredPost.id}`}
               onClick={() => markViewIntent("article", featuredPost.id)}
@@ -296,7 +296,7 @@ export function BlogContentSection({
                 </div>
               </div>
             </Link>
-          </div>
+          </article>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center text-slate-400">
             <p className="text-base font-medium">
@@ -317,56 +317,57 @@ export function BlogContentSection({
               const categoryBadge = post.categoryName || "Engineering";
 
               return (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.id}`}
-                  onClick={() => markViewIntent("article", post.id)}
-                  className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-slate-200 block cursor-pointer"
-                >
-                  {/* Thumbnail Image Container with Badge Overlaid */}
-                  <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-100 block">
-                    <Image
-                      src={
-                        post.coverImageUrl ||
-                        "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80"
-                      }
-                      alt={title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                    />
+                <article key={post.id} className="h-full flex flex-col">
+                  <Link
+                    href={`/blog/${post.id}`}
+                    onClick={() => markViewIntent("article", post.id)}
+                    className="group flex flex-col flex-1 h-full overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-slate-200 block cursor-pointer"
+                  >
+                    {/* Thumbnail Image Container with Badge Overlaid */}
+                    <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-100 block">
+                      <Image
+                        src={
+                          post.coverImageUrl ||
+                          "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80"
+                        }
+                        alt={title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      />
 
-                    {/* Category Pill Overlaid at Top-Left */}
-                    <div className="absolute top-3.5 left-3.5 z-10">
-                      <span className="inline-block rounded-full bg-[#1E1F24]/90 backdrop-blur-xs px-3.5 py-1 text-[11px] font-semibold text-white shadow-xs">
-                        {getCategoryName(post)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content Body */}
-                  <div className="p-6 flex flex-1 flex-col justify-between space-y-4">
-                    <div className="space-y-2.5">
-                      {/* Title */}
-                      <h3 className="text-base sm:text-lg font-bold text-[#1E1F24] leading-snug line-clamp-2 group-hover:text-[#20449A] transition-colors">
-                        {title}
-                      </h3>
-
-                      {/* Excerpt */}
-                      <p className="text-xs sm:text-sm text-[#62636C] leading-relaxed line-clamp-2">
-                        {excerpt}
-                      </p>
+                      {/* Category Pill Overlaid at Top-Left */}
+                      <div className="absolute top-3.5 left-3.5 z-10">
+                        <span className="inline-block rounded-full bg-[#1E1F24]/90 backdrop-blur-xs px-3.5 py-1 text-[11px] font-semibold text-white shadow-xs">
+                          {getCategoryName(post)}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Baca Selengkapnya */}
-                    <div className="pt-2">
-                      <span className="inline-flex items-center text-xs sm:text-sm font-bold text-[#1E1F24] group-hover:text-[#F48902] transition-colors">
-                        <span>{t("homeBlog.readMore") || "Baca Selengkapnya"}</span>
-                        <ArrowRight className="h-3.5 w-3.5 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
-                      </span>
+                    {/* Content Body */}
+                    <div className="p-6 flex flex-1 flex-col justify-between space-y-4">
+                      <div className="space-y-2.5">
+                        {/* Title */}
+                        <h3 className="text-base sm:text-lg font-bold text-[#1E1F24] leading-snug line-clamp-2 group-hover:text-[#20449A] transition-colors">
+                          {title}
+                        </h3>
+
+                        {/* Excerpt */}
+                        <p className="text-xs sm:text-sm text-[#62636C] leading-relaxed line-clamp-2">
+                          {excerpt}
+                        </p>
+                      </div>
+
+                      {/* Baca Selengkapnya */}
+                      <div className="pt-2">
+                        <span className="inline-flex items-center text-xs sm:text-sm font-bold text-[#1E1F24] group-hover:text-[#F48902] transition-colors">
+                          <span>{t("homeBlog.readMore") || "Baca Selengkapnya"}</span>
+                          <ArrowRight className="h-3.5 w-3.5 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </article>
               );
             })}
           </div>

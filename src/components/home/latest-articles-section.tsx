@@ -150,52 +150,53 @@ export function LatestArticlesSection({ posts }: LatestArticlesSectionProps) {
               "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80";
 
             return (
-              <Link
-                key={item.id}
-                href={`/blog/${item.id}`}
-                onClick={() => markViewIntent("article", item.id)}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-200 block cursor-pointer"
-              >
-                {/* Thumbnail Image Container */}
-                <div className="relative h-56 sm:h-60 w-full overflow-hidden bg-slate-100">
-                  <Image
-                    src={item.coverImageUrl || fallbackImg}
-                    alt={title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Category Pill di sudut kiri atas thumbnail (gelap semi-transparan dengan border lembut) */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-flex items-center rounded-lg bg-black/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-xs border border-white/10">
-                      {item.categoryName || "Engineering"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Content Body */}
-                <div className="p-6 sm:p-7 flex flex-1 flex-col justify-between space-y-5">
-                  <div className="space-y-3">
-                    {/* Article Title */}
-                    <h3 className="text-lg sm:text-xl font-bold text-[#1E1F24] leading-snug line-clamp-2 group-hover:text-[#20449A] transition-colors">
-                      {title}
-                    </h3>
-
-                    {/* Excerpt */}
-                    <p className="text-sm text-[#62636C] line-clamp-3 leading-relaxed">
-                      {excerpt}
-                    </p>
+              <article key={item.id} className="h-full flex flex-col">
+                <Link
+                  href={`/blog/${item.id}`}
+                  onClick={() => markViewIntent("article", item.id)}
+                  className="group flex flex-col flex-1 h-full overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-200 block cursor-pointer"
+                >
+                  {/* Thumbnail Image Container */}
+                  <div className="relative h-56 sm:h-60 w-full overflow-hidden bg-slate-100">
+                    <Image
+                      src={item.coverImageUrl || fallbackImg}
+                      alt={title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                    />
+                    {/* Category Pill di sudut kiri atas thumbnail (gelap semi-transparan dengan border lembut) */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="inline-flex items-center rounded-lg bg-black/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-xs border border-white/10">
+                        {item.categoryName || "Engineering"}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Baca Selengkapnya */}
-                  <div className="pt-2">
-                    <span className="inline-flex items-center text-sm font-bold text-[#1E1F24] transition-colors group-hover:text-[#F48902]">
-                      <span>{t("homeBlog.readMore")}</span>
-                      <ArrowRight className="h-4 w-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
-                    </span>
+                  {/* Content Body */}
+                  <div className="p-6 sm:p-7 flex flex-1 flex-col justify-between space-y-5">
+                    <div className="space-y-3">
+                      {/* Article Title */}
+                      <h3 className="text-lg sm:text-xl font-bold text-[#1E1F24] leading-snug line-clamp-2 group-hover:text-[#20449A] transition-colors">
+                        {title}
+                      </h3>
+
+                      {/* Excerpt */}
+                      <p className="text-sm text-[#62636C] line-clamp-3 leading-relaxed">
+                        {excerpt}
+                      </p>
+                    </div>
+
+                    {/* Baca Selengkapnya */}
+                    <div className="pt-2">
+                      <span className="inline-flex items-center text-sm font-bold text-[#1E1F24] transition-colors group-hover:text-[#F48902]">
+                        <span>{t("homeBlog.readMore")}</span>
+                        <ArrowRight className="h-4 w-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </article>
             );
           })}
         </div>
